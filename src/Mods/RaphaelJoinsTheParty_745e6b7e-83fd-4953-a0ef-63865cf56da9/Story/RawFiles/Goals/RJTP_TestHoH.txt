@@ -1,0 +1,233 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+// Raphael Joins the Party - v0.3d test harness: "RJTP TEST: Go to the House of Hope" (PLAN_v0_3d_hoh_exit section 4).
+// A NEW goal file so its INIT row reaches saves made with older builds (the INIT trap). The spell is granted by the
+// v0.1 rules in RJTP_AAA_Init while DB_RJTP_TestBuild(1) holds.
+DB_RJTP_DebugSpell("Shout_RJTP_Debug_GoHoH");
+KBSECTION
+//REGION Entry
+// Test builds only (diff review S3): DB_RJTP_TestBuild(1) is the same guard the other debug spells use
+IF
+CastedSpell(_Caster, "Shout_RJTP_Debug_GoHoH", _, _, _)
+AND
+DB_RJTP_TestBuild(1)
+THEN
+PROC_RJTP_TestHoH((CHARACTER)_Caster);
+//END_REGION
+
+//REGION Refusals: the first one that applies wins, and names its reason
+PROC
+PROC_RJTP_TestHoH((CHARACTER)_Caster)
+AND
+NOT DB_CurrentLevel("CTY_Main_A")
+THEN
+DB_RJTP_TestHoHBlock("RJTP_Msg_TestHoH_Level");
+
+PROC
+PROC_RJTP_TestHoH((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestHoHBlock(_)
+AND
+QRY_RJTP_TestHoHModBlocked()
+THEN
+DB_RJTP_TestHoHBlock("RJTP_Msg_TestHoH_Recruited");
+
+PROC
+PROC_RJTP_TestHoH((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestHoHBlock(_)
+AND
+QRY_RJTP_TestHoHStoryBlocked()
+THEN
+DB_RJTP_TestHoHBlock("RJTP_Msg_TestHoH_Story");
+
+// The house was set up for a run without the deal (HoH2:724-749 run on the first entry)
+PROC
+PROC_RJTP_TestHoH((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestHoHBlock(_)
+AND
+DB_GlobalFlag((FLAG)LOW_HouseOfHope_State_VisitedHouseOfHope_c8889a79-8277-48e9-afa0-e14f6359ea10)
+AND
+NOT DB_GlobalFlag((FLAG)GLO_Monitor_State_MadeDeal_86f40f63-0bfa-4ab6-b3b0-d01475c3cbdc)
+THEN
+DB_RJTP_TestHoHBlock("RJTP_Msg_TestHoH_VisitedNoDeal");
+
+// An alarm of another cause already stands: the offer would never be made
+PROC
+PROC_RJTP_TestHoH((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestHoHBlock(_)
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+NOT QRY_RJTP_AlarmAcceptable()
+THEN
+DB_RJTP_TestHoHBlock("RJTP_Msg_TestHoH_Alarm");
+
+PROC
+PROC_RJTP_TestHoH((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestHoHBlock(_)
+AND
+QRY_RJTP_PartyInCombat()
+THEN
+DB_RJTP_TestHoHBlock("RJTP_Msg_TestHoH_Busy");
+
+PROC
+PROC_RJTP_TestHoH((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestHoHBlock(_)
+AND
+DB_Avatars(_Avatar)
+AND
+DB_DialogPlayers(_, _Avatar, _)
+THEN
+DB_RJTP_TestHoHBlock("RJTP_Msg_TestHoH_Busy");
+
+PROC
+PROC_RJTP_TestHoH((CHARACTER)_Caster)
+AND
+DB_RJTP_TestHoHBlock(_Key)
+THEN
+NOT DB_RJTP_TestHoHBlock(_Key);
+DB_RJTP_TestHoHRefused(1);
+PROC_RJTP_Box(_Caster, _Key, 0);
+
+QRY
+QRY_RJTP_TestHoHModBlocked()
+AND
+DB_RJTP_Recruited(1)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_TestHoHModBlocked()
+AND
+DB_RJTP_Betrayed(1)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_TestHoHModBlocked()
+AND
+DB_RJTP_Dismissed(1)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_TestHoHModBlocked()
+AND
+DB_RJTP_OfferResolved(_)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_TestHoHModBlocked()
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_TestHoHStoryBlocked()
+AND
+DB_GlobalFlag((FLAG)LOW_HouseOfHope_State_RaphaelIsDead_655d7d21-99a2-4138-9a7a-af1850932e75)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_TestHoHStoryBlocked()
+AND
+DB_PermaDefeated((CHARACTER)S_GLO_Monitor_f65becd6-5cd7-4c88-b85e-6dd06b60f7b8)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_TestHoHStoryBlocked()
+AND
+DB_GlobalFlag((FLAG)LOW_HouseOfHope_Event_RaphaelAppeared_c25358e0-5ea1-929b-b511-6e745596d789)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_TestHoHStoryBlocked()
+AND
+DB_GlobalFlag((FLAG)LOW_HouseOfHope_State_ContractIsDestroyed_1a51a77c-d549-4d50-95df-97ab9d1ef9f6)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_TestHoHStoryBlocked()
+AND
+DB_GlobalFlag((FLAG)LOW_HouseOfHope_State_PlayersStoleMainTreasure_ffa3d3be-d30f-296f-d794-4c24d63eb25c)
+THEN
+DB_NOOP(1);
+//END_REGION
+
+//REGION Go: with the deal already made, at once; without it, only after a Yes (diff review S3)
+PROC
+PROC_RJTP_TestHoH((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestHoHRefused(1)
+AND
+DB_GlobalFlag((FLAG)GLO_Monitor_State_MadeDeal_86f40f63-0bfa-4ab6-b3b0-d01475c3cbdc)
+THEN
+PROC_RJTP_TestHoHGo(_Caster, "RJTP_Msg_TestHoH_Go");
+
+PROC
+PROC_RJTP_TestHoH((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestHoHRefused(1)
+AND
+NOT DB_GlobalFlag((FLAG)GLO_Monitor_State_MadeDeal_86f40f63-0bfa-4ab6-b3b0-d01475c3cbdc)
+THEN
+PROC_RJTP_Box(_Caster, "RJTP_Msg_TestHoH_ConfirmDeal", 1);
+
+// The deal exactly as vanilla's own debug shortcut sets it (Act3_WYR_RaphaelTango.txt:752-759)
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_TestHoH_ConfirmDeal", 1)
+AND
+NOT DB_GlobalFlag((FLAG)GLO_Monitor_State_MadeDeal_86f40f63-0bfa-4ab6-b3b0-d01475c3cbdc)
+AND
+DB_CurrentLevel("CTY_Main_A")
+THEN
+DB_RJTP_TestHoHDealGiven(1);
+PROC_GlobalSetFlagAndCache((FLAG)GLO_Monitor_State_MadeDeal_86f40f63-0bfa-4ab6-b3b0-d01475c3cbdc);
+PROC_GlobalSetFlagAndCache((FLAG)WYR_RaphaelTango_State_DiscussedDeal_9896c94b-431e-4b0e-90ce-80293ffb1198);
+ToInventory((ITEM)S_GLO_OrphicHammer_9013ef0d-c6ee-4137-b17a-c1934079e10d, _Player, 1, 1, 1);
+PROC_RJTP_TestHoHGo(_Player, "RJTP_Msg_TestHoH_GoDeal");
+
+// "No" (or Escape): nothing is changed
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_TestHoH_ConfirmDeal", 0)
+THEN
+DB_NOOP(1);
+
+PROC
+PROC_RJTP_TestHoHGo((CHARACTER)_Player, (STRING)_Key)
+THEN
+PROC_TeleportPartiesTo((TRIGGER)S_LOW_HouseOfHopeEntrance_f39ce96a-e495-49dd-a171-b3b160a43d80, "");
+PROC_RJTP_Box(_Player, _Key, 0);
+
+// Diff review M1: vanilla sets NoHammerInHouse for every party member who enters without the hammer
+// (HoH2:724-731); the test deal gives it to one character only, so keep the flag clear in a test-deal save
+IF
+FlagSet((FLAG)LOW_HouseOfHope_State_NoHammerInHouse_29adfa78-2141-4599-a46a-53dd49acdb23, _, _)
+AND
+DB_RJTP_TestHoHDealGiven(1)
+THEN
+ClearFlag((FLAG)LOW_HouseOfHope_State_NoHammerInHouse_29adfa78-2141-4599-a46a-53dd49acdb23);
+
+// Last rule: reset for the next cast
+PROC
+PROC_RJTP_TestHoH((CHARACTER)_Caster)
+AND
+DB_RJTP_TestHoHRefused(1)
+THEN
+NOT DB_RJTP_TestHoHRefused(1);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION

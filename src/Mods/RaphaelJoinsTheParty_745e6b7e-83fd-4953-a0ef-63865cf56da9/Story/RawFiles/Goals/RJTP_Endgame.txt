@@ -1,0 +1,118 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION Withdraw (plan section 6.4): out of the party and off-stage, never resurfacing through dismiss-to-camp
+PROC
+PROC_RJTP_Withdraw()
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+DB_RJTP_Withdrawn(1);
+DB_GLO_PartyMembers_BlockReturnToRecruitmentPosition(_Comp);
+// v0.2: forms off first (vanilla scenes always see the human look), then suit items and the Helldusk deleted
+// before anything is handed back (plan v0.2 sections 4.1-4.2; review 17 m9)
+PROC_RJTP_ClearForms(_Comp);
+PROC_RJTP_RemoveBoundItems();
+
+// Hand everything the player gave him back to one avatar first (review 08 S4); the bound Helldusk copy is deleted above
+PROC
+PROC_RJTP_Withdraw()
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_Avatars(_Avatar)
+AND
+NOT DB_RJTP_ItemsHandedBack(1)
+THEN
+DB_RJTP_ItemsHandedBack(1);
+MoveAllItemsTo(_Comp, _Avatar, 1, 1, 0, 1);
+
+PROC
+PROC_RJTP_Withdraw()
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_Players(_Comp)
+AND
+DB_Avatars(_Avatar)
+AND
+NOT DB_RJTP_WithdrawRemoved(1)
+THEN
+DB_RJTP_WithdrawRemoved(1);
+PROC_GLO_PartyMembers_Remove(_Comp, _Avatar, 1);
+
+PROC
+PROC_RJTP_Withdraw()
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+NOT DB_RJTP_WithdrawRemoved(1);
+NOT DB_RJTP_ItemsHandedBack(1);
+SetOnStage(_Comp, 0);
+ObjectTimerLaunch(_Comp, "RJTP_WithdrawOffstage", 1000, 0);
+
+// Again after vanilla's MakeNPC / dismiss hooks have run (review 05 S5)
+IF
+ObjectTimerFinished(_Comp, "RJTP_WithdrawOffstage")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_Withdrawn(1)
+THEN
+SetOnStage(_Comp, 0);
+//END_REGION
+
+//REGION Farewell and end of the game (the author Q8: he says goodbye unless the contract was broken)
+// PROC_END_GameFinale_StartEpilogue runs for both the epilogue and the no-epilogue credits path (VS END_GameFinale 1496-1510)
+PROC
+PROC_END_GameFinale_StartEpilogue()
+AND
+DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_Betrayed(1)
+AND
+NOT DB_RJTP_FarewellDone(1)
+THEN
+DB_RJTP_FarewellDone(1);
+PROC_RJTP_TellAvatars("RJTP_Msg_Farewell");
+PROC_RJTP_Withdraw();
+
+// Epilogue: vanilla Raphael attends as written; the companion is hidden (WW Mizora precedent, research 02)
+PROC
+PROC_EPI_Epilogue_SetCharacters()
+AND
+DB_RJTP_EverRecruited(1)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_Withdraw();
+PROC_EPI_Epilogue_RemoveAndHideNPC(_Comp);
+
+// Credits without the epilogue: idempotent safety net
+PROC
+PROC_END_GodsAndMonsters_RollCredits(_)
+AND
+DB_RJTP_EverRecruited(1)
+AND
+NOT DB_RJTP_Withdrawn(1)
+THEN
+PROC_RJTP_Withdraw();
+//END_REGION
+
+//REGION Astral Plane "last chance": vanilla Raphael appears; the companion steps aside (review 05 S6)
+IF
+FlagSet((FLAG)END_IllithidOptions_Event_RaphaelAppeared_9cfb6023-25e5-4ae4-899f-d6142c7f1be0, _, _)
+AND
+DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_Withdrawn(1)
+THEN
+DB_RJTP_FarewellDone(1);
+PROC_RJTP_TellAvatars("RJTP_Msg_AstralWithdraw");
+PROC_RJTP_Withdraw();
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION

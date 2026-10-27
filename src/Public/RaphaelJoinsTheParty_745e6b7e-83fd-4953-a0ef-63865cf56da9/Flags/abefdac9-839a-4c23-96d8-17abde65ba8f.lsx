@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="8" revision="0" build="500" />
+	<region id="Flags">
+		<node id="Flags">
+			<attribute id="UUID" type="guid" value="abefdac9-839a-4c23-96d8-17abde65ba8f" />
+			<attribute id="Name" type="FixedString" value="RJTP_Offer_ItemGone" />
+			<attribute id="Description" type="LSString" value="RJTP offer dialog state (set by Osiris on the companion before start): a stolen treasure no longer exists." />
+			<attribute id="Usage" type="uint8" value="4" />
+		</node>
+	</region>
+</save>

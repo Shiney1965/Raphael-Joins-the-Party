@@ -1,0 +1,46 @@
+{
+ "RJTP_CAMP_Raphael": {
+  "donor": "CAMP_Volo",
+  "donor_sha256": "c9b7929eb95ccfd6585b5207e7d1b1a088d647f5d04d14656baf93164b94b149",
+  "speaker_mapping_ids": [
+   "d54fa84c-3bfa-4f48-8119-25d249d8e8fc",
+   "1dd96a13-7d69-4cff-91f4-5bfa5995f208"
+  ],
+  "timeline_id_key": "TL_CAMP",
+  "nodes": {
+   "a_alltime": "d57b629f-20a8-7f58-17ce-819adf98cb8a",
+   "a_assets": "9bb0bb8a-8fcf-1fde-8299-c8fc93e653f8",
+   "a_boast": "b07d8c3e-faeb-053e-46b2-1a770f7210d8",
+   "a_brilliant": "4b7b31c9-6c09-814a-87cd-e11baf46b78b",
+   "a_charmed": "3f273206-129e-8416-7518-20d6319ae719",
+   "a_cub": "738ab932-8eae-6fea-a859-72e031a398f5",
+   "a_delicious": "6b379788-9c0f-9168-d7e1-cd338d1a6e8f",
+   "a_dismiss_warn": "dd9e16f1-8849-3760-1db7-ffa7df6d0196",
+   "a_dismissed": "051459eb-4513-3a8a-3a2a-1e193410d746",
+   "a_dismissed_gap": "fbe36f20-fc47-04d2-05ce-11f1dd64d786",
+   "a_dontlike": "5107c826-058b-074a-2386-56132f1aa698",
+   "a_explore": "6f243d14-d455-0320-49ad-ec518f7b9b93",
+   "a_greet": "c10c0ff5-19e7-6a6c-3cd9-ea6721593da3",
+   "a_insight": "c09144fd-a9d0-064c-7b3f-42409a1c80b2",
+   "a_join": "5a4d21c5-5515-a137-ed59-8527d084a630",
+   "a_leave1": "e8e26413-5902-2871-358c-d00d3b2fbd3b",
+   "a_leave2": "b920b5fc-a7ee-1054-260d-bc67a24a0cd1",
+   "a_naughty": "a0eb001f-ea6c-1d83-d1a9-0dbf7eb3d68f",
+   "a_nofun": "0e7a4ffc-a9ca-8679-7123-b013b49107b5",
+   "a_owe": "279ae448-a44a-2f35-f79a-93165b1b6f34",
+   "a_paranoid": "7e6c90af-c5e2-e3f2-0f18-2284d74b8637",
+   "a_rightplace": "c22a08fe-aafb-0282-0da3-fedf85f53595",
+   "a_rude": "63619794-3295-e15b-4d20-3cec76108efa",
+   "a_stay": "f39eb44a-16f1-cebd-108e-def44dd64f6d",
+   "a_talk": "155523f5-51f7-b296-ca79-00ce9894f40e",
+   "a_tg_gortash": "05f1ae48-96cc-acdb-3d15-4536e76bd5ac",
+   "a_tg_orin": "85a9c938-a13e-0bd0-3246-e02d209dc4cd",
+   "a_tg_pool": "d3c553db-e842-9742-53be-62cf7a1f7bbe",
+   "a_tut": "7e7faa50-e759-fa2a-326e-c9f0bc59fdee",
+   "a_wait": "b9cde6b4-217d-e55f-1fb2-ccf9f1339089",
+   "a_warn": "aab07c91-35ae-c541-89fa-7cc1910f957f",
+   "a_why": "1d442fca-1fa4-e579-3bcc-db71cb010205",
+   "r_hello": "e6435269-23fe-94fa-fa22-1380772b7447"
+  }
+ }
+}

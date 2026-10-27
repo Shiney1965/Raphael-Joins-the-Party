@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="8" revision="0" build="500" />
+	<region id="Tags">
+		<node id="Tags">
+			<attribute id="UUID" type="guid" value="e6a8b93b-fb2a-4109-816f-dcb3fe82bb1c" />
+			<attribute id="Name" type="FixedString" value="RJTP_REALLY_RAPHAEL" />
+			<attribute id="DisplayName" type="TranslatedString" handle="hf90611b6g1bacg5821g9144gab0f3f404951" version="1" />
+			<attribute id="DisplayDescription" type="TranslatedString" handle="ls::TranslatedStringRepository::s_HandleUnknown" version="0" />
+			<attribute id="Icon" type="FixedString" value="" />
+			<attribute id="Description" type="LSString" value="" />
+			<children>
+				<node id="Categories">
+					<children>
+						<node id="Category">
+							<attribute id="Name" type="LSString" value="Code" />
+						</node>
+						<node id="Category">
+							<attribute id="Name" type="LSString" value="Dialog" />
+						</node>
+						<node id="Category">
+							<attribute id="Name" type="LSString" value="DialogHidden" />
+						</node>
+					</children>
+				</node>
+				<node id="Properties" />
+			</children>
+		</node>
+	</region>
+</save>

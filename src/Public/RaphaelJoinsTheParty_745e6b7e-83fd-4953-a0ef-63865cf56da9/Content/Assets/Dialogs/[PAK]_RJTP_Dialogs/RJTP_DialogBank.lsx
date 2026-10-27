@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="0" revision="9" build="0" lslib_meta="v1,bswap_guids,lsf_adjacency" />
+	<region id="DialogBank">
+		<node id="DialogBank">
+			<children>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="True" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="a5650de7-56bb-4fdc-adcf-93245cfc010e" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_HoH_Offer" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP/RJTP_HoH_Offer.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="False" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="True" />
+					<attribute id="EnableTimeline" type="bool" value="True" />
+					<attribute id="ID" type="FixedString" value="b8de429b-ac5c-46e5-af00-822da8d57f97" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_CAMP_Raphael" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP/RJTP_CAMP_Raphael.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="False" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="childResources">
+							<attribute id="Object" type="guid" value="002e501b-6f1b-8357-1fde-20b1b4b7c1b9" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="True" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="eb1bd142-1100-44a8-b72b-aefe1b47836c" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_Farewell" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP/RJTP_Farewell.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="False" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="fc440a39-8d81-45a9-9985-f2ee9ed7c229" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_VoiceTestRekeyed" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Spikes/RJTP_AD_VoiceTestRekeyed.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="db220430-84e7-43b2-bf9b-1b17760c95bc" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_VoiceTestGroup" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Spikes/RJTP_AD_VoiceTestGroup.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="6f333068-90cd-4715-b11b-d910d3a20a8d" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_PrivateAfter" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP/RJTP_AD_PrivateAfter.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="ffdd044e-3608-4fdd-933d-a226cd39a914" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_Bark_CombatStart_1" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Barks/RJTP_AD_Bark_CombatStart_1.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="d2968f0d-2c6c-44f1-8e01-fcc97014819e" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_Bark_CombatStart_2" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Barks/RJTP_AD_Bark_CombatStart_2.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="6b17c013-39f6-4654-8f24-278a97168285" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_Bark_CombatStart_3" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Barks/RJTP_AD_Bark_CombatStart_3.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="35b6b578-71e9-422c-b5ce-992071f4d5ac" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_Bark_Kill_1" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Barks/RJTP_AD_Bark_Kill_1.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="429aeee3-f5f4-44e7-8a0c-1217ade2fbe5" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_Bark_Kill_2" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Barks/RJTP_AD_Bark_Kill_2.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="add738cf-1e27-431c-8c9e-ee8e6c398329" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_Bark_Ascend_1" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Barks/RJTP_AD_Bark_Ascend_1.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="73020fa1-fc70-4a2b-b3fb-d3dba580d32c" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_Bark_Ascend_2" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Barks/RJTP_AD_Bark_Ascend_2.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="d6202b2d-4faa-4822-a60c-7a598333da60" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_Bark_Ascend_3" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Barks/RJTP_AD_Bark_Ascend_3.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="bf38999b-2d2b-4f8c-9946-6236efb9e59f" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_Bark_Ascend_4" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Barks/RJTP_AD_Bark_Ascend_4.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="c79738d2-5bab-403a-9159-06500e2ee3b4" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_Bark_Downed_1" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Barks/RJTP_AD_Bark_Downed_1.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="97a01cc1-8943-4095-b851-8b4054a17625" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_Bark_HelpedUp_1" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Barks/RJTP_AD_Bark_HelpedUp_1.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="e0562c28-28d0-4bca-bedb-7f48be38dbf7" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_Bark_HelpedUp_2" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Barks/RJTP_AD_Bark_HelpedUp_2.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="3cbeebcf-1706-4309-a5c7-88a672ef57c6" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_Bark_HelpedUp_3" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Barks/RJTP_AD_Bark_HelpedUp_3.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="0997c4de-6d9b-4d9c-b693-f1e77de5e6f8" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_AD_Bark_Won_1" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Barks/RJTP_AD_Bark_Won_1.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="fc0ff07b-d1ad-4247-8f1e-c6a3a53dccb0" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_PB_Karlach_ExceptDevils" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Banter/RJTP_PB_Karlach_ExceptDevils.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="13df4a91-93de-42cf-a8da-b8c9ae5f9bbb" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_PB_Karlach_SaveYourSoul" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Banter/RJTP_PB_Karlach_SaveYourSoul.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="1a6845ef-0c85-4b4a-87b3-8ba8ab1e0625" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_PB_Astarion_TheGame" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Banter/RJTP_PB_Astarion_TheGame.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="ab044d17-7389-45c1-8943-9c70c05e8642" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_PB_Astarion_EagerPup" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Banter/RJTP_PB_Astarion_EagerPup.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="0d76c850-69db-45b7-8b5d-a4d7b8269757" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_PB_Astarion_ComradesInArms" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Banter/RJTP_PB_Astarion_ComradesInArms.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="b70bfb7e-41b2-48c9-8a8a-f6a9139d122d" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_PB_Gale_NeverADullDay" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Banter/RJTP_PB_Gale_NeverADullDay.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="50eb9651-2a77-4fca-ba78-550990a37457" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_PB_Gale_HandsomeDevil" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Banter/RJTP_PB_Gale_HandsomeDevil.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="49cceb67-d6c0-45cb-a911-ea55adf64ecf" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_PB_Gale_HellIsWhere" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Banter/RJTP_PB_Gale_HellIsWhere.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="948b90ff-acca-4b31-8b3d-3d64e32ecc64" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_PB_Laezel_DazzlingSmile" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Banter/RJTP_PB_Laezel_DazzlingSmile.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="2678e1aa-1204-4458-bffc-df5fe70f2973" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_PB_Laezel_BestToKeepQuiet" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Banter/RJTP_PB_Laezel_BestToKeepQuiet.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="bee1d8f9-c542-42d4-8d0f-ef58a2f50412" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_PB_Laezel_WhatAreYouHiding" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Banter/RJTP_PB_Laezel_WhatAreYouHiding.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="ba1db418-cee1-435b-b9f6-b89e6a4efb21" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_PB_Wyll_ShouldHaveStayedBelow" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Banter/RJTP_PB_Wyll_ShouldHaveStayedBelow.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="5bc8846e-c7c2-49e0-a985-b49147241fd0" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_PB_Wyll_TheGoodEye" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Banter/RJTP_PB_Wyll_TheGoodEye.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+				<node id="Resource">
+					<attribute id="AllowDeadSpeakers" type="bool" value="False" />
+					<attribute id="BlockFTB" type="bool" value="False" />
+					<attribute id="EnableTimeline" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="22b7a481-af76-4f0c-9427-489ba7bdb0fc" />
+					<attribute id="IsAllowingJoinCombat" type="bool" value="False" />
+					<attribute id="Name" type="LSString" value="RJTP_PB_Wyll_HalfOfWhatHeKnows" />
+					<attribute id="SourceFile" type="LSString" value="Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Story/Dialogs/RJTP_Banter/RJTP_PB_Wyll_HalfOfWhatHeKnows.lsj" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144115207403209030" />
+					<attribute id="automated" type="bool" value="True" />
+					<attribute id="isBehaviour" type="bool" value="False" />
+					<attribute id="isPrivateDialog" type="bool" value="False" />
+					<attribute id="isSubbedDialog" type="bool" value="False" />
+					<attribute id="isWorld" type="bool" value="False" />
+					<children>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+						<node id="SpeakerSlotsWithLines">
+							<attribute id="HasLines" type="bool" value="True" />
+						</node>
+					</children>
+				</node>
+			</children>
+		</node>
+	</region>
+</save>

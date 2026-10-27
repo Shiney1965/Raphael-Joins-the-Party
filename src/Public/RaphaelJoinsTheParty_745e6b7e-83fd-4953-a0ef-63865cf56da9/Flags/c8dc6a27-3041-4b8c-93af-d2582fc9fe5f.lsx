@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="8" revision="0" build="500" />
+	<region id="Flags">
+		<node id="Flags">
+			<attribute id="UUID" type="guid" value="c8dc6a27-3041-4b8c-93af-d2582fc9fe5f" />
+			<attribute id="Name" type="FixedString" value="RJTP_ORI_Raphael_ControlledByUser" />
+			<attribute id="Description" type="LSString" value="Raphael (RJTP) is controlled by a user." />
+			<attribute id="Usage" type="uint8" value="4" />
+		</node>
+	</region>
+</save>

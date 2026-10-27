@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="8" revision="0" build="500" />
+	<region id="Flags">
+		<node id="Flags">
+			<attribute id="UUID" type="guid" value="65cedcf6-adfc-4795-bf3e-47895ba122f3" />
+			<attribute id="Name" type="FixedString" value="RJTP_CAMP_Jergal_State_CanResurrectRaphael" />
+			<attribute id="Description" type="LSString" value="Withers can resurrect Raphael (RJTP)." />
+			<attribute id="Usage" type="uint8" value="5" />
+		</node>
+	</region>
+</save>

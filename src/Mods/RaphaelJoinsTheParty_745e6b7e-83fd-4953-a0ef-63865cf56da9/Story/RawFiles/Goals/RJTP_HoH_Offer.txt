@@ -1,0 +1,1119 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION Gate (plan section 5.1)
+QRY
+QRY_RJTP_OfferAllowed()
+AND
+DB_GlobalFlag((FLAG)GLO_Monitor_State_MadeDeal_86f40f63-0bfa-4ab6-b3b0-d01475c3cbdc)
+AND
+NOT DB_GlobalFlag((FLAG)LOW_HouseOfHope_State_ContractIsDestroyed_1a51a77c-d549-4d50-95df-97ab9d1ef9f6)
+AND
+NOT DB_GlobalFlag((FLAG)LOW_HouseOfHope_State_PlayersStoleMainTreasure_ffa3d3be-d30f-296f-d794-4c24d63eb25c)
+AND
+NOT DB_GlobalFlag((FLAG)LOW_HouseOfHope_State_RaphaelIsDead_655d7d21-99a2-4138-9a7a-af1850932e75)
+AND
+NOT DB_GlobalFlag((FLAG)LOW_HouseOfHope_Event_RaphaelAppeared_c25358e0-5ea1-929b-b511-6e745596d789)
+AND
+NOT DB_PermaDefeated((CHARACTER)S_GLO_Monitor_f65becd6-5cd7-4c88-b85e-6dd06b60f7b8)
+AND
+NOT DB_RJTP_Released(_)
+AND
+NOT DB_RJTP_Uninstalled(1)
+AND
+QRY_RJTP_AlarmAcceptable()
+AND
+NOT DB_RJTP_OfferResolved(_)
+AND
+NOT DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_Betrayed(1)
+AND
+NOT DB_RJTP_Dismissed(1)
+THEN
+DB_NOOP(1);
+
+// Osiris has no OR: two definitions
+QRY
+QRY_RJTP_AlarmAcceptable()
+AND
+NOT DB_LOW_HouseOfHope_AlarmIsReady(1)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_AlarmAcceptable()
+AND
+DB_RJTP_AlarmCause("Theft")
+THEN
+DB_NOOP(1);
+
+// v0.3d (the author 2026-10-14): freeing Hope does not close the offer
+QRY
+QRY_RJTP_AlarmAcceptable()
+AND
+DB_RJTP_AlarmCause("Hope")
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_PartyInCombat()
+AND
+DB_PartyMembers(_Member)
+AND
+IsInCombat(_Member, 1)
+THEN
+DB_NOOP(1);
+//END_REGION
+
+//REGION Theft classification (research 06 section 5.2; mirrors vanilla alarm rules without changing them)
+// Known v0.1 simplification (review 08 S10): a theft that raises the alarm counts as "Theft" even if a non-theft
+// source fired in the same instant. The mirror rules only fire when vanilla's own theft rule raises the alarm.
+IF
+CharacterStoleItem(_Char, _Item, _, _, _, _, (CHARACTER)S_LOW_HouseOfHope_Archivist_d2d4a5ac-4a57-40dd-a317-f749146da306, _, _, _)
+THEN
+DB_RJTP_Taken((ITEM)_Item);
+
+// A1: trapped treasure lifted off its plate (same conditions as vanilla HoH2:3146-3153)
+IF
+DualEntityEvent(_, _Plate, _OffEvent)
+AND
+NOT DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+DB_LOW_HouseOfHope_TrappedTreasures(_Plate, _OffEvent, _)
+AND
+DB_RJTP_HoHTreasure(_Item, _Plate, _, _, _)
+THEN
+DB_RJTP_Taken(_Item);
+DB_RJTP_PendingTheft(1);
+
+// A3: theft-class crime seen by the Archivist after his warning (same conditions as vanilla HoH2:1509-1521)
+PROC
+PROC_CharacterRegisterCrimeHandleIgnoresAfter(_ID, _Player, _CrimeType, _, _)
+AND
+DB_LOW_HouseOfHope_ArchivistWarning(1)
+AND
+NOT DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+DB_RJTP_TheftCrime(_CrimeType)
+AND
+DB_Sees((CHARACTER)S_LOW_HouseOfHope_Archivist_d2d4a5ac-4a57-40dd-a317-f749146da306, _Player)
+THEN
+DB_RJTP_PendingTheft(1);
+
+// A4 (the author, Q-K round 3): a FAILED PICKPOCKET of the Archivist counts as theft - he is Raphael's servant and the
+// Archive is Raphael's property. Same conditions as vanilla HoH2:1535-1543 (victim = Archivist, crime in his
+// call-alarm list); only "PickPocketFailed" is mirrored (Assault / VandaliseNoOwner stay "Other" = vanilla).
+PROC
+PROC_CharacterRegisterCrimeHandleIgnoresAfter(_ID, _, "PickPocketFailed", _, (CHARACTER)S_LOW_HouseOfHope_Archivist_d2d4a5ac-4a57-40dd-a317-f749146da306)
+AND
+NOT DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+DB_LOW_HouseOfHope_ArchivistCallAlarmCrime("PickPocketFailed")
+THEN
+DB_RJTP_PendingTheft(1);
+
+// Classify once, when the alarm flag is raised
+IF
+FlagSet((FLAG)LOW_HouseOfHope_State_RaphaelAlerted_f83c3d6b-d6cf-41a1-a03d-c31df5ea44fe, _, _)
+AND
+NOT DB_RJTP_AlarmCause(_)
+THEN
+PROC_RJTP_ClassifyAlarm();
+
+PROC
+PROC_RJTP_ClassifyAlarm()
+AND
+DB_RJTP_PendingTheft(1)
+THEN
+DB_RJTP_AlarmCause("Theft");
+
+// v0.3d: the alarm Hope's release raises (HoH2:3408-3414). Must stay between the Theft and Other rules.
+PROC
+PROC_RJTP_ClassifyAlarm()
+AND
+NOT DB_RJTP_AlarmCause(_)
+AND
+NOT DB_RJTP_PendingTheft(1)
+AND
+DB_LOW_HouseOfHope_HopeIsFree(1)
+THEN
+DB_RJTP_AlarmCause("Hope");
+
+PROC
+PROC_RJTP_ClassifyAlarm()
+AND
+NOT DB_RJTP_AlarmCause(_)
+THEN
+DB_RJTP_AlarmCause("Other");
+
+PROC
+PROC_RJTP_ClassifyAlarm()
+AND
+DB_RJTP_PendingTheft(1)
+THEN
+NOT DB_RJTP_PendingTheft(1);
+
+// Reactions to an alarm that lands while an offer is open run once, when the alarm is classified (review 10 SF-B)
+// Theft: the quiet offer turns into the theft demand (review 09 S4)
+PROC
+PROC_RJTP_ClassifyAlarm()
+AND
+DB_RJTP_AlarmCause("Theft")
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+DB_RJTP_OfferPlayer(_Player)
+THEN
+NOT DB_RJTP_ConfirmingDecline(1);
+PROC_RJTP_ReopenOffer(_Player);
+
+// Hope freed while an offer is on screen (multiplayer): show the Hope offer instead (v0.3d review M1)
+PROC
+PROC_RJTP_ClassifyAlarm()
+AND
+DB_RJTP_AlarmCause("Hope")
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+NOT DB_RJTP_Reckoning(1)
+AND
+DB_RJTP_OfferPlayer(_Player)
+THEN
+NOT DB_RJTP_ConfirmingDecline(1);
+PROC_RJTP_ReopenOffer(_Player);
+
+// Not a theft or Hope: cancel the offer (review 08 B1(ii)); vanilla then plays out. A reckoning already on screen
+// is kept: it ends in vanilla's arrival anyway (v0.3d review S4).
+PROC
+PROC_RJTP_ClassifyAlarm()
+AND
+DB_RJTP_AlarmCause(_Cause)
+AND
+_Cause != "Theft"
+AND
+_Cause != "Hope"
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+NOT DB_RJTP_Reckoning(1)
+THEN
+PROC_RJTP_CancelOffer();
+//END_REGION
+
+//REGION Hold and release of the vanilla ambush (plan section 5.2)
+// Theft path only: stop vanilla's portal ambush (HoH2:3646-3659) until the offer is resolved
+IF
+DB_RJTP_AlarmCause("Theft")
+AND
+QRY_RJTP_OfferAllowed()
+AND
+NOT DB_OnlyOnce("LOW_HouseOfHope_RaphaelAppearance")
+THEN
+DB_OnlyOnce("LOW_HouseOfHope_RaphaelAppearance");
+DB_RJTP_HoldingVanillaAmbush(1);
+
+// v0.3d: Hope's release raised the alarm, the deal stands and the contract is whole: hold vanilla's portal ambush
+// (HoH2:3646-3659) for the offer, exactly as for a theft
+IF
+DB_RJTP_AlarmCause("Hope")
+AND
+QRY_RJTP_OfferAllowed()
+AND
+NOT DB_OnlyOnce("LOW_HouseOfHope_RaphaelAppearance")
+THEN
+DB_OnlyOnce("LOW_HouseOfHope_RaphaelAppearance");
+DB_RJTP_HoldingVanillaAmbush(1);
+
+PROC
+PROC_RJTP_MakePermanentHold()
+AND
+DB_RJTP_HoldingVanillaAmbush(1)
+THEN
+NOT DB_RJTP_HoldingVanillaAmbush(1);
+DB_RJTP_PermanentHold(1);
+
+PROC
+PROC_RJTP_MakePermanentHold()
+AND
+NOT DB_RJTP_PermanentHold(1)
+AND
+NOT DB_OnlyOnce("LOW_HouseOfHope_RaphaelAppearance")
+THEN
+DB_OnlyOnce("LOW_HouseOfHope_RaphaelAppearance");
+DB_RJTP_PermanentHold(1);
+
+// Release in every state (review 07 B2): contract destroyed or stolen.
+// v0.3d (the author 2026-10-14, "He stays"): freeing Hope releases nothing and is no betrayal. While the hold is permanent
+// (he joined, or joined and was dismissed) vanilla's arrival never comes, so Hope must not follow the party out of
+// the House (vanilla patches the same state in BG3_Act3_SavegamePatches.txt:3286-3301): she stays (review S1).
+IF
+FlagSet((FLAG)LOW_HouseOfHope_Event_HopeRescued_119342c6-2a7b-8c90-e96e-3f3a5930e91a, _, _)
+AND
+DB_RJTP_PermanentHold(1)
+AND
+NOT DB_RJTP_OfferResolved("DeclinedAfterReturn")
+THEN
+PROC_RJTP_ParkHope();
+
+// Legacy (a v0.3c save that declined after a return held the ambush permanently): v0.3c released it on Hope, and
+// vanilla then played out. Kept for those saves only; v0.3d never records DeclinedAfterReturn.
+IF
+FlagSet((FLAG)LOW_HouseOfHope_Event_HopeRescued_119342c6-2a7b-8c90-e96e-3f3a5930e91a, _, _)
+AND
+DB_RJTP_OfferResolved("DeclinedAfterReturn")
+THEN
+PROC_RJTP_Release("Hope");
+
+IF
+FlagSet((FLAG)LOW_HouseOfHope_State_ContractIsDestroyed_1a51a77c-d549-4d50-95df-97ab9d1ef9f6, _, _)
+THEN
+PROC_RJTP_Release("Contract");
+
+IF
+FlagSet((FLAG)LOW_HouseOfHope_State_PlayersStoleMainTreasure_ffa3d3be-d30f-296f-d794-4c24d63eb25c, _, _)
+AND
+DB_GlobalFlag((FLAG)GLO_Monitor_State_MadeDeal_86f40f63-0bfa-4ab6-b3b0-d01475c3cbdc)
+THEN
+PROC_RJTP_Release("Contract");
+
+PROC
+PROC_RJTP_Release((STRING)_Why)
+AND
+DB_RJTP_HoldingVanillaAmbush(1)
+THEN
+NOT DB_RJTP_HoldingVanillaAmbush(1);
+NOT DB_OnlyOnce("LOW_HouseOfHope_RaphaelAppearance");
+DB_RJTP_Released(_Why);
+
+PROC
+PROC_RJTP_Release((STRING)_Why)
+AND
+DB_RJTP_PermanentHold(1)
+THEN
+NOT DB_RJTP_PermanentHold(1);
+NOT DB_OnlyOnce("LOW_HouseOfHope_RaphaelAppearance");
+DB_RJTP_Released(_Why);
+
+PROC
+PROC_RJTP_Release((STRING)_Why)
+AND
+DB_RJTP_Recruited(1)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_Betrayal(_Comp, _Why);
+
+PROC
+PROC_RJTP_Release((STRING)_Why)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+PROC_RJTP_CancelOffer();
+
+// Abort without resolving (plan section 5.3 "dialog aborted"): a later portal use offers again
+PROC
+PROC_RJTP_CancelOffer()
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+NOT DB_RJTP_OfferInProgress(1);
+NOT DB_RJTP_ConfirmingDecline(1);
+NOT DB_RJTP_ConfirmingRefuse(1);
+NOT DB_RJTP_Reckoning(1);
+NOT DB_RJTP_ConfirmingYield(1);
+SetOnStage(_Comp, 0);
+
+PROC
+PROC_RJTP_CancelOffer()
+AND
+DB_RJTP_Step(_Step)
+THEN
+NOT DB_RJTP_Step(_Step);
+//END_REGION
+
+//REGION Portal intercept (plan section 5.2, rules a-c)
+// v0.3d: between a fight/yield choice and Raphael's arrival nothing else may use the portal (no rule below would
+// deny it: the offer is resolved and vanilla's own rule is spent by DB_OnlyOnce)
+PROC
+PROC_BlockUseOfItem(_Player, S_LOW_DevilsFee_ReceivingPortalHoH_e87812da-a916-4d8c-bef7-73040524e587)
+AND
+DB_RJTP_HandPending(_)
+THEN
+DB_CustomUseItemResponse(_Player, S_LOW_DevilsFee_ReceivingPortalHoH_e87812da-a916-4d8c-bef7-73040524e587, 0);
+
+// (a) While an offer is open the portal is always denied, and the pending box is shown again (review 08 B1)
+PROC
+PROC_BlockUseOfItem(_Player, S_LOW_DevilsFee_ReceivingPortalHoH_e87812da-a916-4d8c-bef7-73040524e587)
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+DB_RJTP_OfferPlayer(_OfferPlayer)
+THEN
+DB_CustomUseItemResponse(_Player, S_LOW_DevilsFee_ReceivingPortalHoH_e87812da-a916-4d8c-bef7-73040524e587, 0);
+PROC_RJTP_ReopenOffer(_OfferPlayer);
+
+// (c) Theft path in combat: deny and ask to finish the fight first
+PROC
+PROC_BlockUseOfItem(_Player, S_LOW_DevilsFee_ReceivingPortalHoH_e87812da-a916-4d8c-bef7-73040524e587)
+AND
+DB_PartyMembers(_Player)
+AND
+NOT DB_RJTP_OfferInProgress(1)
+AND
+DB_RJTP_HoldingVanillaAmbush(1)
+AND
+QRY_RJTP_PartyInCombat()
+THEN
+DB_CustomUseItemResponse(_Player, S_LOW_DevilsFee_ReceivingPortalHoH_e87812da-a916-4d8c-bef7-73040524e587, 0);
+PROC_RJTP_Box(_Player, "RJTP_Msg_InCombat", 0);
+
+// (b) Gathered party, gate open, out of combat: deny and start the offer
+PROC
+PROC_BlockUseOfItem(_Player, S_LOW_DevilsFee_ReceivingPortalHoH_e87812da-a916-4d8c-bef7-73040524e587)
+AND
+DB_PartyMembers(_Player)
+AND
+NOT QRY_LOW_HouseOfHope_PlayersNotGathered()
+AND
+NOT DB_RJTP_OfferInProgress(1)
+AND
+QRY_RJTP_OfferAllowed()
+AND
+NOT QRY_RJTP_PartyInCombat()
+THEN
+DB_CustomUseItemResponse(_Player, S_LOW_DevilsFee_ReceivingPortalHoH_e87812da-a916-4d8c-bef7-73040524e587, 0);
+DB_RJTP_OfferInProgress(1);
+PROC_RJTP_StartOffer(_Player);
+//END_REGION
+
+//REGION The offer (message boxes; the v0.2 dialogs in RJTP_Dialogs.txt take over only while DB_RJTP_UseDialogs(1))
+PROC
+PROC_RJTP_StartOffer((CHARACTER)_Player)
+AND
+DB_RJTP_OfferPlayer(_OldPlayer)
+THEN
+NOT DB_RJTP_OfferPlayer(_OldPlayer);
+
+PROC
+PROC_RJTP_StartOffer((CHARACTER)_Player)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+DB_RJTP_OfferPlayer(_Player);
+PROC_RJTP_Dress(_Comp);
+// v0.3g (the author 2026-10-17: "Raphael should actually appear on screen as he does at the start of the ambush"):
+// placed at vanilla Raphael's own ambush point, 3.5 m from the portal, the way vanilla places a character that may
+// come from another level (on stage, teleport, face; GLO_LevelTravelers.txt:213-218) and then hides it again as
+// HoH2:3711-3722 does; he then appears with Raphael's own teleport-in effect (GLO_Monitor_PostEA.txt:58-61), and
+// the first box follows once the arrival has been seen (timers below).
+SetOnStage(_Comp, 1);
+TeleportTo(_Comp, S_LOW_HouseOfHope_RaphaelPoint_38b385de-047f-4f5c-b214-cb219a00ea95, "", 0, 0, 0, 0, 1);
+LookFromTrigger(_Comp, S_LOW_HouseOfHope_RaphaelPoint_38b385de-047f-4f5c-b214-cb219a00ea95, 1);
+SetOnStage(_Comp, 0);
+ObjectTimerLaunch(_Comp, "RJTP_OfferArrive", 300, 0);
+
+IF
+ObjectTimerFinished(_Comp, "RJTP_OfferArrive")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+IsOnStage(_Comp, 0)
+AND
+DB_RJTP_OfferPlayer(_Player)
+THEN
+PROC_GLO_Monitor_EntityFoop(_Comp);
+SteerTo(_Comp, _Player, 0);
+ObjectTimerLaunch(_Comp, "RJTP_OfferBox", 1500, 0);
+
+// The first box. Guard (plan review S1): only if the offer is still open and no box is already up (portal rule (a),
+// an alarm reopen or a reload may have shown one first). RJTP_Dialogs decides dialog vs message box.
+IF
+ObjectTimerFinished(_Comp, "RJTP_OfferBox")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+DB_RJTP_OfferPlayer(_Player)
+AND
+NOT DB_RJTP_Step(_)
+THEN
+PROC_RJTP_PresentOffer(_Player);
+
+// A reload before he appeared: he is still off stage; let him arrive again (the reload already re-opens the box)
+IF
+SavegameLoaded()
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+IsOnStage(_Comp, 0)
+THEN
+ObjectTimerLaunch(_Comp, "RJTP_OfferArrive", 300, 0);
+
+// v0.3d dispatch: the reckoning (fight or yield) comes before every offer step
+PROC
+PROC_RJTP_ReopenOffer((CHARACTER)_Player)
+AND
+DB_RJTP_Reckoning(1)
+AND
+NOT DB_RJTP_ConfirmingYield(1)
+THEN
+PROC_RJTP_Box(_Player, "RJTP_Msg_Reckoning", 1);
+
+PROC
+PROC_RJTP_ReopenOffer((CHARACTER)_Player)
+AND
+DB_RJTP_Reckoning(1)
+AND
+DB_RJTP_ConfirmingYield(1)
+THEN
+PROC_RJTP_Box(_Player, "RJTP_Msg_ConfirmYield", 1);
+
+PROC
+PROC_RJTP_ReopenOffer((CHARACTER)_Player)
+AND
+NOT DB_RJTP_Reckoning(1)
+THEN
+PROC_RJTP_ReopenOfferStep(_Player);
+
+// The step the offer is at decides which box is (re)shown
+// Quiet path
+PROC
+PROC_RJTP_ReopenOfferStep((CHARACTER)_Player)
+AND
+NOT DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+NOT DB_RJTP_ConfirmingDecline(1)
+THEN
+PROC_RJTP_Box(_Player, "RJTP_Msg_Offer", 1);
+
+PROC
+PROC_RJTP_ReopenOfferStep((CHARACTER)_Player)
+AND
+NOT DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+DB_RJTP_ConfirmingDecline(1)
+THEN
+PROC_RJTP_Box(_Player, "RJTP_Msg_ConfirmDecline", 1);
+
+// Alarm up but not a theft or Hope (catch-all): cancel, vanilla plays out (review 08 B1(ii))
+PROC
+PROC_RJTP_ReopenOfferStep((CHARACTER)_Player)
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+NOT DB_RJTP_AlarmCause("Theft")
+AND
+NOT DB_RJTP_AlarmCause("Hope")
+THEN
+PROC_RJTP_CancelOffer();
+
+// v0.3d: Hope freed (her release raised the alarm)
+PROC
+PROC_RJTP_ReopenOfferStep((CHARACTER)_Player)
+AND
+DB_RJTP_AlarmCause("Hope")
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+NOT DB_RJTP_ConfirmingDecline(1)
+THEN
+PROC_RJTP_Box(_Player, "RJTP_Msg_OfferHope", 1);
+
+PROC
+PROC_RJTP_ReopenOfferStep((CHARACTER)_Player)
+AND
+DB_RJTP_AlarmCause("Hope")
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+DB_RJTP_ConfirmingDecline(1)
+THEN
+PROC_RJTP_Box(_Player, "RJTP_Msg_ConfirmDecline", 1);
+
+// Theft path, nothing that must be returned
+PROC
+PROC_RJTP_ReopenOfferStep((CHARACTER)_Player)
+AND
+DB_RJTP_AlarmCause("Theft")
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+NOT DB_RJTP_Taken(_)
+AND
+NOT DB_RJTP_ItemsReturned(1)
+THEN
+PROC_RJTP_Box(_Player, "RJTP_Msg_OfferNothingToReturn", 1);
+
+// Theft path: a taken treasure no longer exists = refusal (the author Q-F). Only the two treasures count (review 08 S2).
+PROC
+PROC_RJTP_ReopenOfferStep((CHARACTER)_Player)
+AND
+DB_RJTP_AlarmCause("Theft")
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+NOT DB_RJTP_ItemsReturned(1)
+AND
+DB_RJTP_Taken(_Item)
+AND
+DB_RJTP_HoHTreasure(_Item, _, _, _, _)
+AND
+Exists(_Item, 0)
+THEN
+DB_RJTP_ItemGone(1);
+
+PROC
+PROC_RJTP_ReopenOfferStep((CHARACTER)_Player)
+AND
+DB_RJTP_AlarmCause("Theft")
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+DB_RJTP_ItemGone(1)
+THEN
+PROC_RJTP_Box(_Player, "RJTP_Msg_ItemGone", 0);
+
+PROC
+PROC_RJTP_ReopenOfferStep((CHARACTER)_Player)
+AND
+DB_RJTP_AlarmCause("Theft")
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+DB_RJTP_Taken(_)
+AND
+NOT DB_RJTP_ItemGone(1)
+AND
+NOT DB_RJTP_ItemsReturned(1)
+AND
+NOT DB_RJTP_ConfirmingRefuse(1)
+THEN
+PROC_RJTP_Box(_Player, "RJTP_Msg_TheftDemand", 1);
+
+PROC
+PROC_RJTP_ReopenOfferStep((CHARACTER)_Player)
+AND
+DB_RJTP_ConfirmingRefuse(1)
+AND
+NOT DB_RJTP_ItemsReturned(1)
+AND
+NOT DB_RJTP_ItemGone(1)
+THEN
+PROC_RJTP_Box(_Player, "RJTP_Msg_ConfirmRefuse", 1);
+
+PROC
+PROC_RJTP_ReopenOfferStep((CHARACTER)_Player)
+AND
+DB_RJTP_ItemsReturned(1)
+AND
+NOT DB_RJTP_ConfirmingDecline(1)
+THEN
+PROC_RJTP_Box(_Player, "RJTP_Msg_OfferAfterReturn", 1);
+
+PROC
+PROC_RJTP_ReopenOfferStep((CHARACTER)_Player)
+AND
+DB_RJTP_ItemsReturned(1)
+AND
+DB_RJTP_ConfirmingDecline(1)
+THEN
+PROC_RJTP_Box(_Player, "RJTP_Msg_ConfirmDecline", 1);
+
+// Answers (PROC_RJTP_BoxAnswered is raised by the message layer in RJTP_AAA_Init)
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_Offer", 1)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+PROC_RJTP_Accept(_Player);
+
+// "No" (or Escape) asks for confirmation instead of declining at once (review 08 S3)
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_Offer", 0)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+DB_RJTP_ConfirmingDecline(1);
+PROC_RJTP_Box(_Player, "RJTP_Msg_ConfirmDecline", 1);
+
+// v0.3g (the author's script, 2026-10-17): on "Are you quite certain?" Yes = "Well, on second thought... OK" (he joins),
+// No = "...the answer is still No" (the reckoning). Escape = No.
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_ConfirmDecline", 1)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+NOT DB_RJTP_ConfirmingDecline(1);
+PROC_RJTP_Accept(_Player);
+
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_ConfirmDecline", 0)
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+NOT DB_RJTP_ItemsReturned(1)
+THEN
+NOT DB_RJTP_ConfirmingDecline(1);
+PROC_RJTP_DeclineQuiet(_Player);
+
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_ConfirmDecline", 0)
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+DB_RJTP_ItemsReturned(1)
+THEN
+NOT DB_RJTP_ConfirmingDecline(1);
+PROC_RJTP_DeclineAfterReturn(_Player);
+
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_TheftDemand", 1)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+PROC_RJTP_ReturnAndOffer(_Player);
+
+PROC
+PROC_RJTP_ReturnAndOffer((CHARACTER)_Player)
+THEN
+PROC_RJTP_ReturnTaken();
+PROC_RJTP_CureAlarm();
+DB_RJTP_ItemsReturned(1);
+PROC_RJTP_Box(_Player, "RJTP_Msg_OfferAfterReturn", 1);
+
+// Refusing is confirmed first, so a stray Escape cannot kill the party
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_TheftDemand", 0)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+DB_RJTP_ConfirmingRefuse(1);
+PROC_RJTP_Box(_Player, "RJTP_Msg_ConfirmRefuse", 1);
+
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_ConfirmRefuse", 1)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+NOT DB_RJTP_ConfirmingRefuse(1);
+PROC_RJTP_Refuse(_Player);
+
+// v0.3g (the author's script): No = "Fine, fine. Take your trinket back" - the item goes back at once, then the offer
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_ConfirmRefuse", 0)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+NOT DB_RJTP_ConfirmingRefuse(1);
+PROC_RJTP_ReturnAndOffer(_Player);
+
+PROC
+PROC_RJTP_BoxClosed((CHARACTER)_Player, "RJTP_Msg_ItemGone")
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+PROC_RJTP_Refuse(_Player);
+
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_OfferAfterReturn", 1)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+PROC_RJTP_Accept(_Player);
+
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_OfferAfterReturn", 0)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+DB_RJTP_ConfirmingDecline(1);
+PROC_RJTP_Box(_Player, "RJTP_Msg_ConfirmDecline", 1);
+
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_OfferNothingToReturn", 1)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+PROC_RJTP_CureAlarm();
+PROC_RJTP_Accept(_Player);
+
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_OfferNothingToReturn", 0)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+PROC_RJTP_CureAlarm();
+DB_RJTP_ItemsReturned(1);
+DB_RJTP_ConfirmingDecline(1);
+PROC_RJTP_Box(_Player, "RJTP_Msg_ConfirmDecline", 1);
+
+// v0.3d: the Hope offer. "No" asks for confirmation; the existing ConfirmDecline rules then lead to the reckoning.
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_OfferHope", 1)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+PROC_RJTP_Accept(_Player);
+
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_OfferHope", 0)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+DB_RJTP_ConfirmingDecline(1);
+PROC_RJTP_Box(_Player, "RJTP_Msg_ConfirmDecline", 1);
+
+// v0.3d reckoning (the author 2026-10-14): Yes fights; No (or Escape) asks before yielding, so a stray Escape cannot kill
+// the party
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_Reckoning", 1)
+AND
+DB_RJTP_Reckoning(1)
+THEN
+PROC_RJTP_HandToVanilla(_Player, "Fought");
+
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_Reckoning", 0)
+AND
+DB_RJTP_Reckoning(1)
+THEN
+DB_RJTP_ConfirmingYield(1);
+PROC_RJTP_Box(_Player, "RJTP_Msg_ConfirmYield", 1);
+
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_ConfirmYield", 1)
+AND
+DB_RJTP_Reckoning(1)
+AND
+DB_RJTP_ConfirmingYield(1)
+THEN
+PROC_RJTP_HandToVanilla(_Player, "Yielded");
+
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, "RJTP_Msg_ConfirmYield", 0)
+AND
+DB_RJTP_Reckoning(1)
+THEN
+NOT DB_RJTP_ConfirmingYield(1);
+PROC_RJTP_ReopenOffer(_Player);
+//END_REGION
+
+//REGION Outcomes (plan section 5.3)
+PROC
+PROC_RJTP_Accept((CHARACTER)_Player)
+THEN
+NOT DB_RJTP_OfferInProgress(1);
+DB_RJTP_OfferResolved("Recruited");
+PROC_RJTP_MakePermanentHold();
+PROC_RJTP_Recruit(_Player);
+
+// v0.3d (the author 2026-10-14, "Stays free in the House"): Hope does not follow the party out
+PROC
+PROC_RJTP_Accept((CHARACTER)_Player)
+AND
+DB_LOW_HouseOfHope_HopeIsFree(1)
+THEN
+PROC_RJTP_ParkHope();
+
+// v0.3d (the author 2026-10-14): "if you refuse his deal or refuse to allow him to join the party on the way out, then you
+// have to fight him". Every refusal - a declined offer (quiet, after a return, or with Hope freed), a refused return,
+// a destroyed treasure - now leads to the reckoning: fight him, or yield. This reverses Q-C (free exit after a return).
+// RJTP_Msg_Declined / RJTP_Msg_DeclinedAfterReturn are no longer shown.
+PROC
+PROC_RJTP_DeclineQuiet((CHARACTER)_Player)
+THEN
+PROC_RJTP_StartReckoning(_Player);
+
+PROC
+PROC_RJTP_DeclineAfterReturn((CHARACTER)_Player)
+THEN
+PROC_RJTP_StartReckoning(_Player);
+
+PROC
+PROC_RJTP_Refuse((CHARACTER)_Player)
+THEN
+PROC_RJTP_StartReckoning(_Player);
+
+// The offer stays open (OfferInProgress), so portal rule (a) and a reload show the reckoning box again
+PROC
+PROC_RJTP_StartReckoning((CHARACTER)_Player)
+THEN
+NOT DB_RJTP_ConfirmingDecline(1);
+NOT DB_RJTP_ConfirmingRefuse(1);
+NOT DB_RJTP_ConfirmingYield(1);
+DB_RJTP_OfferInProgress(1);
+DB_RJTP_Reckoning(1);
+PROC_RJTP_Box(_Player, "RJTP_Msg_Reckoning", 1);
+
+// Diff review S1: while the choice is open an alarm (multiplayer, a crime) must not let vanilla's portal rule
+// (HoH2:3646-3659) start its own arrival; the quiet path had no hold. HandToVanilla clears HoldingVanillaAmbush.
+PROC
+PROC_RJTP_StartReckoning((CHARACTER)_Player)
+AND
+NOT DB_OnlyOnce("LOW_HouseOfHope_RaphaelAppearance")
+THEN
+DB_OnlyOnce("LOW_HouseOfHope_RaphaelAppearance");
+DB_RJTP_HoldingVanillaAmbush(1);
+
+// Hand over to vanilla. The hold DBs are cleared but DB_OnlyOnce("...RaphaelAppearance") is KEPT (inserted if the
+// quiet path had none), so the portal can never start a second arrival (HoH2:3646-3659 does not check RaphaelIsDead),
+// and PROC_RJTP_Release, run later by the ContractIsDestroyed event of a fight, finds nothing to release.
+PROC
+PROC_RJTP_HandToVanilla((CHARACTER)_Player, (STRING)_How)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+NOT DB_RJTP_OfferInProgress(1);
+NOT DB_RJTP_Reckoning(1);
+NOT DB_RJTP_ConfirmingYield(1);
+DB_RJTP_OfferResolved(_How);
+NOT DB_RJTP_HoldingVanillaAmbush(1);
+NOT DB_RJTP_PermanentHold(1);
+DB_RJTP_HandPending(_Player);
+
+// He leaves with Raphael's own teleport-out effect (GLO_Monitor_PostEA.txt:53-56) - only if he is visible
+PROC
+PROC_RJTP_HandToVanilla((CHARACTER)_Player, (STRING)_How)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+IsOnStage(_Comp, 1)
+THEN
+PROC_GLO_Monitor_EntityPoof(_Comp);
+
+PROC
+PROC_RJTP_HandToVanilla((CHARACTER)_Player, (STRING)_How)
+AND
+NOT DB_OnlyOnce("LOW_HouseOfHope_RaphaelAppearance")
+THEN
+DB_OnlyOnce("LOW_HouseOfHope_RaphaelAppearance");
+
+// Fight: exactly what vanilla's own debug does for a stolen contract with the deal (HoH2:2084-2091). The appearance
+// dialog's soul-taking node f5f37412 checks PlayersStoleMainTreasure=False, so it goes to "I will not abide it." and
+// combat; vanilla then sets ContractIsDestroyed (HoH2:3056-3061). The contract item is burned so the story and the
+// world agree (review S2).
+PROC
+PROC_RJTP_HandToVanilla((CHARACTER)_Player, "Fought")
+THEN
+Die(S_LOW_HouseOfHope_PlayerContract_69119dc3-2c26-4e50-8430-ef427d05ef7f, DEATHTYPE.Incinerate, NULL_00000000-0000-0000-0000-000000000000, 0, 1);
+SetFlag((FLAG)LOW_HouseOfHope_State_PlayersStoleMainTreasure_ffa3d3be-d30f-296f-d794-4c24d63eb25c);
+
+// Both choices: vanilla's alarm must be up BEFORE Raphael arrives (review B1): it places Korrilla with him, sets
+// Orthon's side and the debtor ambush (HoH2:2089-2092, 2155-2163, 3517-3579, 1645-1651). On the theft and Hope paths
+// it is already up. The arrival itself waits for the alarm's queued rules (timer below).
+PROC
+PROC_RJTP_HandToVanilla((CHARACTER)_Player, (STRING)_How)
+AND
+NOT DB_GlobalFlag((FLAG)LOW_HouseOfHope_State_RaphaelAlerted_f83c3d6b-d6cf-41a1-a03d-c31df5ea44fe)
+THEN
+SetFlag((FLAG)LOW_HouseOfHope_State_RaphaelAlerted_f83c3d6b-d6cf-41a1-a03d-c31df5ea44fe);
+
+PROC
+PROC_RJTP_HandToVanilla((CHARACTER)_Player, (STRING)_How)
+THEN
+TimerLaunch("RJTP_HandToVanilla", 1500);
+
+IF
+TimerFinished("RJTP_HandToVanilla")
+AND
+DB_RJTP_HandPending(_Player)
+THEN
+NOT DB_RJTP_HandPending(_Player);
+DB_LOW_HouseOfHope_PlayerForRaphaelDialog(_Player);
+PROC_HouseOfHope_RaphaelArrived();
+
+IF
+SavegameLoaded()
+AND
+DB_RJTP_HandPending(_)
+THEN
+TimerLaunch("RJTP_HandToVanilla", 1500);
+//END_REGION
+
+//REGION Hope stays in the House (v0.3d; review S1)
+// Same calls vanilla uses: PROC_RemovePartyFollower (HoH2:3460, 4021); clearing the rescuer as vanilla's own save
+// patch does; Poof/Teleport/Foop to her point (HoH2:3681-3683), only once she is out of dialog and combat.
+PROC
+PROC_RJTP_ParkHope()
+AND
+NOT DB_PermaDefeated(S_LOW_RealHope_1947e869-a95d-43c6-81f7-b4c4f90d95ce)
+THEN
+PROC_RemovePartyFollower((CHARACTER)S_LOW_RealHope_1947e869-a95d-43c6-81f7-b4c4f90d95ce);
+DB_RJTP_HopeParking(1);
+TimerLaunch("RJTP_ParkHope", 1000);
+
+PROC
+PROC_RJTP_ParkHope()
+AND
+DB_LOW_HouseOfHope_HopeRescuer(_Rescuer)
+THEN
+NOT DB_LOW_HouseOfHope_HopeRescuer(_Rescuer);
+
+IF
+TimerFinished("RJTP_ParkHope")
+AND
+DB_RJTP_HopeParking(1)
+AND
+NOT DB_PermaDefeated(S_LOW_RealHope_1947e869-a95d-43c6-81f7-b4c4f90d95ce)
+AND
+IsInCombat(S_LOW_RealHope_1947e869-a95d-43c6-81f7-b4c4f90d95ce, 0)
+AND
+QRY_SpeakerIsAvailable(S_LOW_RealHope_1947e869-a95d-43c6-81f7-b4c4f90d95ce)
+THEN
+NOT DB_RJTP_HopeParking(1);
+PROC_LOW_HouseOfHope_PoofHope(S_LOW_RealHope_1947e869-a95d-43c6-81f7-b4c4f90d95ce);
+TeleportTo(S_LOW_RealHope_1947e869-a95d-43c6-81f7-b4c4f90d95ce, S_LOW_HouseOfHope_RealHopePoint_c0a33c62-6671-474d-83e0-d274e5cd5c38, "", 0, 0);
+PROC_LOW_HouseOfHope_FoopHope(S_LOW_RealHope_1947e869-a95d-43c6-81f7-b4c4f90d95ce);
+
+// Not yet possible (dialog, combat): try again while in the Lower City; given up if she is permanently defeated
+IF
+TimerFinished("RJTP_ParkHope")
+AND
+DB_RJTP_HopeParking(1)
+AND
+NOT DB_PermaDefeated(S_LOW_RealHope_1947e869-a95d-43c6-81f7-b4c4f90d95ce)
+AND
+DB_CurrentLevel("CTY_Main_A")
+THEN
+TimerLaunch("RJTP_ParkHope", 3000);
+
+IF
+LevelGameplayStarted("CTY_Main_A", _)
+AND
+DB_RJTP_HopeParking(1)
+THEN
+TimerLaunch("RJTP_ParkHope", 1000);
+
+IF
+TimerFinished("RJTP_ParkHope")
+AND
+DB_RJTP_HopeParking(1)
+AND
+DB_PermaDefeated(S_LOW_RealHope_1947e869-a95d-43c6-81f7-b4c4f90d95ce)
+THEN
+NOT DB_RJTP_HopeParking(1);
+
+IF
+SavegameLoaded()
+AND
+DB_RJTP_HopeParking(1)
+THEN
+TimerLaunch("RJTP_ParkHope", 1000);
+//END_REGION
+
+//REGION Returning the stolen items (plan section 5.3; research 06 section 4.3)
+// Unequip from whoever wears it: party, camp members (review 08 S12)
+PROC
+PROC_RJTP_ReturnTaken()
+AND
+DB_RJTP_Taken(_Item)
+AND
+Exists(_Item, 1)
+AND
+DB_PartOfTheTeam(_Holder)
+AND
+DB_EquippedItemSlots(_Slot)
+AND
+GetEquippedItem(_Holder, _Slot, _Item)
+THEN
+Unequip(_Holder, _Item);
+
+PROC
+PROC_RJTP_ReturnTaken()
+AND
+DB_RJTP_Taken(_Item)
+AND
+Exists(_Item, 1)
+AND
+DB_Players(_Holder)
+AND
+DB_EquippedItemSlots(_Slot)
+AND
+GetEquippedItem(_Holder, _Slot, _Item)
+THEN
+Unequip(_Holder, _Item);
+
+PROC
+PROC_RJTP_ReturnTaken()
+AND
+DB_RJTP_Taken(_Item)
+AND
+Exists(_Item, 1)
+AND
+DB_RJTP_HoHTreasure(_Item, _, _X, _Y, _Z)
+THEN
+TeleportToPosition(_Item, _X, _Y, _Z, "", 0, 0, 0, 0, 1);
+SetOwner(_Item, S_LOW_HouseOfHope_Archivist_d2d4a5ac-4a57-40dd-a317-f749146da306);
+DB_RJTP_Returned(_Item);
+
+// Anything else taken from the Archivist (not one of the two treasures) goes back into his desk
+PROC
+PROC_RJTP_ReturnTaken()
+AND
+DB_RJTP_Taken(_Item)
+AND
+Exists(_Item, 1)
+AND
+NOT DB_RJTP_HoHTreasure(_Item, _, _, _, _)
+THEN
+ToInventory(_Item, S_LOW_HouseOfHope_RosewoodDesk_df3bb617-5a25-4b1e-af59-8e87cf563c8c, 1, 0, 1);
+SetOwner(_Item, S_LOW_HouseOfHope_Archivist_d2d4a5ac-4a57-40dd-a317-f749146da306);
+DB_RJTP_Returned(_Item);
+
+PROC
+PROC_BlockPickupOfItem((CHARACTER)_Char, (ITEM)_Item)
+AND
+DB_RJTP_Returned(_Item)
+AND
+NOT DB_GlobalFlag((FLAG)LOW_HouseOfHope_State_RaphaelIsDead_655d7d21-99a2-4138-9a7a-af1850932e75)
+THEN
+DB_CustomPickupItemResponse(_Char, _Item, 0);
+
+PROC
+PROC_BlockMoveOfItem((CHARACTER)_Char, (ITEM)_Item)
+AND
+DB_RJTP_Returned(_Item)
+AND
+NOT DB_GlobalFlag((FLAG)LOW_HouseOfHope_State_RaphaelIsDead_655d7d21-99a2-4138-9a7a-af1850932e75)
+THEN
+DB_CustomMoveItemResponse(_Char, _Item, 0);
+//END_REGION
+
+//REGION Uninstall (release 1.0.0; plan review S3): close an open offer and give vanilla back its portal ambush
+PROC
+PROC_RJTP_Uninstall((CHARACTER)_Caster)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+PROC_RJTP_CancelOffer();
+
+PROC
+PROC_RJTP_Uninstall((CHARACTER)_Caster)
+AND
+DB_RJTP_HoldingVanillaAmbush(1)
+THEN
+NOT DB_RJTP_HoldingVanillaAmbush(1);
+NOT DB_OnlyOnce("LOW_HouseOfHope_RaphaelAppearance");
+
+PROC
+PROC_RJTP_Uninstall((CHARACTER)_Caster)
+AND
+DB_RJTP_PermanentHold(1)
+THEN
+NOT DB_RJTP_PermanentHold(1);
+NOT DB_OnlyOnce("LOW_HouseOfHope_RaphaelAppearance");
+//END_REGION
+
+//REGION Alarm cure: moved to RJTP_Cure_v02.txt in v0.2 (PROC_RJTP_CureAlarm arms it; plan v0.2 section 3)
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="331"/>
+    <region id="Gossips">
+        <node id="root">
+            <children>
+                <node id="Gossip">
+                    <attribute id="DialogUUID" type="guid" value="fc0ff07b-d1ad-4247-8f1e-c6a3a53dccb0"/>
+                    <attribute id="Name" type="FixedString" value="RJTP_PB_Karlach_ExceptDevils"/>
+                    <attribute id="Priority" type="int32" value="50"/>
+                    <attribute id="Type" type="FixedString" value="PartyBanter"/>
+                    <attribute id="UUID" type="guid" value="603d6d95-03c1-4eb3-8bef-a052de85046e"/>
+                    <children>
+                        <node id="ConditionFlags">
+                            <children>
+                                <node id="Flag">
+                                    <attribute id="UUID" type="guid" value="196e233f-7e32-488f-849c-4425645ac188"/>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="Gossip">
+                    <attribute id="DialogUUID" type="guid" value="13df4a91-93de-42cf-a8da-b8c9ae5f9bbb"/>
+                    <attribute id="Name" type="FixedString" value="RJTP_PB_Karlach_SaveYourSoul"/>
+                    <attribute id="Priority" type="int32" value="50"/>
+                    <attribute id="Type" type="FixedString" value="PartyBanter"/>
+                    <attribute id="UUID" type="guid" value="f93ba4db-b11d-445e-b61d-56cfacfe5856"/>
+                    <children>
+                        <node id="ConditionFlags">
+                            <children>
+                                <node id="Flag">
+                                    <attribute id="UUID" type="guid" value="196e233f-7e32-488f-849c-4425645ac188"/>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="Gossip">
+                    <attribute id="DialogUUID" type="guid" value="1a6845ef-0c85-4b4a-87b3-8ba8ab1e0625"/>
+                    <attribute id="Name" type="FixedString" value="RJTP_PB_Astarion_TheGame"/>
+                    <attribute id="Priority" type="int32" value="50"/>
+                    <attribute id="Type" type="FixedString" value="PartyBanter"/>
+                    <attribute id="UUID" type="guid" value="63fd50dc-e608-41fe-bc7b-56eb2c901074"/>
+                    <children>
+                        <node id="ConditionFlags">
+                            <children>
+                                <node id="Flag">
+                                    <attribute id="UUID" type="guid" value="196e233f-7e32-488f-849c-4425645ac188"/>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="Gossip">
+                    <attribute id="DialogUUID" type="guid" value="ab044d17-7389-45c1-8943-9c70c05e8642"/>
+                    <attribute id="Name" type="FixedString" value="RJTP_PB_Astarion_EagerPup"/>
+                    <attribute id="Priority" type="int32" value="50"/>
+                    <attribute id="Type" type="FixedString" value="PartyBanter"/>
+                    <attribute id="UUID" type="guid" value="f5768549-a9ca-47cd-b581-e4c73999312d"/>
+                    <children>
+                        <node id="ConditionFlags">
+                            <children>
+                                <node id="Flag">
+                                    <attribute id="UUID" type="guid" value="196e233f-7e32-488f-849c-4425645ac188"/>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="Gossip">
+                    <attribute id="DialogUUID" type="guid" value="0d76c850-69db-45b7-8b5d-a4d7b8269757"/>
+                    <attribute id="Name" type="FixedString" value="RJTP_PB_Astarion_ComradesInArms"/>
+                    <attribute id="Priority" type="int32" value="50"/>
+                    <attribute id="Type" type="FixedString" value="PartyBanter"/>
+                    <attribute id="UUID" type="guid" value="0620d209-6e09-4b77-b61d-22eb38d191b4"/>
+                    <children>
+                        <node id="ConditionFlags">
+                            <children>
+                                <node id="Flag">
+                                    <attribute id="UUID" type="guid" value="196e233f-7e32-488f-849c-4425645ac188"/>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="Gossip">
+                    <attribute id="DialogUUID" type="guid" value="b70bfb7e-41b2-48c9-8a8a-f6a9139d122d"/>
+                    <attribute id="Name" type="FixedString" value="RJTP_PB_Gale_NeverADullDay"/>
+                    <attribute id="Priority" type="int32" value="50"/>
+                    <attribute id="Type" type="FixedString" value="PartyBanter"/>
+                    <attribute id="UUID" type="guid" value="c0e52a69-1015-4915-a16e-f30c959b0827"/>
+                    <children>
+                        <node id="ConditionFlags">
+                            <children>
+                                <node id="Flag">
+                                    <attribute id="UUID" type="guid" value="196e233f-7e32-488f-849c-4425645ac188"/>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="Gossip">
+                    <attribute id="DialogUUID" type="guid" value="50eb9651-2a77-4fca-ba78-550990a37457"/>
+                    <attribute id="Name" type="FixedString" value="RJTP_PB_Gale_HandsomeDevil"/>
+                    <attribute id="Priority" type="int32" value="50"/>
+                    <attribute id="Type" type="FixedString" value="PartyBanter"/>
+                    <attribute id="UUID" type="guid" value="e58b7b05-22ab-45eb-8c75-8efc73397605"/>
+                    <children>
+                        <node id="ConditionFlags">
+                            <children>
+                                <node id="Flag">
+                                    <attribute id="UUID" type="guid" value="196e233f-7e32-488f-849c-4425645ac188"/>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="Gossip">
+                    <attribute id="DialogUUID" type="guid" value="49cceb67-d6c0-45cb-a911-ea55adf64ecf"/>
+                    <attribute id="Name" type="FixedString" value="RJTP_PB_Gale_HellIsWhere"/>
+                    <attribute id="Priority" type="int32" value="50"/>
+                    <attribute id="Type" type="FixedString" value="PartyBanter"/>
+                    <attribute id="UUID" type="guid" value="00678d3f-48a9-4085-9a58-e42c2eaf988a"/>
+                    <children>
+                        <node id="ConditionFlags">
+                            <children>
+                                <node id="Flag">
+                                    <attribute id="UUID" type="guid" value="196e233f-7e32-488f-849c-4425645ac188"/>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="Gossip">
+                    <attribute id="DialogUUID" type="guid" value="948b90ff-acca-4b31-8b3d-3d64e32ecc64"/>
+                    <attribute id="Name" type="FixedString" value="RJTP_PB_Laezel_DazzlingSmile"/>
+                    <attribute id="Priority" type="int32" value="50"/>
+                    <attribute id="Type" type="FixedString" value="PartyBanter"/>
+                    <attribute id="UUID" type="guid" value="e2f4ea9b-6048-494e-a594-f6e02254e42f"/>
+                    <children>
+                        <node id="ConditionFlags">
+                            <children>
+                                <node id="Flag">
+                                    <attribute id="UUID" type="guid" value="196e233f-7e32-488f-849c-4425645ac188"/>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="Gossip">
+                    <attribute id="DialogUUID" type="guid" value="2678e1aa-1204-4458-bffc-df5fe70f2973"/>
+                    <attribute id="Name" type="FixedString" value="RJTP_PB_Laezel_BestToKeepQuiet"/>
+                    <attribute id="Priority" type="int32" value="50"/>
+                    <attribute id="Type" type="FixedString" value="PartyBanter"/>
+                    <attribute id="UUID" type="guid" value="d863da0b-10ce-4809-9738-702f3f434b47"/>
+                    <children>
+                        <node id="ConditionFlags">
+                            <children>
+                                <node id="Flag">
+                                    <attribute id="UUID" type="guid" value="196e233f-7e32-488f-849c-4425645ac188"/>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="Gossip">
+                    <attribute id="DialogUUID" type="guid" value="bee1d8f9-c542-42d4-8d0f-ef58a2f50412"/>
+                    <attribute id="Name" type="FixedString" value="RJTP_PB_Laezel_WhatAreYouHiding"/>
+                    <attribute id="Priority" type="int32" value="50"/>
+                    <attribute id="Type" type="FixedString" value="PartyBanter"/>
+                    <attribute id="UUID" type="guid" value="72ecf367-a8e4-484d-962f-6b42d87a2301"/>
+                    <children>
+                        <node id="ConditionFlags">
+                            <children>
+                                <node id="Flag">
+                                    <attribute id="UUID" type="guid" value="196e233f-7e32-488f-849c-4425645ac188"/>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="Gossip">
+                    <attribute id="DialogUUID" type="guid" value="ba1db418-cee1-435b-b9f6-b89e6a4efb21"/>
+                    <attribute id="Name" type="FixedString" value="RJTP_PB_Wyll_ShouldHaveStayedBelow"/>
+                    <attribute id="Priority" type="int32" value="50"/>
+                    <attribute id="Type" type="FixedString" value="PartyBanter"/>
+                    <attribute id="UUID" type="guid" value="3351a0e2-9602-46a3-83c2-ae46d8496362"/>
+                    <children>
+                        <node id="ConditionFlags">
+                            <children>
+                                <node id="Flag">
+                                    <attribute id="UUID" type="guid" value="196e233f-7e32-488f-849c-4425645ac188"/>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="Gossip">
+                    <attribute id="DialogUUID" type="guid" value="5bc8846e-c7c2-49e0-a985-b49147241fd0"/>
+                    <attribute id="Name" type="FixedString" value="RJTP_PB_Wyll_TheGoodEye"/>
+                    <attribute id="Priority" type="int32" value="50"/>
+                    <attribute id="Type" type="FixedString" value="PartyBanter"/>
+                    <attribute id="UUID" type="guid" value="6161c452-bdc9-4ea2-826b-b5358f3881d8"/>
+                    <children>
+                        <node id="ConditionFlags">
+                            <children>
+                                <node id="Flag">
+                                    <attribute id="UUID" type="guid" value="196e233f-7e32-488f-849c-4425645ac188"/>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="Gossip">
+                    <attribute id="DialogUUID" type="guid" value="22b7a481-af76-4f0c-9427-489ba7bdb0fc"/>
+                    <attribute id="Name" type="FixedString" value="RJTP_PB_Wyll_HalfOfWhatHeKnows"/>
+                    <attribute id="Priority" type="int32" value="50"/>
+                    <attribute id="Type" type="FixedString" value="PartyBanter"/>
+                    <attribute id="UUID" type="guid" value="8f91935b-a4a4-4561-a120-d42dde3f7881"/>
+                    <children>
+                        <node id="ConditionFlags">
+                            <children>
+                                <node id="Flag">
+                                    <attribute id="UUID" type="guid" value="196e233f-7e32-488f-849c-4425645ac188"/>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

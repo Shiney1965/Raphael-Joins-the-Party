@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="8" revision="0" build="500" />
+	<region id="Flags">
+		<node id="Flags">
+			<attribute id="UUID" type="guid" value="0ce21ad3-669a-4661-a0c7-a96870cc4ebe" />
+			<attribute id="Name" type="FixedString" value="RJTP_RAPHAELCAMP" />
+			<attribute id="Description" type="LSString" value="Camp flag for Raphael (RJTP) in camp." />
+			<attribute id="Usage" type="uint8" value="5" />
+		</node>
+	</region>
+</save>

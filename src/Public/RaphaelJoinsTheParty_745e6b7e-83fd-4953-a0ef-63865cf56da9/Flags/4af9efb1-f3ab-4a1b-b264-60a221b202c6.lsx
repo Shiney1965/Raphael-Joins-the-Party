@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="8" revision="0" build="500" />
+	<region id="Flags">
+		<node id="Flags">
+			<attribute id="UUID" type="guid" value="4af9efb1-f3ab-4a1b-b264-60a221b202c6" />
+			<attribute id="Name" type="FixedString" value="RJTP_Event_Accept" />
+			<attribute id="Description" type="LSString" value="RJTP offer outcome: accept (Osiris acts on DialogEnded)." />
+			<attribute id="Usage" type="uint8" value="4" />
+		</node>
+	</region>
+</save>

@@ -1,0 +1,468 @@
+{
+ "barks": [
+  {
+   "name": "RJTP_AD_Bark_CombatStart_1",
+   "group": "CombatStart",
+   "index": 1,
+   "cooldown_ms": 180000,
+   "line": "h85f5d40fge71eg49aega356g07b5fcac0966",
+   "length_s": 2.41
+  },
+  {
+   "name": "RJTP_AD_Bark_CombatStart_2",
+   "group": "CombatStart",
+   "index": 2,
+   "cooldown_ms": 180000,
+   "line": "hc466a5aegd56eg4f2bg8d24g75c46d89b8c6",
+   "length_s": 2.12
+  },
+  {
+   "name": "RJTP_AD_Bark_CombatStart_3",
+   "group": "CombatStart",
+   "index": 3,
+   "cooldown_ms": 180000,
+   "line": "h3fe48a4cge8c9g4805ga9f7g8e7630ee1640",
+   "length_s": 6.79
+  },
+  {
+   "name": "RJTP_AD_Bark_Kill_1",
+   "group": "Kill",
+   "index": 1,
+   "cooldown_ms": 90000,
+   "line": "hc4e1430dgc556g44cdgb372g9331dae0004f",
+   "length_s": 3.73
+  },
+  {
+   "name": "RJTP_AD_Bark_Kill_2",
+   "group": "Kill",
+   "index": 2,
+   "cooldown_ms": 90000,
+   "line": "hdb2e1731g53deg4cbbgba0cgd2b718dea3b8",
+   "length_s": 7.14
+  },
+  {
+   "name": "RJTP_AD_Bark_Ascend_1",
+   "group": "Ascend",
+   "index": 1,
+   "cooldown_ms": 60000,
+   "line": "h228b0e8egf78fg4c56g984cg0d570ad39f8d",
+   "length_s": 3.64
+  },
+  {
+   "name": "RJTP_AD_Bark_Ascend_2",
+   "group": "Ascend",
+   "index": 2,
+   "cooldown_ms": 60000,
+   "line": "hfc494b00gcd72g4e17g9dd7g27ce8f8c61cc",
+   "length_s": 3.54
+  },
+  {
+   "name": "RJTP_AD_Bark_Ascend_3",
+   "group": "Ascend",
+   "index": 3,
+   "cooldown_ms": 60000,
+   "line": "h522c2dbegd8fdg401bg98dbgc6ecb0bd0c40",
+   "length_s": 5.03
+  },
+  {
+   "name": "RJTP_AD_Bark_Ascend_4",
+   "group": "Ascend",
+   "index": 4,
+   "cooldown_ms": 60000,
+   "line": "h48df382cg772ag48ffg9096gaf18bb74cbca",
+   "length_s": 7.29
+  },
+  {
+   "name": "RJTP_AD_Bark_Downed_1",
+   "group": "Downed",
+   "index": 1,
+   "cooldown_ms": 0,
+   "line": "h421e4ce3gcd13g4a15g8456g8d10fe4ea755",
+   "length_s": 9.83
+  },
+  {
+   "name": "RJTP_AD_Bark_HelpedUp_1",
+   "group": "HelpedUp",
+   "index": 1,
+   "cooldown_ms": 120000,
+   "line": "hd4564c97g6f0bg41f9gaa76g4e83c8e3dcbe",
+   "length_s": 2.81
+  },
+  {
+   "name": "RJTP_AD_Bark_HelpedUp_2",
+   "group": "HelpedUp",
+   "index": 2,
+   "cooldown_ms": 120000,
+   "line": "h3617634aga369g44a1ga608g9df96864e426",
+   "length_s": 3.35
+  },
+  {
+   "name": "RJTP_AD_Bark_HelpedUp_3",
+   "group": "HelpedUp",
+   "index": 3,
+   "cooldown_ms": 120000,
+   "line": "hfb06e3dcg31d9g44ceg9e7dg5b3979a3e1ef",
+   "length_s": 2.82
+  },
+  {
+   "name": "RJTP_AD_Bark_Won_1",
+   "group": "Won",
+   "index": 1,
+   "cooldown_ms": 600000,
+   "line": "h52718081ge715g4b74ga8e4gf86740fa5675",
+   "length_s": 8.02
+  }
+ ],
+ "banters": [
+  {
+   "name": "RJTP_PB_Karlach_ExceptDevils",
+   "companion": "KARLACH",
+   "origin": "2c76687d-93a2-477b-8b18-8a14b549304c",
+   "title": "Except devils",
+   "gate": "none",
+   "where": "walking or camp",
+   "lines": [
+    {
+     "speaker": 1,
+     "line": "h3b2a739eg2945g4ca8gaf50g610e558eed40",
+     "length_s": 6.2
+    },
+    {
+     "speaker": 0,
+     "line": "h502f8aa8gb409g45b5gb736g0431d4c3bb0b",
+     "length_s": 4.8
+    },
+    {
+     "speaker": 1,
+     "line": "hb3784ab9g404cg4e03gbd9bgbff86c9f1587",
+     "length_s": 2.15
+    }
+   ]
+  },
+  {
+   "name": "RJTP_PB_Karlach_SaveYourSoul",
+   "companion": "KARLACH",
+   "origin": "2c76687d-93a2-477b-8b18-8a14b549304c",
+   "title": "Save your soul",
+   "gate": "no story gate; both his lines are from his Sharess' Caress scene, so play before it or accept a repeat",
+   "where": "camp",
+   "lines": [
+    {
+     "speaker": 0,
+     "line": "h4f6e258fg8b90g404fg8d08gc51a45de6f0a",
+     "length_s": 5.19
+    },
+    {
+     "speaker": 1,
+     "line": "h51d438cbg9864g468dga228g27494bc2d787",
+     "length_s": 5.59
+    },
+    {
+     "speaker": 0,
+     "line": "h6188c74fge7a4g4593ga17cgd197c6669616",
+     "length_s": 5.47
+    }
+   ]
+  },
+  {
+   "name": "RJTP_PB_Astarion_TheGame",
+   "companion": "ASTARION",
+   "origin": "c7c13742-bacd-460a-8f65-f864fe41f255",
+   "title": "The game",
+   "gate": "none",
+   "where": "camp / walking",
+   "lines": [
+    {
+     "speaker": 1,
+     "line": "h03511b73g225dg44adgb0f7g53dcc7fa8592",
+     "length_s": 4.49
+    },
+    {
+     "speaker": 0,
+     "line": "h453222cegb901g4864ga4d2gfef31053948c",
+     "length_s": 5.57
+    },
+    {
+     "speaker": 1,
+     "line": "h26c3e171gf414g43edgbc5fga43e73dd5b1b",
+     "length_s": 3.61
+    }
+   ]
+  },
+  {
+   "name": "RJTP_PB_Astarion_EagerPup",
+   "companion": "ASTARION",
+   "origin": "c7c13742-bacd-460a-8f65-f864fe41f255",
+   "title": "Eager pup",
+   "gate": "none",
+   "where": "walking, enemies in sight",
+   "lines": [
+    {
+     "speaker": 1,
+     "line": "h6e6a7e67g946bg4276g80c9g1a03883eea9b",
+     "length_s": 1.76
+    },
+    {
+     "speaker": 0,
+     "line": "h754ed1ddg648bg40ccg89bdgac960f38d3ae",
+     "length_s": 4.65
+    },
+    {
+     "speaker": 1,
+     "line": "h18527820g99bdg4d2ag8ac0g5ecba143671d",
+     "length_s": 1.68
+    }
+   ]
+  },
+  {
+   "name": "RJTP_PB_Astarion_ComradesInArms",
+   "companion": "ASTARION",
+   "origin": "c7c13742-bacd-460a-8f65-f864fe41f255",
+   "title": "Comrades in arms",
+   "gate": "none",
+   "where": "walking, or after two companions quarrel",
+   "lines": [
+    {
+     "speaker": 0,
+     "line": "he3163dd8g0805g4cb3gb0c3g362a5bb7f52c",
+     "length_s": 6.11
+    },
+    {
+     "speaker": 1,
+     "line": "h54418ef0g3212g4e84gbf1egfcd8f7296107",
+     "length_s": 5.38
+    },
+    {
+     "speaker": 0,
+     "line": "hd0404335g1f41g41daga65ag793a81a96b94",
+     "length_s": 2.95
+    }
+   ]
+  },
+  {
+   "name": "RJTP_PB_Gale_NeverADullDay",
+   "companion": "GALE",
+   "origin": "ad9af97d-75da-406a-ae13-7071c563f604",
+   "title": "Never a dull day",
+   "gate": "none",
+   "where": "camp, soon after Raphael joins",
+   "lines": [
+    {
+     "speaker": 1,
+     "line": "hcc05f3bbg15e9g4684g8f9fg252e293c9fd9",
+     "length_s": 6.66
+    },
+    {
+     "speaker": 0,
+     "line": "h1baa7117gb24bg4b00g837cg764a02ee5df0",
+     "length_s": 5.3
+    },
+    {
+     "speaker": 1,
+     "line": "h99319db8g9fd8g47bag8b02g7695b9020aea",
+     "length_s": 1.57
+    }
+   ]
+  },
+  {
+   "name": "RJTP_PB_Gale_HandsomeDevil",
+   "companion": "GALE",
+   "origin": "ad9af97d-75da-406a-ae13-7071c563f604",
+   "title": "Handsome devil",
+   "gate": "none",
+   "where": "camp",
+   "lines": [
+    {
+     "speaker": 1,
+     "line": "ha983ca4eg425dg4f49gb0a3g81e1f65c5b4a",
+     "length_s": 6.3
+    },
+    {
+     "speaker": 0,
+     "line": "h34e43ecagde95g4359gb341g10dedf62fca3",
+     "length_s": 2.44
+    },
+    {
+     "speaker": 1,
+     "line": "h090b0bfbgcf43g4fe5g9167g1f3e73c755bd",
+     "length_s": 4.39
+    }
+   ]
+  },
+  {
+   "name": "RJTP_PB_Gale_HellIsWhere",
+   "companion": "GALE",
+   "origin": "ad9af97d-75da-406a-ae13-7071c563f604",
+   "title": "Hell is where",
+   "gate": "none; best once the House of Hope has been named",
+   "where": "walking, on entering any grim place",
+   "lines": [
+    {
+     "speaker": 1,
+     "line": "h41352951g33d0g48a4ga48dgbd67347d48d1",
+     "length_s": 3.65
+    },
+    {
+     "speaker": 0,
+     "line": "h24daeaf0g617cg4f19g83f0g12327d0640ed",
+     "length_s": 5.45
+    }
+   ]
+  },
+  {
+   "name": "RJTP_PB_Laezel_DazzlingSmile",
+   "companion": "LAEZEL",
+   "origin": "58a69333-40bf-8358-1d17-fff240d7fb12",
+   "title": "Dazzling smile",
+   "gate": "none",
+   "where": "walking, right after Lae'zel threatens or insults someone",
+   "lines": [
+    {
+     "speaker": 0,
+     "line": "h8f0b59dcg0630g496bg96afgd665aa825612",
+     "length_s": 5.58
+    },
+    {
+     "speaker": 1,
+     "line": "hcc1f7468g667cg472eg8219g345bf645e517",
+     "length_s": 8.21
+    },
+    {
+     "speaker": 0,
+     "line": "hd2096844g9b94g4d08g8ab4gbb9bb31dd9b1",
+     "length_s": 4.6
+    }
+   ]
+  },
+  {
+   "name": "RJTP_PB_Laezel_BestToKeepQuiet",
+   "companion": "LAEZEL",
+   "origin": "58a69333-40bf-8358-1d17-fff240d7fb12",
+   "title": "Best to keep quiet",
+   "gate": "none",
+   "where": "walking or camp, idle",
+   "lines": [
+    {
+     "speaker": 0,
+     "line": "h9c4b8c3cg68deg4093gbb68g7fa3183c5507",
+     "length_s": 3.62
+    },
+    {
+     "speaker": 1,
+     "line": "ha5bd9cd0g1593g47dbga69fg917666cde3f4",
+     "length_s": 5.37
+    },
+    {
+     "speaker": 0,
+     "line": "h4e74dbc8g808bg40a6g980fga415a58099f1",
+     "length_s": 5.48
+    }
+   ]
+  },
+  {
+   "name": "RJTP_PB_Laezel_WhatAreYouHiding",
+   "companion": "LAEZEL",
+   "origin": "58a69333-40bf-8358-1d17-fff240d7fb12",
+   "title": "What are you hiding",
+   "gate": "none",
+   "where": "camp",
+   "lines": [
+    {
+     "speaker": 1,
+     "line": "h3e687b0ag26a0g488bg97feg5927cf376949",
+     "length_s": 1.54
+    },
+    {
+     "speaker": 0,
+     "line": "hc56ed5a6g1e59g4e99gb810gc4b2ff47f69e",
+     "length_s": 4.57
+    },
+    {
+     "speaker": 1,
+     "line": "h1c8a91deg7bb0g4239gbb13g1ded67be3220",
+     "length_s": 9.19
+    },
+    {
+     "speaker": 0,
+     "line": "hd0404335g1f41g41daga65ag793a81a96b94",
+     "length_s": 2.95
+    }
+   ]
+  },
+  {
+   "name": "RJTP_PB_Wyll_ShouldHaveStayedBelow",
+   "companion": "WYLL",
+   "origin": "c774d764-4a17-48dc-b470-32ace9ce447d",
+   "title": "Should have stayed below",
+   "gate": "none",
+   "where": "walking",
+   "lines": [
+    {
+     "speaker": 1,
+     "line": "h452edeecg885ag499dga5ecgd23464cb8264",
+     "length_s": 2.98
+    },
+    {
+     "speaker": 0,
+     "line": "h24daeaf0g617cg4f19g83f0g12327d0640ed",
+     "length_s": 5.45
+    }
+   ]
+  },
+  {
+   "name": "RJTP_PB_Wyll_TheGoodEye",
+   "companion": "WYLL",
+   "origin": "c774d764-4a17-48dc-b470-32ace9ce447d",
+   "title": "The good eye",
+   "gate": "none",
+   "where": "walking / camp",
+   "lines": [
+    {
+     "speaker": 1,
+     "line": "heeded996g9c3dg4733gb1e4gd748b21d9c8e",
+     "length_s": 1.82
+    },
+    {
+     "speaker": 0,
+     "line": "h4034ebf9ge1ddg4c1eg8567g431dcc34d22c",
+     "length_s": 4.33
+    },
+    {
+     "speaker": 1,
+     "line": "hfcf60a12g25dfg436eg90b1g630190e2fba8",
+     "length_s": 3.99
+    }
+   ]
+  },
+  {
+   "name": "RJTP_PB_Wyll_HalfOfWhatHeKnows",
+   "companion": "WYLL",
+   "origin": "c774d764-4a17-48dc-b470-32ace9ce447d",
+   "title": "Half of what he knows",
+   "gate": "none",
+   "where": "walking",
+   "lines": [
+    {
+     "speaker": 1,
+     "line": "h82844dbagd34bg4cd7g9e08gc819446f078e",
+     "length_s": 2.27
+    },
+    {
+     "speaker": 0,
+     "line": "hc56ed5a6g1e59g4e99gb810gc4b2ff47f69e",
+     "length_s": 4.57
+    },
+    {
+     "speaker": 1,
+     "line": "hf57d0f64gda61g4ce7gaca4geccc0f57db3a",
+     "length_s": 0.89
+    },
+    {
+     "speaker": 0,
+     "line": "he76f0294g3cb9g46dfgbdb4ga9adda26422e",
+     "length_s": 7.65
+    }
+   ]
+  }
+ ]
+}

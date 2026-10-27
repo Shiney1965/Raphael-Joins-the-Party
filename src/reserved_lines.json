@@ -1,0 +1,20 @@
+{
+ "_about": "Raphael lines that must NOT be used anywhere in the mod (the author: too important, they belong to the base game's own scenes). tools/gen_dialogs.py and tools/gen_banter_content.py fail on any of them.",
+ "lines": [
+  {
+   "handle": "h4430c988g6291g4a74gba7fgc3a2734b1868",
+   "what": "loathes kittens and chattering children",
+   "by": "the author 2026-10-07"
+  },
+  {
+   "handle": "hfcd0715egbd40g43d9g9c2dgbfd1cbe6613f",
+   "what": "the setting is too middle-of-nowhere (quaint little scene take)",
+   "by": "the author 2026-10-07"
+  },
+  {
+   "handle": "h615f125dg3d5cg4288ga59bgb0a41456e1c7",
+   "what": "the setting is too middle-of-nowhere (dark little tableau take)",
+   "by": "the author 2026-10-07; the second take of the same line"
+  }
+ ]
+}

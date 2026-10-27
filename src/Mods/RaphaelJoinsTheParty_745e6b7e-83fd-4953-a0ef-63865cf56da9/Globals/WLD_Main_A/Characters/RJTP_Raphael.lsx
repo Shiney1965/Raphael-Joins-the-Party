@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="0" revision="9" build="328" />
+	<region id="Templates">
+		<node id="Templates">
+			<children>
+				<node id="GameObjects">
+					<attribute id="Archetype" type="FixedString" value="mage" />
+					<attribute id="CharacterVisualResourceID" type="FixedString" value="bf8c5cd9-c0fd-4533-84eb-5f4687be427f" />
+					<attribute id="DisplayName" type="TranslatedString" handle="h1ea7aa50g70c6g4ce4g85b2geedd37622b36" version="1" />
+					<attribute id="Equipment" type="FixedString" value="EQP_Unarmed" />
+					<attribute id="EquipmentRace" type="guid" value="7d73f501-f65e-46af-a13b-2cacf3985d05" />
+					<attribute id="Faction" type="guid" value="a1003392-4017-4652-ab8f-174747bd6f2e" />
+					<attribute id="Flag" type="int32" value="1" />
+					<attribute id="GeneratePortrait" type="LSString" value="Icon_Raphael_Human" />
+					<attribute id="Icon" type="FixedString" value="dc5589d3-5f3b-0ac4-ef9d-88c34dd85f9c-EQP_Unarmed_(Icon_Raphael_Human)" />
+					<attribute id="IsGlobal" type="bool" value="True" />
+					<attribute id="IsLootable" type="bool" value="False" />
+					<attribute id="LevelName" type="FixedString" value="WLD_Main_A" />
+					<attribute id="MapKey" type="FixedString" value="95a854c9-17cc-4774-83f0-ce6bf93924e2" />
+					<attribute id="Name" type="LSString" value="S_RJTP_Raphael" />
+					<attribute id="PortraitVisualResourceID" type="FixedString" value="dc5589d3-5f3b-0ac4-ef9d-88c34dd85f9c" />
+					<attribute id="Race" type="guid" value="0eb594cb-8820-4be6-a58d-8be7a1a98fba" />
+					<attribute id="SoftBodyCollisionTemplate" type="FixedString" value="e96eed75-850b-4497-b077-a8f62f731bf3" />
+					<attribute id="SpellSet" type="FixedString" value="CommonPlayerActions" />
+					<attribute id="Stats" type="FixedString" value="RJTP_Raphael" />
+					<attribute id="TemplateName" type="FixedString" value="acd7060a-43bd-4dc9-b050-9d9b2cf7b7df" />
+					<attribute id="Type" type="FixedString" value="character" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144537400540922056" />
+					<children>
+						<node id="LayerList">
+							<children>
+								<node id="Layers">
+									<children>
+										<node id="Object">
+											<attribute id="MapKey" type="FixedString" value="WLD_Main_A" />
+											<children>
+								<node id="Layer">
+									<attribute id="Object" type="guid" value="303db700-f9db-a9ea-293a-3af3066f58b1" />
+								</node>
+								<node id="Layer">
+									<attribute id="Object" type="guid" value="28b53b44-9a9b-974d-0876-6d29aab9d9c9" />
+								</node>
+											</children>
+										</node>
+									</children>
+								</node>
+							</children>
+						</node>
+						<node id="LocomotionParams" />
+						<node id="SpeakerGroupList">
+							<children>
+								<node id="SpeakerGroup">
+									<attribute id="Object" type="guid" value="02cdc15e-1dc3-5eb4-f73c-9458b4f90b9f" />
+								</node>
+								<node id="SpeakerGroup">
+									<attribute id="Object" type="guid" value="e0d1ff71-04a8-4340-ae64-9684d846eb83" />
+								</node>
+								<node id="SpeakerGroup">
+									<attribute id="Object" type="guid" value="ae20615c-be4a-5278-2db7-10b3feade3e1" />
+								</node>
+								<node id="SpeakerGroup">
+									<attribute id="Object" type="guid" value="6e51f2eb-9fdf-4f95-a66b-7043e700795b" />
+								</node>
+								<node id="SpeakerGroup">
+									<attribute id="Object" type="guid" value="4e16d397-c917-841a-a715-7a9969b8ddf3" />
+								</node>
+							</children>
+						</node>
+						<node id="Tags">
+							<children>
+								<node id="Tag">
+									<attribute id="Object" type="guid" value="7fbed0d4-cabc-4a9d-804e-12ca6088a0a8" />
+								</node>
+								<node id="Tag">
+									<attribute id="Object" type="guid" value="2a4f9fcc-5891-4150-bf3f-a219e69a7f33" />
+								</node>
+								<node id="Tag">
+									<attribute id="Object" type="guid" value="ff75b510-d1ba-4532-b3cd-b0e61fe5e0af" />
+								</node>
+							</children>
+						</node>
+						<node id="Transform">
+							<attribute id="Position" type="fvec3" value="-298.43454 24.10363 120.92958" />
+							<attribute id="RotationQuat" type="fvec4" value="0 -0.8170171 0 0.5766135" />
+							<attribute id="Scale" type="float" value="1" />
+						</node>
+					</children>
+				</node>
+			</children>
+		</node>
+	</region>
+</save>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="8" revision="0" build="500" />
+	<region id="Flags">
+		<node id="Flags">
+			<attribute id="UUID" type="guid" value="88b83b89-9749-4690-b1a4-2ee2b7b3f46c" />
+			<attribute id="Name" type="FixedString" value="RJTP_ORI_Raphael_State_IsInParty" />
+			<attribute id="Description" type="LSString" value="Raphael (RJTP) is in the party." />
+			<attribute id="Usage" type="uint8" value="5" />
+		</node>
+	</region>
+</save>

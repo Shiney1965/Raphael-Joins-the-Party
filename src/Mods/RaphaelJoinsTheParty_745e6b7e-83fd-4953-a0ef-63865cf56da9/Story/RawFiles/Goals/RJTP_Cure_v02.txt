@@ -1,0 +1,721 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+// Raphael Joins the Party - v0.2 goal: full House of Hope alarm cure, v0.1 -> v0.2 save migration, v0.2 debug rows.
+// A NEW goal file, so its INIT also runs on saves made with v0.1/v0.1.1 (plan v0.2 section 3.1, review 16 B3).
+// Osiris timing rule (review 17 (a)): status and stage events arrive AFTER the calling proc finishes.
+
+// Debtor home positions and combat groups (research 11 section 4.1, from CTY_Main_A Characters _merged.lsx)
+DB_RJTP_DebtorHome((CHARACTER)S_LOW_HouseOfHope_MerregonDebtor01_306e91b1-71af-4b6f-8df7-1e1dab6899d2, -6510.5312, 5.5816298, 2907.9832, "e2b48fec-eb23-477d-9764-1ceab947d3e2");
+DB_RJTP_DebtorHome((CHARACTER)S_LOW_HouseOfHope_MerregonDebtor02_b3037a96-9405-43b1-8041-0b928910fcc4, -6507.3438, 7.6120167, 2942.9944, "5cb9e2fa-7e0d-4fe5-886b-0b04c21d7ece");
+DB_RJTP_DebtorHome((CHARACTER)S_LOW_HouseOfHope_MerregonDebtor03_34a70c23-20a8-4aa8-a03d-8ac86b8b8654, -6487.0244, 9.684925, 2948.4321, "5cb9e2fa-7e0d-4fe5-886b-0b04c21d7ece");
+DB_RJTP_DebtorHome((CHARACTER)S_LOW_HouseOfHope_MerregonDebtor04_37191419-9d40-495a-b480-a4971a5f7129, -6457.183, 7.612016, 2944.5881, "85ddc767-191c-4ede-b2fa-4b4554ec421e");
+DB_RJTP_DebtorHome((CHARACTER)S_LOW_HouseOfHope_MerregonDebtor05_800614f0-49a8-4b2a-bc9d-50cd80fd72d4, -6444.353, 5.538993, 2938.4148, "6eb1a02b-f32b-46ad-9329-f6a1071c878a");
+DB_RJTP_DebtorHome((CHARACTER)S_LOW_HouseOfHope_ImpDebtor01_32c94fae-f910-45e4-a2a6-c0f55ecbbd99, -6450.6353, 5.5816298, 2932.4841, "6eb1a02b-f32b-46ad-9329-f6a1071c878a");
+DB_RJTP_DebtorHome((CHARACTER)S_LOW_HouseOfHope_ImpDebtor02_bd0d230f-fa57-42fb-8e39-858ee093285d, -6465.3896, 9.684922, 2951.264, "6eb1a02b-f32b-46ad-9329-f6a1071c878a");
+DB_RJTP_DebtorHome((CHARACTER)S_LOW_HouseOfHope_ImpDebtor03_9c3e4abd-c659-455c-a65f-3cc2307d94d1, -6481.215, 9.70162, 2950.8584, "63ab8e56-caca-47b7-8392-a9891b02ff19");
+DB_RJTP_DebtorHome((CHARACTER)S_LOW_HouseOfHope_ImpDebtor04_4ef2947c-cd4c-49f4-8be1-7d2240b90e78, -6510.353, 5.9939103, 2930.014, "e2b48fec-eb23-477d-9764-1ceab947d3e2");
+DB_RJTP_DebtorHome((CHARACTER)S_LOW_HouseOfHope_FireDebtor01_f790dbe7-021c-4eb1-a7e9-ba172f8eaca9, -6518.173, 5.5387945, 2924.2244, "e2b48fec-eb23-477d-9764-1ceab947d3e2");
+DB_RJTP_DebtorHome((CHARACTER)S_LOW_HouseOfHope_FireDebtor02_8c149ab1-bb45-4bdc-a9b7-d07b98f9f924, -6448.1973, 5.578247, 2911.84, "85ddc767-191c-4ede-b2fa-4b4554ec421e");
+DB_RJTP_DebtorHome((CHARACTER)S_LOW_HouseOfHope_FireDebtor03_bbd649db-111b-4f20-87d0-917827c15252, -6495.072, 9.684922, 2952.27, "63ab8e56-caca-47b7-8392-a9891b02ff19");
+
+// Poofed in place by the alarm rules only (review 16 verified-OK): foop back if alive and off stage
+DB_RJTP_FoopBack((CHARACTER)S_LOW_HouseOfHope_Nubaldin_046f67d9-d477-42d5-8b70-fd0a7911caf4);
+DB_RJTP_FoopBack((CHARACTER)S_LOW_HouseOfHope_Debtor_Mason_7fa2834b-e31e-476a-bb3f-83b935b898e1);
+DB_RJTP_FoopBack((CHARACTER)S_LOW_HouseOfHope_SkeletonDebtor01_79d71dfc-854d-4b0a-89e9-c8b834eab689);
+DB_RJTP_FoopBack((CHARACTER)S_LOW_HouseOfHope_SkeletonDebtor02_516ff175-6882-48f4-81e3-2198dc63b5a5);
+DB_RJTP_FoopBack((CHARACTER)S_LOW_HouseOfHope_SkeletonDebtor03_25c91096-cfc4-45e4-b128-e2dda2fde57a);
+DB_RJTP_FoopBack((CHARACTER)S_LOW_HouseOfHope_SkeletonDebtor04_52b54f46-8ac6-4722-ac26-1e91aaf346d9);
+
+// v0.2 test harness rows (granted by the v0.1 rules in RJTP_AAA_Init while DB_RJTP_TestBuild(1) holds)
+DB_RJTP_DebugSpell("Shout_RJTP_Debug_Cure");
+DB_RJTP_DebugSpell("Shout_RJTP_Debug_V02Status");
+DB_RJTP_DebugSpell("Shout_RJTP_Debug_Uninstall");
+KBSECTION
+//REGION "Vanilla has moved on" (review 17 N3): the same flags QRY_RJTP_OfferAllowed uses
+QRY
+QRY_RJTP_HoHResolved()
+AND
+DB_RJTP_Released(_)
+THEN
+DB_NOOP(1);
+
+// v0.3d: the reckoning handed the house to vanilla (fight or yield)
+QRY
+QRY_RJTP_HoHResolved()
+AND
+DB_RJTP_OfferResolved("Fought")
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_HoHResolved()
+AND
+DB_RJTP_OfferResolved("Yielded")
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_HoHResolved()
+AND
+DB_GlobalFlag((FLAG)LOW_HouseOfHope_Event_RaphaelAppeared_c25358e0-5ea1-929b-b511-6e745596d789)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_HoHResolved()
+AND
+DB_GlobalFlag((FLAG)LOW_HouseOfHope_Event_HopeRescued_119342c6-2a7b-8c90-e96e-3f3a5930e91a)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_HoHResolved()
+AND
+DB_GlobalFlag((FLAG)LOW_HouseOfHope_State_RaphaelIsDead_655d7d21-99a2-4138-9a7a-af1850932e75)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_HoHResolved()
+AND
+DB_GlobalFlag((FLAG)LOW_HouseOfHope_State_ContractIsDestroyed_1a51a77c-d549-4d50-95df-97ab9d1ef9f6)
+THEN
+DB_NOOP(1);
+//END_REGION
+
+//REGION Entry: arm only on a real theft alarm (review 17 N7); run only when safe (review 16 S1/S2)
+// No other rule may sit on PROC_RJTP_CureAlarm (review 16 M9). The v0.1 cure rules were moved into DoCure below.
+PROC
+PROC_RJTP_CureAlarm()
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+DB_RJTP_AlarmCause("Theft")
+AND
+NOT DB_RJTP_CureV2Done(1)
+AND
+NOT DB_RJTP_CurePending(1)
+THEN
+DB_RJTP_CurePending(1);
+
+PROC
+PROC_RJTP_CureAlarm()
+THEN
+PROC_RJTP_TryCure();
+
+// Vanilla has moved on: never undo its House of Hope state (review 17 N3)
+PROC
+PROC_RJTP_TryCure()
+AND
+DB_RJTP_CurePending(1)
+AND
+QRY_RJTP_HoHResolved()
+THEN
+NOT DB_RJTP_CurePending(1);
+DB_RJTP_CureV2Done(1);
+DB_RJTP_AlarmCured(1);
+DB_RJTP_CureSkipped(1);
+
+PROC
+PROC_RJTP_TryCure()
+AND
+DB_RJTP_CurePending(1)
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+DB_CurrentLevel("CTY_Main_A")
+AND
+NOT QRY_RJTP_PartyInCombat()
+AND
+NOT DB_RJTP_CureV2Done(1)
+THEN
+NOT DB_RJTP_CurePending(1);
+PROC_RJTP_DoCure();
+
+// Retry points (review 16 S2). The pending DB persists, so save/load mid-pending is safe.
+IF
+CombatEnded(_)
+AND
+DB_RJTP_CurePending(1)
+THEN
+PROC_RJTP_TryCure();
+TimerLaunch("RJTP_CureRetry", 2000);
+
+IF
+TimerFinished("RJTP_CureRetry")
+AND
+DB_RJTP_CurePending(1)
+THEN
+PROC_RJTP_TryCure();
+
+IF
+LeftCombat(_Member, _)
+AND
+DB_PartyMembers((CHARACTER)_Member)
+AND
+DB_RJTP_CurePending(1)
+THEN
+PROC_RJTP_TryCure();
+
+IF
+SavegameLoaded()
+AND
+DB_RJTP_CurePending(1)
+THEN
+PROC_RJTP_TryCure();
+
+IF
+LevelGameplayStarted("CTY_Main_A", _)
+AND
+DB_RJTP_CurePending(1)
+THEN
+PROC_RJTP_TryCure();
+//END_REGION
+
+//REGION The cure. Osiris runs a PROC's rules in file order: the step order below is the execution order.
+// Never touch (research 11 section 5): AlarmIsReady, RaphaelAlerted, IncubusLeft, PlayersStoleMainTreasure,
+// DB_OnlyOnce("...ArchivistAlarmComment") removal, ArchivistSaysGoodbye, HopeIsFree, DebtorsIntoDemons/DebtorTransformed inserts.
+
+// 1. v0.1 steps, unchanged (statuses, inferno, debtor faction)
+PROC
+PROC_RJTP_DoCure()
+AND
+DB_LOW_HouseOfHope_DebtorsIntoDemons(_Debtor, _)
+THEN
+RemoveStatus(_Debtor, "LOW_HOH_ALARMED");
+
+PROC
+PROC_RJTP_DoCure()
+AND
+DB_LOW_HouseOfHope_DebtorsIntoDemons(_, _Demon)
+THEN
+RemoveStatus(_Demon, "LOW_HOH_ALARMEDDEMON");
+
+PROC
+PROC_RJTP_DoCure()
+AND
+DB_LOW_HouseOfHope_DebtorTransformed(_, _Demon)
+THEN
+RemoveStatus(_Demon, "LOW_HOH_ALARMEDDEMON");
+
+PROC
+PROC_RJTP_DoCure()
+AND
+NOT DB_LOW_HouseOfHope_DisableInferno(1)
+THEN
+DB_LOW_HouseOfHope_DisableInferno(1);
+
+PROC
+PROC_RJTP_DoCure()
+THEN
+PROC_SetRelationToPlayers((FACTION)Act3_LOW_HouseOfHope_Debtors_d7db90e1-e131-4c76-8787-7d5a881dbec7, 50);
+
+// 2. Demons created by defeats: gone (research 11 section 4.2)
+PROC
+PROC_RJTP_DoCure()
+AND
+DB_LOW_HouseOfHope_DebtorTransformed(_, _Demon)
+AND
+IsDead((CHARACTER)_Demon, 0)
+AND
+IsOnStage(_Demon, 1)
+THEN
+NOT DB_LOW_HouseOfHope_DelayTheAmbush(_Demon);
+PurgeOsirisQueue(_Demon);
+PROC_GLO_Monitor_EntityPoof(_Demon);
+
+// 3. Debtors home (research 11 section 4.1; review 16 S3). A debtor in combat waits for its own LeftCombat.
+PROC
+PROC_RJTP_DoCure()
+AND
+DB_RJTP_DebtorHome(_D, _, _, _, _)
+THEN
+DB_RJTP_DebtorPending(_D);
+
+PROC
+PROC_RJTP_DoCure()
+AND
+DB_RJTP_DebtorPending(_D)
+THEN
+PROC_RJTP_SendDebtorHome(_D);
+
+PROC
+PROC_RJTP_SendDebtorHome((CHARACTER)_D)
+AND
+IsDead(_D, 1)
+THEN
+NOT DB_RJTP_DebtorPending(_D);
+
+// Off stage while alive = vanilla put it away (e.g. story poof): leave it alone
+PROC
+PROC_RJTP_SendDebtorHome((CHARACTER)_D)
+AND
+IsDead(_D, 0)
+AND
+IsOnStage(_D, 0)
+THEN
+NOT DB_RJTP_DebtorPending(_D);
+
+PROC
+PROC_RJTP_SendDebtorHome((CHARACTER)_D)
+AND
+DB_RJTP_DebtorPending(_D)
+AND
+IsDead(_D, 0)
+AND
+IsInCombat(_D, 0)
+AND
+DB_RJTP_DebtorHome(_D, _X, _Y, _Z, _CG)
+THEN
+NOT DB_RJTP_DebtorPending(_D);
+NOT DB_LOW_HouseOfHope_DelayTheAmbush(_D);
+DB_LOW_HouseOfHope_InAmbush(_D);
+PurgeOsirisQueue(_D);
+SetCombatGroupID(_D, _CG);
+DB_RJTP_DebtorGoingHome(_D);
+TeleportToPosition(_D, _X, _Y, _Z, "RJTP_DebtorHome", 0, 0, 0, 0, 1);
+
+IF
+EntityEvent((CHARACTER)_D, "RJTP_DebtorHome")
+AND
+DB_RJTP_DebtorGoingHome(_D)
+THEN
+NOT DB_RJTP_DebtorGoingHome(_D);
+PROC_GLO_Monitor_EntityFoop(_D);
+
+IF
+LeftCombat((CHARACTER)_D, _)
+AND
+DB_RJTP_DebtorPending(_D)
+AND
+NOT QRY_RJTP_HoHResolved()
+THEN
+PROC_RJTP_SendDebtorHome(_D);
+
+// 4. Haarlep and the boudoir imps, only if the alarm is what turned him (research 11 section 4.4; review 16 M11)
+PROC
+PROC_RJTP_DoCure()
+AND
+DB_GlobalFlag((FLAG)LOW_HouseOfHope_Event_ImpAlarmed_3c7fffc9-d2a4-e6b4-592e-0f97c14f4e7b)
+THEN
+PROC_SetRelationToPlayers((FACTION)Act3_LOW_HouseOfHope_Incubus_c379b3f1-9f7b-411a-897c-228b7db333ff, 50);
+
+PROC
+PROC_RJTP_DoCure()
+AND
+DB_GlobalFlag((FLAG)LOW_HouseOfHope_Event_ImpAlarmed_3c7fffc9-d2a4-e6b4-592e-0f97c14f4e7b)
+AND
+DB_LOW_HouseOfHope_BoudoirImpsAfterAlarm((CHARACTER)_Imp, _, _)
+AND
+IsOnStage(_Imp, 1)
+AND
+IsDead(_Imp, 0)
+THEN
+PurgeOsirisQueue(_Imp);
+PROC_GLO_Monitor_EntityPoof(_Imp);
+
+PROC
+PROC_RJTP_DoCure()
+AND
+DB_GlobalFlag((FLAG)LOW_HouseOfHope_Event_ImpAlarmed_3c7fffc9-d2a4-e6b4-592e-0f97c14f4e7b)
+AND
+NOT DB_PermaDefeated(S_LOW_HouseOfHope_Incubus_3947e0e2-3b4c-4a39-ac53-454e95665b26)
+AND
+IsOnStage(S_LOW_HouseOfHope_Incubus_3947e0e2-3b4c-4a39-ac53-454e95665b26, 1)
+AND
+IsInCombat(S_LOW_HouseOfHope_Incubus_3947e0e2-3b4c-4a39-ac53-454e95665b26, 0)
+THEN
+PurgeOsirisQueue(S_LOW_HouseOfHope_Incubus_3947e0e2-3b4c-4a39-ac53-454e95665b26);
+DB_RJTP_IncubusGoingHome(1);
+TeleportToPosition(S_LOW_HouseOfHope_Incubus_3947e0e2-3b4c-4a39-ac53-454e95665b26, -6478.7446, 10.905422, 2993.3523, "RJTP_IncubusHome", 0, 0, 0, 0, 1);
+
+IF
+EntityEvent(S_LOW_HouseOfHope_Incubus_3947e0e2-3b4c-4a39-ac53-454e95665b26, "RJTP_IncubusHome")
+AND
+DB_RJTP_IncubusGoingHome(1)
+THEN
+NOT DB_RJTP_IncubusGoingHome(1);
+Use((CHARACTER)S_LOW_HouseOfHope_Incubus_3947e0e2-3b4c-4a39-ac53-454e95665b26, (ITEM)S_LOW_HouseOfHope_IncubusBed_5061d998-bd03-4f2d-9543-b6dfc7e3f7c2, "");
+
+PROC
+PROC_RJTP_DoCure()
+AND
+DB_GlobalFlag((FLAG)LOW_HouseOfHope_Event_ImpAlarmed_3c7fffc9-d2a4-e6b4-592e-0f97c14f4e7b)
+AND
+NOT DB_GlobalFlag((FLAG)LOW_HouseOfHope_Event_GetNaked_e71e9de1-2efd-eb6d-203f-bac5e4657dec)
+THEN
+RemoveStatus(S_LOW_HouseOfHope_Incubus_3947e0e2-3b4c-4a39-ac53-454e95665b26, "LOW_INCUBUS_GETNAKED_USED");
+
+// 5. Poofed-in-place NPCs back (only the alarm rules poof them)
+PROC
+PROC_RJTP_DoCure()
+AND
+DB_RJTP_FoopBack(_N)
+AND
+IsDead(_N, 0)
+AND
+IsOnStage(_N, 0)
+THEN
+PROC_GLO_Monitor_EntityFoop(_N);
+
+// 6. Hope's alarm hints off (research 11 section 4.8)
+PROC
+PROC_RJTP_DoCure()
+THEN
+PROC_TriggerUnregisterForPlayers((TRIGGER)S_LOW_HouseOfHope_HopeLastHopeTrigger_992cda41-4d2f-49f5-b5ef-c42e6e5fa867);
+PROC_SetOnStage(S_LOW_HopeSpirit_Guide_51baa5f6-1248-499b-acf3-79b6bdd0f6bd, 0);
+PROC_RemoveOneShotAD((TRIGGER)S_LOW_HouseOfHope_HopeSpirit_Start_35457c2f-aaf7-4540-a35b-b0afcda04ad1);
+PROC_TriggerUnregisterForPlayers((TRIGGER)S_LOW_HouseOfHope_HopeAlarmTrigger_a74b17a0-2343-46c8-b992-0af963fb13a8);
+
+PROC
+PROC_RJTP_DoCure()
+AND
+DB_LOW_HouseOfHope_AllowedHopeSpirits((CHARACTER)S_LOW_HopeSpirit_Alarm_8b0c3442-b9b9-4efa-aa05-2c1ea1240dae)
+THEN
+NOT DB_LOW_HouseOfHope_AllowedHopeSpirits((CHARACTER)S_LOW_HopeSpirit_Alarm_8b0c3442-b9b9-4efa-aa05-2c1ea1240dae);
+
+PROC
+PROC_RJTP_DoCure()
+AND
+DB_LOW_HouseOfHope_HopeGuidance(_T, _, _, _)
+THEN
+PROC_TriggerUnregisterForPlayers(_T);
+
+// 7. Soul pillars re-armed exactly as vanilla does (HoH2:1266-1271)
+PROC
+PROC_RJTP_DoCure()
+AND
+NOT DB_GlobalFlag((FLAG)LOW_HouseOfHope_State_SoulPillarArcanaCheckPassed_7fdafb09-86d8-f9a5-1e30-66bdb8c43c32)
+AND
+DB_LOW_HouseOfHope_SoulPillarTriggers(_T)
+THEN
+DB_KnowledgeCheckTrigger_AD("LOW_HouseOfHope_SoulPillar", _T, "Arcana", (DIFFICULTYCLASS)Act3_Medium_77cee1c4-384a-4217-b670-67db3c7add57, (DIALOGRESOURCE)LOW_HouseOfHope_PAD_SoulPillar_71a7b45d-751b-460d-bc34-590013b2f877, (FLAG)LOW_HouseOfHope_State_SoulPillarArcanaCheckPassed_7fdafb09-86d8-f9a5-1e30-66bdb8c43c32);
+
+// 8. The Archivist returns (the author: "For the alarm cure the Archivist should return"; research 11 section 4.3;
+//    review 16 S4). Safe order: stop his dialogs, defuse the comment and goodbye rules, remove his dialog, foop.
+PROC
+PROC_RJTP_DoCure()
+AND
+NOT DB_PermaDefeated(S_LOW_HouseOfHope_Archivist_d2d4a5ac-4a57-40dd-a317-f749146da306)
+AND
+IsDead(S_LOW_HouseOfHope_Archivist_d2d4a5ac-4a57-40dd-a317-f749146da306, 0)
+THEN
+// No off-stage guard (review 21 SF3): if he is still mid alarm comment or goodbye, this marks him returned so the
+// re-foop net below catches the poof that follows.
+PROC_RJTP_ReturnArchivist();
+
+PROC
+PROC_RJTP_ReturnArchivist()
+THEN
+PROC_ForceStopDialog((CHARACTER)S_LOW_HouseOfHope_Archivist_d2d4a5ac-4a57-40dd-a317-f749146da306);
+DB_RJTP_ArchivistReturned(1);
+
+PROC
+PROC_RJTP_ReturnArchivist()
+AND
+NOT DB_OnlyOnce("LOW_HouseOfHope_ArchivistAlarmComment")
+THEN
+DB_OnlyOnce("LOW_HouseOfHope_ArchivistAlarmComment");
+
+PROC
+PROC_RJTP_ReturnArchivist()
+AND
+DB_LOW_HouseOfHope_ArchivistWantsToSayGoodbye(1)
+THEN
+NOT DB_LOW_HouseOfHope_ArchivistWantsToSayGoodbye(1);
+
+PROC
+PROC_RJTP_ReturnArchivist()
+THEN
+PROC_RemoveDialog((CHARACTER)S_LOW_HouseOfHope_Archivist_d2d4a5ac-4a57-40dd-a317-f749146da306);
+PROC_GLO_Monitor_EntityFoop(S_LOW_HouseOfHope_Archivist_d2d4a5ac-4a57-40dd-a317-f749146da306);
+
+// 9. Last: mark done
+PROC
+PROC_RJTP_DoCure()
+THEN
+DB_RJTP_CureV2Done(1);
+DB_RJTP_AlarmCured(1);
+
+// Re-foop net: a late goodbye or alarm-comment end must not undo the return (review 16 S4; review 18 F4)
+IF
+DialogEnded((DIALOGRESOURCE)LOW_HouseOfHope_Archivist_144d4b6a-428c-b650-21a8-cb49dff74aff, _)
+AND
+DB_RJTP_ArchivistReturned(1)
+THEN
+PROC_RJTP_ArchivistRefoopSoon();
+
+IF
+AutomatedDialogEnded((DIALOGRESOURCE)LOW_HouseOfHope_AD_ArchivistAlarmComment_358f6bac-746d-c10d-34c2-db32c1c968f9, _)
+AND
+DB_RJTP_ArchivistReturned(1)
+THEN
+PROC_RJTP_ArchivistRefoopSoon();
+
+PROC
+PROC_RJTP_ArchivistRefoopSoon()
+THEN
+TimerLaunch("RJTP_ArchivistRefoop", 1000);
+
+IF
+TimerFinished("RJTP_ArchivistRefoop")
+AND
+DB_RJTP_ArchivistReturned(1)
+AND
+NOT QRY_RJTP_HoHResolved()
+AND
+NOT DB_PermaDefeated(S_LOW_HouseOfHope_Archivist_d2d4a5ac-4a57-40dd-a317-f749146da306)
+AND
+IsDead(S_LOW_HouseOfHope_Archivist_d2d4a5ac-4a57-40dd-a317-f749146da306, 0)
+THEN
+PROC_RJTP_ClearArchivistGoodbye();
+PROC_GLO_Monitor_EntityFoop(S_LOW_HouseOfHope_Archivist_d2d4a5ac-4a57-40dd-a317-f749146da306);
+
+PROC
+PROC_RJTP_ClearArchivistGoodbye()
+AND
+DB_LOW_HouseOfHope_ArchivistWantsToSayGoodbye(1)
+THEN
+NOT DB_LOW_HouseOfHope_ArchivistWantsToSayGoodbye(1);
+//END_REGION
+
+//REGION v0.1 -> v0.2 migration (plan section 8; review 17 N2; review 18 section 3)
+// Event-first on purpose: a DB-triggered rule would fire inside the Initialized insert and flag a fresh install.
+IF
+SavegameLoaded()
+AND
+DB_RJTP_Initialized(1)
+AND
+NOT DB_RJTP_ModVersion(_)
+THEN
+PROC_RJTP_MigrateToV02();
+
+PROC
+PROC_RJTP_MigrateToV02()
+THEN
+DB_RJTP_LegacyVisual(1);
+DB_RJTP_FormStatus("Wardrobe", "RJTP_FORM_WARDROBE");
+
+PROC
+PROC_RJTP_MigrateToV02()
+AND
+NOT DB_RJTP_Form(_)
+THEN
+DB_RJTP_Form("Wardrobe");
+
+PROC
+PROC_RJTP_MigrateToV02()
+AND
+DB_RJTP_Recruited(1)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+DB_RJTP_KeepCurrentArmour(1);
+PROC_RJTP_Dress(_Comp);
+PROC_RJTP_GrantFormSpell(_Comp);
+PROC_RJTP_ReassertForm(_Comp);
+
+PROC
+PROC_RJTP_MigrateToV02()
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_Dress(_Comp);
+
+// v0.1 already ran its partial cure: finish it (still subject to every TryCure guard)
+PROC
+PROC_RJTP_MigrateToV02()
+AND
+DB_RJTP_AlarmCured(1)
+AND
+NOT DB_RJTP_CureV2Done(1)
+THEN
+DB_RJTP_CurePending(1);
+PROC_RJTP_TryCure();
+
+PROC
+PROC_RJTP_MigrateToV02()
+THEN
+DB_RJTP_ModVersion(2);
+//END_REGION
+
+//REGION v0.2 test harness
+// Cure test: goes through the same guards, so outside a theft alarm it records nothing (review 17 N7)
+IF
+CastedSpell(_Caster, "Shout_RJTP_Debug_Cure", _, _, _)
+AND
+DB_RJTP_TestBuild(1)
+THEN
+PROC_RJTP_CureAlarm();
+PROC_RJTP_DebugV02Report((CHARACTER)_Caster);
+
+// Camp-clothes debug toggle REMOVED 2026-10-01: its armour-set enum literals were the only enum use in
+// the mod and the prime suspect for the in-game story compile failure. Test camp clothes with a real camp night.
+
+IF
+CastedSpell(_Caster, "Shout_RJTP_Debug_Uninstall", _, _, _)
+AND
+DB_RJTP_TestBuild(1)
+THEN
+PROC_RJTP_Uninstall((CHARACTER)_Caster);
+
+IF
+CastedSpell(_Caster, "Shout_RJTP_Debug_V02Status", _, _, _)
+AND
+DB_RJTP_TestBuild(1)
+THEN
+PROC_RJTP_DebugV02Report((CHARACTER)_Caster);
+
+PROC
+PROC_RJTP_DebugV02Report((CHARACTER)_Caster)
+THEN
+DB_RJTP_V2Dbg1("cure=none");
+DB_RJTP_V2Dbg2(" | form=none");
+DB_RJTP_V2Dbg3(" | ver=none");
+DB_RJTP_V2Dbg4("");
+
+PROC
+PROC_RJTP_DebugV02Report((CHARACTER)_Caster)
+AND
+DB_RJTP_CurePending(1)
+THEN
+NOT DB_RJTP_V2Dbg1("cure=none");
+DB_RJTP_V2Dbg1("cure=PENDING (waits for: CTY_Main_A level, out of combat)");
+
+PROC
+PROC_RJTP_DebugV02Report((CHARACTER)_Caster)
+AND
+DB_RJTP_CureV2Done(1)
+AND
+NOT DB_RJTP_CureSkipped(1)
+THEN
+NOT DB_RJTP_V2Dbg1("cure=none");
+DB_RJTP_V2Dbg1("cure=DONE");
+
+PROC
+PROC_RJTP_DebugV02Report((CHARACTER)_Caster)
+AND
+DB_RJTP_CureSkipped(1)
+THEN
+NOT DB_RJTP_V2Dbg1("cure=none");
+DB_RJTP_V2Dbg1("cure=SKIPPED (House of Hope already resolved)");
+
+PROC
+PROC_RJTP_DebugV02Report((CHARACTER)_Caster)
+AND
+DB_RJTP_V2Dbg1("cure=none")
+AND
+NOT DB_LOW_HouseOfHope_AlarmIsReady(1)
+THEN
+NOT DB_RJTP_V2Dbg1("cure=none");
+DB_RJTP_V2Dbg1("cure=not armed (no alarm)");
+
+PROC
+PROC_RJTP_DebugV02Report((CHARACTER)_Caster)
+AND
+DB_RJTP_Form(_F)
+AND
+Concatenate(" | form=", _F, _Str)
+THEN
+NOT DB_RJTP_V2Dbg2(" | form=none");
+DB_RJTP_V2Dbg2(_Str);
+
+PROC
+PROC_RJTP_DebugV02Report((CHARACTER)_Caster)
+AND
+DB_RJTP_ModVersion(2)
+AND
+NOT DB_RJTP_LegacyVisual(1)
+THEN
+NOT DB_RJTP_V2Dbg3(" | ver=none");
+DB_RJTP_V2Dbg3(" | ver=2");
+
+PROC
+PROC_RJTP_DebugV02Report((CHARACTER)_Caster)
+AND
+DB_RJTP_ModVersion(2)
+AND
+DB_RJTP_LegacyVisual(1)
+THEN
+NOT DB_RJTP_V2Dbg3(" | ver=none");
+DB_RJTP_V2Dbg3(" | ver=2 (legacy save)");
+
+PROC
+PROC_RJTP_DebugV02Report((CHARACTER)_Caster)
+AND
+DB_RJTP_Ascended(1)
+AND
+DB_RJTP_V2Dbg4(_Old)
+AND
+Concatenate(_Old, " | ASCENDED", _New)
+THEN
+NOT DB_RJTP_V2Dbg4(_Old);
+DB_RJTP_V2Dbg4(_New);
+
+PROC
+PROC_RJTP_DebugV02Report((CHARACTER)_Caster)
+AND
+DB_RJTP_CampHold(1)
+AND
+DB_RJTP_V2Dbg4(_Old)
+AND
+Concatenate(_Old, " | camp-hold", _New)
+THEN
+NOT DB_RJTP_V2Dbg4(_Old);
+DB_RJTP_V2Dbg4(_New);
+
+PROC
+PROC_RJTP_DebugV02Report((CHARACTER)_Caster)
+AND
+DB_RJTP_ReassertStopped(1)
+AND
+DB_RJTP_V2Dbg4(_Old)
+AND
+Concatenate(_Old, " | LOOP-BREAKER TRIPPED", _New)
+THEN
+NOT DB_RJTP_V2Dbg4(_Old);
+DB_RJTP_V2Dbg4(_New);
+
+PROC
+PROC_RJTP_DebugV02Report((CHARACTER)_Caster)
+AND
+DB_RJTP_ModdedForm(_T)
+AND
+DB_RJTP_V2Dbg4(_Old)
+AND
+Concatenate(_Old, " | modded form active", _New)
+THEN
+NOT DB_RJTP_V2Dbg4(_Old);
+DB_RJTP_V2Dbg4(_New);
+
+PROC
+PROC_RJTP_DebugV02Report((CHARACTER)_Caster)
+AND
+DB_RJTP_V2Dbg1(_A)
+AND
+DB_RJTP_V2Dbg2(_B)
+AND
+DB_RJTP_V2Dbg3(_C)
+AND
+DB_RJTP_V2Dbg4(_D)
+AND
+Concatenate("RJTP v0.2: ", _A, _S1)
+AND
+Concatenate(_S1, _B, _S2)
+AND
+Concatenate(_S2, _C, _S3)
+AND
+Concatenate(_S3, _D, _S4)
+THEN
+OpenMessageBox(_Caster, _S4);
+NOT DB_RJTP_V2Dbg1(_A);
+NOT DB_RJTP_V2Dbg2(_B);
+NOT DB_RJTP_V2Dbg3(_C);
+NOT DB_RJTP_V2Dbg4(_D);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION

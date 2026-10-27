@@ -1,0 +1,5 @@
+# GUID constants used by the RJTP goals that do not appear in vanilla goal files, with where each was verified.
+7ae705fd-1cfd-4482-a584-d2e68f9c1262  MAG_Infernal_Plate_Armor (Helldusk Armour root template) - _vanilla_ref/roottemplates/GustavDev_RT.lsx, Stats MAG_Infernal_Plate_Armor
+df3bb617-5a25-4b1e-af59-8e87cf563c8c  S_LOW_HouseOfHope_RosewoodDesk (Archivist's desk container) - _vanilla_ref/levels/CTY_Main_A_Items.lsx
+75cbe7ab-c39e-498e-a08d-b3c9ba05038e  GENERIC_VOICE_5_MALE tag - Hireling.lsj greeting TaggedText rule tag #5; on Hirelings_Stats_Player_Wizard (_vanilla_ref/roottemplates/SharedDev_RT.lsx); Hireling.lsj synopsis: voice 5 = male
+71c931fd-ed37-432c-9c0c-0a3417c76aff  Kascayde_M_Incubus_new_v1 ("Indulgent Incubus Set" underwear root template, THIRD-PARTY mod Kas' Lingerie b7ee0c78; soft reference, verified in KasLingerie.pak Public/KasLingerie/RootTemplates/_merged.lsf 2026-10-03)

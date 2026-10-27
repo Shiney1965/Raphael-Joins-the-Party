@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="7" revision="1" build="3"/>
+    <region id="FactionContainer">
+        <node id="root">
+            <children>
+                <node id="Faction">
+                    <attribute id="Faction" type="FixedString" value="RJTP_RaphaelNPC"/>
+                    <attribute id="ParentGuid" type="guid" value="00000000-0000-0000-0000-000000000000"/>
+                    <attribute id="UUID" type="guid" value="a1003392-4017-4652-ab8f-174747bd6f2e"/>
+                </node>
+                <node id="Faction">
+                    <attribute id="Faction" type="FixedString" value="RJTP_RaphaelCompanion"/>
+                    <attribute id="ParentGuid" type="guid" value="a1542c81-6895-929e-4522-10ce218bb360"/>
+                    <attribute id="UUID" type="guid" value="92e572ba-3995-4ddf-8d80-c8d94bd93eb2"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

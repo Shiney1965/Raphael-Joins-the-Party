@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="8" revision="0" build="500" />
+	<region id="Flags">
+		<node id="Flags">
+			<attribute id="UUID" type="guid" value="ff15e9aa-a2b6-4222-bbaf-33239ac65958" />
+			<attribute id="Name" type="FixedString" value="RJTP_ORI_Raphael_Event_KickCompanion" />
+			<attribute id="Description" type="LSString" value="Kick Raphael (RJTP) from the party." />
+			<attribute id="Usage" type="uint8" value="5" />
+		</node>
+	</region>
+</save>

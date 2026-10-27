@@ -1,0 +1,203 @@
+{
+  "SchemaVersion": 1,
+  "Optional": true,
+  "ModName": "Raphael Joins the Party",
+  "Tabs": [
+    {
+      "TabId": "rjtp_tab_recruit",
+      "TabName": "Recruitment",
+      "Settings": [
+        {
+          "Id": "rjtp_mode",
+          "Name": "Recruitment mode",
+          "Type": "radio",
+          "Default": "Story",
+          "Options": {
+            "Choices": [
+              "Story",
+              "Recruit anytime"
+            ]
+          },
+          "Description": "Story (default): Raphael can only join through his offer at the House of Hope exit portal in Act 3, if you made the deal with him. Recruit anytime: the button below also works, at any point of the game. In both modes the House of Hope offer and its alarm cure stay available as long as he is not already with you, and the base game's Raphael and his story are never changed."
+        },
+        {
+          "Id": "rjtp_btn_recruit",
+          "Name": "Recruit Raphael now",
+          "Type": "event_button",
+          "Options": {
+            "Label": "Recruit Raphael now",
+            "ConfirmDialog": {
+              "Title": "Recruit Raphael now?",
+              "Message": "He joins at once and stays a companion for this save. Recruiting him early means he makes no offer at the House of Hope later, and dismissing him is permanent.",
+              "ConfirmText": "Recruit",
+              "CancelText": "Cancel"
+            }
+          },
+          "Description": "Works only in 'Recruit anytime' mode, in a loaded game, outside combat and dialogue. Host only."
+        },
+        {
+          "Id": "rjtp_btn_uninstall",
+          "Name": "Prepare to uninstall",
+          "Type": "event_button",
+          "Options": {
+            "Label": "Prepare to uninstall",
+            "ConfirmDialog": {
+              "Title": "Prepare to remove the mod?",
+              "Message": "Raphael leaves your party for good, his looks and his own items are cleared (items you gave him go to one of your characters), his own conversation and his banter are switched off, and the House of Hope is handed back to the base game. This cannot be undone in this save: he cannot be recruited again. Then save, quit and deactivate the mod.",
+              "ConfirmText": "Prepare to uninstall",
+              "CancelText": "Cancel"
+            }
+          },
+          "Description": "Run this before removing the mod from a save. Host only; not during combat. Without MCM, dismiss him for good from his conversation before removing the mod (that leaves the House of Hope as it is)."
+        }
+      ]
+    },
+    {
+      "TabId": "rjtp_tab_look",
+      "TabName": "Look",
+      "Settings": [
+        {
+          "Id": "rjtp_banter",
+          "Name": "Party banter",
+          "Type": "checkbox",
+          "Default": true,
+          "Description": "Raphael trades remarks with Karlach, Astarion, Gale, Lae'zel and Wyll when the game plays party banter. On by default. Applies to every save."
+        },
+        {
+          "Id": "rjtp_look",
+          "Name": "Out-of-combat look",
+          "Type": "radio",
+          "Default": "Wardrobe",
+          "Options": {
+            "Choices": [
+              "Wardrobe",
+              "Signature",
+              "Devil"
+            ]
+          },
+          "Description": "Wardrobe = his own clothes and any armour you give him. Signature = his vanilla suit (shows restyle mods). Devil = his devil form. A look applies when you pick it here in a loaded game (Reset picks Wardrobe, so it also returns him to Wardrobe). Switching MCM profiles or loading a save never changes his look. His real look is saved in your savegame; the 'Raphael's forms' tab shows it, and its buttons always apply even if this setting already shows that look."
+        },
+        {
+          "Id": "rjtp_auto_ascend",
+          "Name": "Auto-ascend in combat",
+          "Type": "checkbox",
+          "Default": false,
+          "Description": "Applies when you tick or untick it in a loaded game with Raphael in your party (Reset turns it off): the choice is written into that savegame, and he then takes his Ascended form on his first turn of each combat. Switching MCM profiles or loading a save never changes it; other saves keep their own setting."
+        },
+        {
+          "Id": "rjtp_btn_ascend",
+          "Name": "Ascend now",
+          "Type": "event_button",
+          "Options": {
+            "Label": "Ascend now"
+          },
+          "Description": "Casts his Ascend spell. Works only in combat and uses his action and the spell's cooldown, exactly like the spell bar."
+        },
+        {
+          "Id": "rjtp_modded_form",
+          "Name": "Form from another mod",
+          "Type": "enum",
+          "Default": "None",
+          "Options": {
+            "Choices": [
+              "None"
+            ],
+            "Dynamic": true
+          },
+          "Description": "Filled in only by MCM 1.41 or newer, after you open the 'Raphael's forms' tab once. With older MCM this list stays at 'None': use the 'Raphael's forms' tab instead."
+        },
+        {
+          "Id": "rjtp_key_cycle",
+          "Name": "Cycle his look",
+          "Type": "keybinding_v2",
+          "Default": {
+            "Keyboard": {
+              "Key": "",
+              "ModifierKeys": []
+            }
+          },
+          "Options": {
+            "ShouldTriggerOnKeyDown": true,
+            "ShouldTriggerOnKeyUp": false,
+            "ShouldTriggerOnRepeat": false,
+            "BlockIfLevelNotStarted": true,
+            "PreventAction": false
+          },
+          "Description": "Unbound by default. Wardrobe, Signature, Devil, then any forms from other mods, in turn."
+        },
+        {
+          "Id": "rjtp_key_wardrobe",
+          "Name": "Back to Wardrobe",
+          "Type": "keybinding_v2",
+          "Default": {
+            "Keyboard": {
+              "Key": "",
+              "ModifierKeys": []
+            }
+          },
+          "Options": {
+            "ShouldTriggerOnKeyDown": true,
+            "ShouldTriggerOnKeyUp": false,
+            "ShouldTriggerOnRepeat": false,
+            "BlockIfLevelNotStarted": true,
+            "PreventAction": false
+          },
+          "Description": "Unbound by default. Returns him to his own clothes (also ends a form from another mod)."
+        },
+        {
+          "Id": "rjtp_key_ascend",
+          "Name": "Ascend now",
+          "Type": "keybinding_v2",
+          "Default": {
+            "Keyboard": {
+              "Key": "",
+              "ModifierKeys": []
+            }
+          },
+          "Options": {
+            "ShouldTriggerOnKeyDown": true,
+            "ShouldTriggerOnKeyUp": false,
+            "ShouldTriggerOnRepeat": false,
+            "BlockIfLevelNotStarted": true,
+            "PreventAction": false
+          },
+          "Description": "Unbound by default. Casts his Ascend spell (combat only; uses his action and the cooldown)."
+        }
+      ]
+    },
+    {
+      "TabId": "rjtp_tab_traits",
+      "TabName": "Traits",
+      "Settings": [
+        {
+          "Id": "rjtp_trait_soulreaper",
+          "Name": "Soul Reaper",
+          "Type": "checkbox",
+          "Default": false,
+          "Description": "Once per short rest, when Raphael lands a killing blow on an enemy, he regains his Infernal Charge for Flames of Avernus. Applies to every save while he is in your company (the setting is not stored per save)."
+        },
+        {
+          "Id": "rjtp_trait_resolve",
+          "Name": "Inevitable Resolve",
+          "Type": "checkbox",
+          "Default": false,
+          "Description": "Once per short rest, in combat: when Raphael is held, dominated, incapacitated, restrained, turned, planar-bound or forced to dance, the effect ends after 1 turn. Applies to every save while he is in your company."
+        },
+        {
+          "Id": "rjtp_trait_fiendish",
+          "Name": "Fiendish Blessing",
+          "Type": "checkbox",
+          "Default": false,
+          "Description": "The base game's effect: +2 Armour Class. Applies to every save while he is in your company."
+        },
+        {
+          "Id": "rjtp_trait_magicres",
+          "Name": "Magic Resistance",
+          "Type": "checkbox",
+          "Default": false,
+          "Description": "The base game's effect: Advantage on saving throws against spells. Applies to every save while he is in your company."
+        }
+      ]
+    }
+  ]
+}

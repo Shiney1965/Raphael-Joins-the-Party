@@ -1,0 +1,505 @@
+{
+	"save": {
+		"header": {
+			"version": "4.0.9.326"
+		},
+		"regions": {
+			"dialog": {
+				"category": {
+					"type": "LSString",
+					"value": "Automated NPC Dialog"
+				},
+				"UUID": {
+					"type": "FixedString",
+					"value": "ba368600-d07d-4ef3-83ab-d4cd34079137"
+				},
+				"DefaultAddressedSpeakers": [
+					{}
+				],
+				"automated": {
+					"type": "bool",
+					"value": true
+				},
+				"speakerlist": [
+					{
+						"speaker": [
+							{
+								"index": {
+									"type": "FixedString",
+									"value": "0"
+								},
+								"list": {
+									"type": "LSString",
+									"value": "95a854c9-17cc-4774-83f0-ce6bf93924e2"
+								},
+								"SpeakerMappingId": {
+									"type": "guid",
+									"value": "8f96b4e5-d8a4-498e-b299-66b79f90bb2c"
+								}
+							}
+						]
+					}
+				],
+				"nodes": [
+					{
+						"RootNodes": [
+							{
+								"RootNodes": {
+									"type": "FixedString",
+									"value": "5e0d5d43-9ae3-5e72-8666-d9addac5e47c"
+								}
+							}
+						],
+						"node": [
+							{
+								"constructor": {
+									"type": "FixedString",
+									"value": "TagGreeting"
+								},
+								"UUID": {
+									"type": "FixedString",
+									"value": "5e0d5d43-9ae3-5e72-8666-d9addac5e47c"
+								},
+								"Root": {
+									"type": "bool",
+									"value": true
+								},
+								"speaker": {
+									"type": "int32",
+									"value": 0
+								},
+								"endnode": {
+									"type": "bool",
+									"value": true
+								},
+								"children": [
+									{}
+								],
+								"GameData": [
+									{
+										"AiPersonalities": [
+											{}
+										],
+										"MusicInstrumentSounds": [
+											{}
+										],
+										"OriginSound": [
+											{}
+										]
+									}
+								],
+								"Tags": [
+									{}
+								],
+								"setflags": [
+									{}
+								],
+								"checkflags": [
+									{}
+								],
+								"TaggedTexts": [
+									{
+										"TaggedText": [
+											{
+												"HasTagRule": {
+													"type": "bool",
+													"value": true
+												},
+												"RuleGroup": [
+													{
+														"Rules": [
+															{}
+														],
+														"TagCombineOp": {
+															"type": "uint8",
+															"value": 0
+														}
+													}
+												],
+												"TagTexts": [
+													{
+														"TagText": [
+															{
+																"LineId": {
+																	"type": "guid",
+																	"value": "0a609305-4416-536b-943f-4f74527e04a7"
+																},
+																"TagText": {
+																	"handle": "hc466a5aegd56eg4f2bg8d24g75c46d89b8c6",
+																	"type": "TranslatedString",
+																	"version": 2
+																},
+																"stub": {
+																	"type": "bool",
+																	"value": true
+																}
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								],
+								"editorData": [
+									{
+										"data": [
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "AnimationTags"
+												},
+												"val": {
+													"type": "LSString",
+													"value": ""
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "Attitude"
+												},
+												"val": {
+													"type": "LSString",
+													"value": "Default"
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "CinematicNodeContext"
+												},
+												"val": {
+													"type": "LSString",
+													"value": ""
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "CinematicObjects"
+												},
+												"val": {
+													"type": "LSString",
+													"value": ""
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "CustomCineArtKeysPresent"
+												},
+												"val": {
+													"type": "LSString",
+													"value": "False"
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "CustomLightingPresent"
+												},
+												"val": {
+													"type": "LSString",
+													"value": "False"
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "CustomSoundPresent"
+												},
+												"val": {
+													"type": "LSString",
+													"value": "False"
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "CustomVFXPresent"
+												},
+												"val": {
+													"type": "LSString",
+													"value": "False"
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "Emotion"
+												},
+												"val": {
+													"type": "LSString",
+													"value": "Default"
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "ForceDisableIsCustomNode"
+												},
+												"val": {
+													"type": "LSString",
+													"value": "False"
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "ID"
+												},
+												"val": {
+													"type": "LSString",
+													"value": "N1"
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "InternalNodeContext"
+												},
+												"val": {
+													"type": "LSString",
+													"value": ""
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "IsCustomNode"
+												},
+												"val": {
+													"type": "LSString",
+													"value": "False"
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "MusicTags"
+												},
+												"val": {
+													"type": "LSString",
+													"value": ""
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "NodeContext"
+												},
+												"val": {
+													"type": "LSString",
+													"value": ""
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "Quality"
+												},
+												"val": {
+													"type": "LSString",
+													"value": "Bronze"
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "SFXTags"
+												},
+												"val": {
+													"type": "LSString",
+													"value": ""
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "StateChangeTags"
+												},
+												"val": {
+													"type": "LSString",
+													"value": ""
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "TemplateNodeUUID"
+												},
+												"val": {
+													"type": "LSString",
+													"value": "00000000-0000-0000-0000-000000000000"
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "TemplateVersion"
+												},
+												"val": {
+													"type": "LSString",
+													"value": "0"
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "VFXTags"
+												},
+												"val": {
+													"type": "LSString",
+													"value": ""
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "collapsed"
+												},
+												"val": {
+													"type": "LSString",
+													"value": "False"
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "logicalname"
+												},
+												"val": {
+													"type": "LSString",
+													"value": "Greeting"
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "position"
+												},
+												"val": {
+													"type": "LSString",
+													"value": "15;15"
+												}
+											},
+											{
+												"key": {
+													"type": "FixedString",
+													"value": "sourcetemplate"
+												},
+												"val": {
+													"type": "LSString",
+													"value": ""
+												}
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			"editorData": {
+				"HowToTrigger": {
+					"type": "LSString",
+					"value": "PROC_RJTP_Bark(CombatStart) or the test spell Shout_RJTP_Debug_Bark."
+				},
+				"defaultAttitudes": [
+					{
+						"data": [
+							{
+								"key": {
+									"type": "FixedString",
+									"value": "0"
+								},
+								"val": {
+									"type": "LSString",
+									"value": "Neutral"
+								}
+							}
+						]
+					}
+				],
+				"defaultEmotions": [
+					{
+						"data": [
+							{
+								"key": {
+									"type": "FixedString",
+									"value": "0"
+								},
+								"val": {
+									"type": "LSString",
+									"value": "Neutral"
+								}
+							}
+						]
+					}
+				],
+				"isImportantForStagings": [
+					{
+						"data": [
+							{
+								"key": {
+									"type": "FixedString",
+									"value": "0"
+								},
+								"val": {
+									"type": "LSString",
+									"value": "True"
+								}
+							}
+						]
+					}
+				],
+				"isPeanuts": [
+					{
+						"data": [
+							{
+								"key": {
+									"type": "FixedString",
+									"value": "0"
+								},
+								"val": {
+									"type": "LSString",
+									"value": "False"
+								}
+							}
+						]
+					}
+				],
+				"needLayout": {
+					"type": "bool",
+					"value": false
+				},
+				"nextNodeId": {
+					"type": "uint32",
+					"value": 2
+				},
+				"speakerSlotDescription": [
+					{
+						"data": [
+							{
+								"key": {
+									"type": "FixedString",
+									"value": "0"
+								},
+								"val": {
+									"type": "LSString",
+									"value": "Raphael (RJTP companion)"
+								}
+							}
+						]
+					}
+				],
+				"synopsis": {
+					"type": "LSString",
+					"value": "Solo bark of the RJTP companion, group CombatStart. One line, no timeline (the shape proven by the voice tests). Started by RJTP_Banter.txt."
+				}
+			}
+		}
+	}
+}

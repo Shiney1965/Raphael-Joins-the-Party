@@ -1,0 +1,147 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+// Raphael Joins the Party - v0.4a: optional traits chosen in MCM, and the Infernal Charge holder (its ONLY source:
+// it is not in the Character stats Passives, so it can never be granted twice; diff review S3)
+// (PLAN_v0_4a_traits_2026-10-17.md; plan review B1, S1-S5). A NEW goal file so its INIT reaches existing saves.
+// The MCM layer calls PROC_RJTP_SetTrait(name, 1|0) on the server (RJTP_Server.lua). Without Script Extender no trait
+// is ever switched on, and Raphael's kit is unchanged.
+DB_RJTP_TraitPassive("SoulReaper", "RJTP_Trait_SoulReaper");
+DB_RJTP_TraitPassive("InevitableResolve", "RJTP_Trait_InevitableResolve");
+DB_RJTP_TraitPassive("FiendishBlessing", "RJTP_Trait_FiendishBlessing");
+DB_RJTP_TraitPassive("MagicResistance", "RJTP_Trait_MagicResistance");
+KBSECTION
+//REGION The choice (kept in the save; the MCM value is pushed again at every level start)
+PROC
+PROC_RJTP_SetTrait((STRING)_Name, 1)
+AND
+DB_RJTP_TraitPassive(_Name, _)
+AND
+NOT DB_RJTP_TraitOn(_Name)
+THEN
+DB_RJTP_TraitOn(_Name);
+
+PROC
+PROC_RJTP_SetTrait((STRING)_Name, 0)
+AND
+DB_RJTP_TraitOn(_Name)
+THEN
+NOT DB_RJTP_TraitOn(_Name);
+
+// Queued, never applied directly: the MCM push sets four traits in one frame, and AddPassive may not be visible to
+// HasPassive until later, so four direct applies could add a passive twice (diff review S2). The timer merges them.
+PROC
+PROC_RJTP_SetTrait((STRING)_Name, (INTEGER)_On)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_QueueTraits(_Comp);
+//END_REGION
+
+//REGION Apply: only add what is on and missing, only remove what is off and present (review: a remove-then-add would
+// reset the once-per-short-rest uses). Only while he is recruited and not withdrawn (review S2).
+PROC
+PROC_RJTP_ApplyTraits((CHARACTER)_Comp)
+AND
+DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_Withdrawn(1)
+AND
+HasPassive(_Comp, "RJTP_InfernalCharge_Holder", 0)
+THEN
+AddPassive(_Comp, "RJTP_InfernalCharge_Holder");
+
+PROC
+PROC_RJTP_ApplyTraits((CHARACTER)_Comp)
+AND
+DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_Withdrawn(1)
+AND
+DB_RJTP_TraitOn(_Name)
+AND
+DB_RJTP_TraitPassive(_Name, _Passive)
+AND
+HasPassive(_Comp, _Passive, 0)
+THEN
+AddPassive(_Comp, _Passive);
+
+PROC
+PROC_RJTP_ApplyTraits((CHARACTER)_Comp)
+AND
+DB_RJTP_TraitPassive(_Name, _Passive)
+AND
+NOT DB_RJTP_TraitOn(_Name)
+AND
+HasPassive(_Comp, _Passive, 1)
+THEN
+RemovePassive(_Comp, _Passive);
+
+// After the engine has finished with him (recruit, respec): a short delay (review S5)
+PROC
+PROC_RJTP_QueueTraits((CHARACTER)_Comp)
+THEN
+ObjectTimerLaunch(_Comp, "RJTP_ApplyTraits", 1000, 0);
+
+IF
+ObjectTimerFinished(_Comp, "RJTP_ApplyTraits")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+THEN
+PROC_RJTP_ApplyTraits(_Comp);
+//END_REGION
+
+//REGION When to apply
+IF
+SavegameLoaded()
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_QueueTraits(_Comp);
+
+PROC
+PROC_RJTP_Recruit((CHARACTER)_Player)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_QueueTraits(_Comp);
+
+PROC
+PROC_GLO_PartyMembers_AddHook((CHARACTER)_Comp, (CHARACTER)_Player)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_QueueTraits(_Comp);
+
+IF
+RespecCompleted(_Comp)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_QueueTraits(_Comp);
+//END_REGION
+
+//REGION Removal when he leaves for good: every withdraw path (dismiss, betrayal, finale, uninstall) calls Withdraw
+PROC
+PROC_RJTP_Withdraw()
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_RJTP_TraitPassive(_, _Passive)
+AND
+HasPassive(_Comp, _Passive, 1)
+THEN
+RemovePassive(_Comp, _Passive);
+
+PROC
+PROC_RJTP_Withdraw()
+AND
+DB_RJTP_Companion(_Comp)
+AND
+HasPassive(_Comp, "RJTP_InfernalCharge_Holder", 1)
+THEN
+RemovePassive(_Comp, "RJTP_InfernalCharge_Holder");
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION

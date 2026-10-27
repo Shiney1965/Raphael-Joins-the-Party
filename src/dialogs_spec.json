@@ -1,0 +1,1490 @@
+{
+  "_about": [
+    "Frozen dialog graph for RJTP v0.2 (plan PLAN_v0_2.md section 6.1; research 14 sections 3-5; research 20).",
+    "Read by tools/gen_dialogs.py. Node keys are PERMANENT: node and LineId UUIDs are derived from them",
+    "(uuid5 of the dialog UUID + key), and the Toolkit timelines are keyed by node UUID. Never rename a key after the",
+    "Toolkit step; add new keys instead.",
+    "line = a vanilla Raphael voiced handle (version taken from vanilla english.xml). text = new subtitle-only text",
+    "(handle generated). Flags: '@KEY' = a mod flag from ids.json, 'V:Name' = a vanilla flag from vanilla_flags.",
+    "check/set rows: [type, flag, value, paramval]; paramval = speaker index for Object flags, null for Global.",
+    "v0.3a (PLAN_v0_3a_banter_2026-10-06.md): Jump nodes = {type: Jump, target: <node key>, point: 1|2}.",
+    "RJTP_CAMP_Raphael node UUIDs come from src/timeline_donor_map.json (tools/gen_timelines.py), not from the keys.",
+    "Bark and banter dialogs are not listed here: gen_dialogs.py builds them from src/banter_content.json.",
+    "v0.3b: src/reserved_lines.json lists Raphael lines the mod must never use (the author 2026-10-07).",
+    "v0.3c: a node may carry voice: HAARLEP (line checked against _vanilla_ref/dumps/HAARLEP_VOICED_LINES_60.tsv; spoken under Haarlep's speaker id, which RJTP_Private.txt + the SE layer switch to for the private scene).",
+    "v0.3c: flag usage 4 = object flag, 5 = global flag (verified on vanilla flag files 2026-10-08)."
+  ],
+  "slot0_route": "companion",
+  "_slot0_route_note": "companion = slot 0 bound to the companion's own GUID (re-keyed bank route, spike S1a). group = GROUP_MonitorHumanForm (group-override route, spike S1b). v0.2b ships only the winner (plan 6.3).",
+  "slot0_lists": {
+    "companion": "95a854c9-17cc-4774-83f0-ce6bf93924e2",
+    "group": "ed2660af-c4e2-0ce0-43e8-29dd7c0ab23a",
+    "monitor": "f65becd6-5cd7-4c88-b85e-6dd06b60f7b8"
+  },
+  "group_players": "e0d1ff71-04a8-4340-ae64-9684d846eb83",
+  "vanilla_flags": {
+    "ORI_State_Recruited": "e78c0aab-fb48-98e9-3ed9-773a0c39988d",
+    "GEN_MaxPlayerCountReached": "823b5064-8aa4-c0b7-1b8c-657b46987ccd",
+    "Hireling_State_AllowReplace": "a8bffa48-dffb-4615-a318-cc2df8b8a551",
+    "GLO_ND_CompanionSwap_ReturnToParentDialogBlocked": "faae54e3-e356-4b38-a803-d06292da7231",
+    "OriginAddToParty": "4870b2cd-210c-0fdc-9c58-4d0142bdae29",
+    "OriginRemoveFromPartyAfterDialog": "7a429beb-fbfb-fa8a-3a33-0349323ad11d",
+    "TG_WYR_Gortash_Killed": "0871c6d9-c3e7-4c1d-9910-11d7d0eda660",
+    "TG_LOW_Orin_Killed": "6aa79a7d-e0b8-407b-8528-3dc3d8d95221",
+    "TG_END_MorphicPoolArrived": "67422c33-4c45-4015-8b87-845f3e5a7471"
+  },
+  "vanilla_dialogs": {
+    "GLO_CompanionSwap_Camp": "002e501b-6f1b-8357-1fde-20b1b4b7c1b9"
+  },
+  "flags": [
+    {
+      "key": "FLAG_Offer_ItemGone",
+      "name": "RJTP_Offer_ItemGone",
+      "usage": 4,
+      "desc": "RJTP offer dialog state (set by Osiris on the companion before start): a stolen treasure no longer exists."
+    },
+    {
+      "key": "FLAG_Offer_Returned",
+      "name": "RJTP_Offer_Returned",
+      "usage": 4,
+      "desc": "RJTP offer dialog state: the stolen items were returned earlier (AfterReturn root)."
+    },
+    {
+      "key": "FLAG_Offer_Theft",
+      "name": "RJTP_Offer_Theft",
+      "usage": 4,
+      "desc": "RJTP offer dialog state: theft with an item to return."
+    },
+    {
+      "key": "FLAG_Offer_NothingToReturn",
+      "name": "RJTP_Offer_NothingToReturn",
+      "usage": 4,
+      "desc": "RJTP offer dialog state: theft alarm with nothing to return."
+    },
+    {
+      "key": "FLAG_Offer_Seen",
+      "name": "RJTP_Offer_Seen",
+      "usage": 4,
+      "desc": "RJTP: the quiet offer greeting has played once (persistent)."
+    },
+    {
+      "key": "FLAG_Event_Accept",
+      "name": "RJTP_Event_Accept",
+      "usage": 4,
+      "desc": "RJTP offer outcome: accept (Osiris acts on DialogEnded)."
+    },
+    {
+      "key": "FLAG_Event_Decline",
+      "name": "RJTP_Event_Decline",
+      "usage": 4,
+      "desc": "RJTP offer outcome: decline, confirmed (Osiris acts on DialogEnded)."
+    },
+    {
+      "key": "FLAG_Event_Return",
+      "name": "RJTP_Event_Return",
+      "usage": 4,
+      "desc": "RJTP offer: return the stolen items now (Osiris acts on FlagSet, mid-dialog)."
+    },
+    {
+      "key": "FLAG_Event_Refuse",
+      "name": "RJTP_Event_Refuse",
+      "usage": 4,
+      "desc": "RJTP offer outcome: refusal (vanilla ambush replays after DialogEnded)."
+    },
+    {
+      "key": "FLAG_Event_Abort",
+      "name": "RJTP_Event_Abort",
+      "usage": 4,
+      "desc": "RJTP offer outcome: [Leave] = abort; the offer repeats at the next portal use."
+    },
+    {
+      "key": "FLAG_Event_Dismiss",
+      "name": "RJTP_Event_Dismiss",
+      "usage": 4,
+      "desc": "RJTP camp dialog: leave for good, confirmed (Osiris acts on DialogEnded)."
+    },
+    {
+      "key": "FLAG_Banter_Enabled",
+      "name": "RJTP_Banter_Enabled",
+      "usage": 5,
+      "desc": "RJTP: global flag that gates the companion's party banter rows in Gossips.lsx. Set by RJTP_Banter.txt only while he is in the active party and a banter has been seen to play."
+    },
+    {
+      "key": "FLAG_Event_Private",
+      "name": "RJTP_Event_Private",
+      "usage": 4,
+      "desc": "RJTP camp dialog: set on the companion by the last line of the private scene; RJTP_Private.txt fades to black and clears it."
+    },
+    {
+      "key": "FLAG_State_Romanced",
+      "name": "RJTP_State_Romanced",
+      "usage": 4,
+      "desc": "RJTP: set on the companion once the private scene has played (unlocks one camp topic). Touches no vanilla romance state."
+    },
+    {
+      "key": "FLAG_Event_VoiceHaarlep",
+      "name": "RJTP_Event_VoiceHaarlep",
+      "usage": 4,
+      "desc": "RJTP camp dialog: set on the companion by the first line of the private scene; RJTP_Private.txt then asks the SE layer to let him speak Haarlep's recorded lines until the dialog ends."
+    },
+    {
+      "key": "FLAG_RomanceEnabled",
+      "name": "RJTP_RomanceEnabled",
+      "usage": 5,
+      "desc": "Release 1.0.0: never set. Hides the private (romance) topic of RJTP_CAMP_Raphael until it is tested."
+    }
+  ],
+  "dialogs": [
+    {
+      "name": "RJTP_HoH_Offer",
+      "ids": "DLG_OFFER",
+      "subpath": "RJTP",
+      "automated": false,
+      "timeline_id": "",
+      "block_ftb": true,
+      "slot0": "route",
+      "synopsis": "Raphael (RJTP companion) meets the party at the House of Hope portal and offers to travel with them. One of five roots plays, chosen by the Object flag Osiris sets on the companion before the start. Every outcome sets an RJTP_Event_* flag; Osiris acts on DialogEnded (Return acts on FlagSet).",
+      "how_to_trigger": "Use the House of Hope receiving portal with the party gathered while the offer is allowed and DB_RJTP_UseDialogs(1) holds (RJTP_Dialogs.txt, PROC_RJTP_PresentOffer).",
+      "roots": [
+        "r_itemgone",
+        "r_afterreturn",
+        "r_theft",
+        "r_nothing",
+        "r_quiet_first",
+        "r_quiet"
+      ],
+      "nodes": {
+        "r_itemgone": {
+          "type": "TagGreeting",
+          "speaker": 0,
+          "line": "hf0a5d899g70e1g4c5eg81edg732192411b74",
+          "check": [
+            [
+              "Object",
+              "@FLAG_Offer_ItemGone",
+              true,
+              0
+            ]
+          ],
+          "children": [
+            "a_dealvoid"
+          ],
+          "context": "ItemGone root: a stolen treasure was destroyed. Furious."
+        },
+        "a_dealvoid": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "ha15db615gad06g4578g98d7gb3e1843491e1",
+          "set": [
+            [
+              "Object",
+              "@FLAG_Event_Refuse",
+              true,
+              0
+            ]
+          ],
+          "end": true,
+          "context": "Deal is void. Osiris then replays vanilla's House of Hope ambush (PROC_RJTP_Refuse)."
+        },
+        "r_afterreturn": {
+          "type": "TagGreeting",
+          "speaker": 0,
+          "line": "hc44e5c5cg2e2cg4481g827cg93e2a1b2bdbb",
+          "check": [
+            [
+              "Object",
+              "@FLAG_Offer_Returned",
+              true,
+              0
+            ],
+            [
+              "Object",
+              "@FLAG_Offer_ItemGone",
+              false,
+              0
+            ]
+          ],
+          "children": [
+            "a_pitch"
+          ],
+          "context": "AfterReturn root: the items were returned earlier and the player left without an answer."
+        },
+        "r_theft": {
+          "type": "TagGreeting",
+          "speaker": 0,
+          "line": "he9f8165fgee69g44acg8974g7a1dc22b7e76",
+          "check": [
+            [
+              "Object",
+              "@FLAG_Offer_Theft",
+              true,
+              0
+            ]
+          ],
+          "children": [
+            "a_theft_demand"
+          ],
+          "context": "Theft root: the party holds something stolen from the Archive."
+        },
+        "a_theft_demand": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "text": "Return what you took from my Archive.",
+          "gap": "a",
+          "children": [
+            "a_theft_soul"
+          ],
+          "context": "Gap line (a), subtitle only."
+        },
+        "a_theft_soul": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h4f6e258fg8b90g404fg8d08gc51a45de6f0a",
+          "children": [
+            "q_return",
+            "q_refuse",
+            "q_theft_leave"
+          ]
+        },
+        "q_return": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "[Return the stolen items] Fine. Take them back.",
+          "set": [
+            [
+              "Object",
+              "@FLAG_Event_Return",
+              true,
+              0
+            ]
+          ],
+          "children": [
+            "a_putback"
+          ],
+          "context": "Osiris returns the items on FlagSet, so the next line plays after the teleport."
+        },
+        "a_putback": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hb49716ebg64c5g497cg94e2g515e3e727576",
+          "children": [
+            "a_forgiven"
+          ]
+        },
+        "a_forgiven": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "text": "There. All is forgiven - this once.",
+          "gap": "d",
+          "children": [
+            "a_pitch"
+          ],
+          "context": "Gap line (d), subtitle only."
+        },
+        "q_refuse": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "No. You'll get nothing back from me.",
+          "children": [
+            "a_refuse_warn"
+          ]
+        },
+        "a_refuse_warn": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hc99e7637g4e19g45d4g9179g3f5bec04ff08",
+          "children": [
+            "q_refuse_confirm",
+            "q_refuse_relent"
+          ],
+          "context": "Confirm-refusal prompt. Kept to one line: vanilla's own ambush scene follows."
+        },
+        "q_refuse_confirm": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "[Refuse] So be it. I'm keeping them.",
+          "set": [
+            [
+              "Object",
+              "@FLAG_Event_Refuse",
+              true,
+              0
+            ]
+          ],
+          "end": true
+        },
+        "q_refuse_relent": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Wait - take them back.",
+          "set": [
+            [
+              "Object",
+              "@FLAG_Event_Return",
+              true,
+              0
+            ]
+          ],
+          "children": [
+            "a_putback"
+          ]
+        },
+        "q_theft_leave": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "<i>Leave.</i>",
+          "set": [
+            [
+              "Object",
+              "@FLAG_Event_Abort",
+              true,
+              0
+            ]
+          ],
+          "end": true
+        },
+        "r_nothing": {
+          "type": "TagGreeting",
+          "speaker": 0,
+          "line": "h3e3f787dg9d69g41b1gab87gc226afbfbe80",
+          "check": [
+            [
+              "Object",
+              "@FLAG_Offer_NothingToReturn",
+              true,
+              0
+            ]
+          ],
+          "children": [
+            "a_pitch"
+          ],
+          "context": "NothingToReturn root: the alarm was raised (failed pickpocket etc.) but nothing is held."
+        },
+        "r_quiet_first": {
+          "type": "TagGreeting",
+          "speaker": 0,
+          "line": "h599eb693gd4bdg4d2cgb840g7a63b116a5b5",
+          "check": [
+            [
+              "Object",
+              "@FLAG_Offer_ItemGone",
+              false,
+              0
+            ],
+            [
+              "Object",
+              "@FLAG_Offer_Returned",
+              false,
+              0
+            ],
+            [
+              "Object",
+              "@FLAG_Offer_Theft",
+              false,
+              0
+            ],
+            [
+              "Object",
+              "@FLAG_Offer_NothingToReturn",
+              false,
+              0
+            ],
+            [
+              "Object",
+              "@FLAG_Offer_Seen",
+              false,
+              0
+            ]
+          ],
+          "set": [
+            [
+              "Object",
+              "@FLAG_Offer_Seen",
+              true,
+              0
+            ]
+          ],
+          "children": [
+            "a_pitch"
+          ],
+          "context": "Quiet root, first meeting."
+        },
+        "r_quiet": {
+          "type": "TagGreeting",
+          "speaker": 0,
+          "line": "hda6bf7ecgd9aag45e3ga1eegf53a72aa525a",
+          "check": [
+            [
+              "Object",
+              "@FLAG_Offer_ItemGone",
+              false,
+              0
+            ],
+            [
+              "Object",
+              "@FLAG_Offer_Returned",
+              false,
+              0
+            ],
+            [
+              "Object",
+              "@FLAG_Offer_Theft",
+              false,
+              0
+            ],
+            [
+              "Object",
+              "@FLAG_Offer_NothingToReturn",
+              false,
+              0
+            ]
+          ],
+          "children": [
+            "a_pitch"
+          ],
+          "context": "Quiet root, repeat visit (after a [Leave])."
+        },
+        "a_pitch": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hd6c10e01g36abg4e46g92c4gcb6e95bace7e",
+          "children": [
+            "a_offer"
+          ]
+        },
+        "a_offer": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "text": "Let me travel at your side until the Crown is within reach. Consider it an investment in our partnership.",
+          "gap": "b",
+          "children": [
+            "q_accept",
+            "q_decline",
+            "q_offer_leave"
+          ],
+          "context": "Gap line (b), subtitle only: the explicit offer."
+        },
+        "q_accept": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Very well. Join us.",
+          "set": [
+            [
+              "Object",
+              "@FLAG_Event_Accept",
+              true,
+              0
+            ]
+          ],
+          "children": [
+            "a_accepted"
+          ]
+        },
+        "a_accepted": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h1baa7117gb24bg4b00g837cg764a02ee5df0",
+          "end": true
+        },
+        "q_decline": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "No. We'll manage without you.",
+          "children": [
+            "a_confirm_decline"
+          ]
+        },
+        "a_confirm_decline": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h0a290fb5g86c0g418bgad67ga90751b83d87",
+          "children": [
+            "q_decline_confirm",
+            "q_decline_relent",
+            "q_decline_leave"
+          ],
+          "context": "Confirm-decline prompt."
+        },
+        "q_decline_confirm": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "I'm sure. The answer is no.",
+          "set": [
+            [
+              "Object",
+              "@FLAG_Event_Decline",
+              true,
+              0
+            ]
+          ],
+          "children": [
+            "a_declined"
+          ]
+        },
+        "a_declined": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hf767ed04gffe4g4e57gb51ag2c0bdd062756",
+          "end": true
+        },
+        "q_decline_relent": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "On second thought - join us.",
+          "set": [
+            [
+              "Object",
+              "@FLAG_Event_Accept",
+              true,
+              0
+            ]
+          ],
+          "children": [
+            "a_accepted"
+          ]
+        },
+        "q_decline_leave": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "<i>Leave.</i>",
+          "set": [
+            [
+              "Object",
+              "@FLAG_Event_Abort",
+              true,
+              0
+            ]
+          ],
+          "end": true
+        },
+        "q_offer_leave": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "<i>Leave.</i>",
+          "set": [
+            [
+              "Object",
+              "@FLAG_Event_Abort",
+              true,
+              0
+            ]
+          ],
+          "end": true
+        }
+      }
+    },
+    {
+      "name": "RJTP_CAMP_Raphael",
+      "ids": "DLG_CAMP",
+      "subpath": "RJTP",
+      "automated": false,
+      "timeline_id": "",
+      "block_ftb": true,
+      "slot0": "route",
+      "child_resources": [
+        "GLO_CompanionSwap_Camp"
+      ],
+      "require_unconditional_root": true,
+      "synopsis": "In-party / camp dialog of the RJTP companion. One greeting root, then a topical greeting (vanilla TG Object flags, cleared on play) or the default greeting. Let's talk (eleven topics, proposal 5.1 and 5.10), join (vanilla OriginAddToParty), join with a full party (nests vanilla GLO_CompanionSwap_Camp), wait at camp (OriginRemoveFromPartyAfterDialog), leave for good (RJTP_Event_Dismiss). v0.3a: the timeline is an unmodified copy of vanilla CAMP_Volo's; NPC node UUIDs and SpeakerMappingIds are the donor's (tools/gen_timelines.py).",
+      "how_to_trigger": "v0.3a: the test spell Shout_RJTP_Debug_CampTalk starts it directly (RJTP_Banter.txt). Clicking him still opens the borrowed Hireling dialog.",
+      "roots": [
+        "r_hello"
+      ],
+      "nodes": {
+        "r_hello": {
+          "type": "TagGreeting",
+          "speaker": 0,
+          "line": "h599eb693gd4bdg4d2cgb840g7a63b116a5b5",
+          "children": [
+            "a_tg_gortash",
+            "a_tg_orin",
+            "a_tg_pool",
+            "a_greet"
+          ],
+          "context": "Single unconditional root on the donor's greeting phase (8.29 s window): a 6.15 s greeting keeps the pause short."
+        },
+        "a_tg_gortash": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hb5685e68g2ebbg4dedg88d2g9af27cb5a324",
+          "check": [
+            [
+              "Object",
+              "V:TG_WYR_Gortash_Killed",
+              true,
+              0
+            ]
+          ],
+          "set": [
+            [
+              "Object",
+              "V:TG_WYR_Gortash_Killed",
+              false,
+              0
+            ]
+          ],
+          "children": [
+            "q_talk",
+            "q_private",
+            "q_join",
+            "q_join_full",
+            "q_wait",
+            "q_dismiss",
+            "q_leave"
+          ],
+          "context": "Topical greeting: Gortash killed."
+        },
+        "a_tg_orin": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hb5685e68g2ebbg4dedg88d2g9af27cb5a324",
+          "check": [
+            [
+              "Object",
+              "V:TG_LOW_Orin_Killed",
+              true,
+              0
+            ]
+          ],
+          "set": [
+            [
+              "Object",
+              "V:TG_LOW_Orin_Killed",
+              false,
+              0
+            ]
+          ],
+          "children": [
+            "q_talk",
+            "q_private",
+            "q_join",
+            "q_join_full",
+            "q_wait",
+            "q_dismiss",
+            "q_leave"
+          ],
+          "context": "Topical greeting: Orin killed."
+        },
+        "a_tg_pool": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hc45040cfga0c3g47d3ga671g70276ee137ee",
+          "check": [
+            [
+              "Object",
+              "V:TG_END_MorphicPoolArrived",
+              true,
+              0
+            ]
+          ],
+          "set": [
+            [
+              "Object",
+              "V:TG_END_MorphicPoolArrived",
+              false,
+              0
+            ]
+          ],
+          "children": [
+            "q_talk",
+            "q_private",
+            "q_join",
+            "q_join_full",
+            "q_wait",
+            "q_dismiss",
+            "q_leave"
+          ],
+          "context": "Topical greeting: arrived at the Morphic Pool."
+        },
+        "a_greet": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hc0b8ac50gd78fg4ea6ga8d6gfd6eb64161b4",
+          "children": [
+            "q_talk",
+            "q_private",
+            "q_join",
+            "q_join_full",
+            "q_wait",
+            "q_dismiss",
+            "q_leave"
+          ],
+          "context": "Default greeting (unconditional, last)."
+        },
+        "q_talk": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Let's talk.",
+          "children": [
+            "a_talk"
+          ]
+        },
+        "a_talk": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hac44666dg6c8ag4f98gb8b9g5c30559568c1",
+          "children": [
+            "q_why",
+            "q_insight",
+            "q_claws",
+            "q_rude",
+            "q_boast",
+            "q_warn",
+            "q_owe",
+            "q_dontlike",
+            "q_close",
+            "q_back",
+            "q_leave_talk"
+          ],
+          "context": "Topic hub (proposal 5.1 and 5.10). Every topic answer jumps back to this node's questions."
+        },
+        "q_why": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Why are you really here, devil?",
+          "children": [
+            "a_why"
+          ]
+        },
+        "a_why": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h67cab22eg622dg48c7gaaccg03eb66ec301f",
+          "children": [
+            "j_a_why"
+          ]
+        },
+        "j_a_why": {
+          "type": "Jump",
+          "target": "a_talk",
+          "point": 2
+        },
+        "q_insight": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "You want something from me. More than you've said.",
+          "children": [
+            "a_insight"
+          ]
+        },
+        "a_insight": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h0066532eg4e76g48eag8e32g07d270bcc64b",
+          "children": [
+            "q_name_it"
+          ]
+        },
+        "q_name_it": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Then name it.",
+          "children": [
+            "a_alltime"
+          ]
+        },
+        "a_alltime": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hd373bb38gadecg48a0g9e39g5d3c740358cc",
+          "children": [
+            "j_a_alltime"
+          ]
+        },
+        "j_a_alltime": {
+          "type": "Jump",
+          "target": "a_talk",
+          "point": 2
+        },
+        "q_claws": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Keep your claws where I can see them and we'll get along.",
+          "children": [
+            "a_paranoid"
+          ]
+        },
+        "a_paranoid": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h4034ebf9ge1ddg4c1eg8567g431dcc34d22c",
+          "children": [
+            "j_a_paranoid"
+          ]
+        },
+        "j_a_paranoid": {
+          "type": "Jump",
+          "target": "a_talk",
+          "point": 2
+        },
+        "q_rude": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Talk straight or don't talk, hellspawn.",
+          "children": [
+            "a_rude"
+          ]
+        },
+        "a_rude": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h6e95b253g2fc7g48b7gb57agb838bcafdb80",
+          "children": [
+            "j_a_rude"
+          ]
+        },
+        "j_a_rude": {
+          "type": "Jump",
+          "target": "a_talk",
+          "point": 2
+        },
+        "q_boast": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Admit it. I've handled all this rather deftly.",
+          "children": [
+            "a_boast"
+          ]
+        },
+        "a_boast": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h3e3f787dg9d69g41b1gab87gc226afbfbe80",
+          "children": [
+            "j_a_boast"
+          ]
+        },
+        "j_a_boast": {
+          "type": "Jump",
+          "target": "a_talk",
+          "point": 2
+        },
+        "q_warn": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "You never warn me about what's ahead.",
+          "children": [
+            "a_warn"
+          ]
+        },
+        "a_warn": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hd007d362g4f0cg4644ga34cg3a5636b95595",
+          "children": [
+            "j_a_warn"
+          ]
+        },
+        "j_a_warn": {
+          "type": "Jump",
+          "target": "a_talk",
+          "point": 2
+        },
+        "q_owe": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "What do I owe you for your help?",
+          "children": [
+            "a_owe"
+          ]
+        },
+        "a_owe": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h9321e72ag7520g450ag9fc6g6da6090da026",
+          "children": [
+            "j_a_owe"
+          ]
+        },
+        "j_a_owe": {
+          "type": "Jump",
+          "target": "a_talk",
+          "point": 2
+        },
+        "q_dontlike": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "I don't like where this is going. But I'll see it through.",
+          "children": [
+            "a_dontlike"
+          ]
+        },
+        "a_dontlike": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h7dfb68e5gdd79g4460g968agbf6aefba62fb",
+          "children": [
+            "j_a_dontlike"
+          ]
+        },
+        "j_a_dontlike": {
+          "type": "Jump",
+          "target": "a_talk",
+          "point": 2
+        },
+        "q_back": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Something else.",
+          "children": [
+            "j_back"
+          ]
+        },
+        "j_back": {
+          "type": "Jump",
+          "target": "a_greet",
+          "point": 2
+        },
+        "q_leave_talk": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "I'll leave you to it.",
+          "children": [
+            "a_leave1"
+          ]
+        },
+        "a_leave1": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "haf3ce1dbg0fe0g4dfegbc63gc9305e26b19d",
+          "children": [
+            "a_leave2"
+          ]
+        },
+        "a_leave2": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h5767cab6g204bg4472gb322gb26c8d268479",
+          "end": true
+        },
+        "q_join": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Join me.",
+          "check": [
+            [
+              "Object",
+              "V:ORI_State_Recruited",
+              false,
+              0
+            ],
+            [
+              "Global",
+              "V:GEN_MaxPlayerCountReached",
+              false,
+              null
+            ]
+          ],
+          "set": [
+            [
+              "Object",
+              "V:OriginAddToParty",
+              true,
+              0
+            ]
+          ],
+          "children": [
+            "a_join"
+          ]
+        },
+        "a_join": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hcb1e987dg1d23g44ffgbc7bgcdf1b5683aae",
+          "end": true
+        },
+        "q_join_full": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Join me.",
+          "check": [
+            [
+              "Global",
+              "V:GEN_MaxPlayerCountReached",
+              true,
+              null
+            ],
+            [
+              "Global",
+              "V:Hireling_State_AllowReplace",
+              true,
+              null
+            ],
+            [
+              "Object",
+              "V:ORI_State_Recruited",
+              false,
+              0
+            ]
+          ],
+          "set": [
+            [
+              "Object",
+              "V:GLO_ND_CompanionSwap_ReturnToParentDialogBlocked",
+              true,
+              1
+            ]
+          ],
+          "children": [
+            "n_swap"
+          ],
+          "context": "Party full: vanilla companion swap (same checks and flag as Hireling.lsj 70f1760a). Needs the GENERIC_VOICE_5_MALE tag."
+        },
+        "n_swap": {
+          "type": "Nested",
+          "nested": "GLO_CompanionSwap_Camp",
+          "linking": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "end": true
+        },
+        "q_wait": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Wait for me at camp.",
+          "check": [
+            [
+              "Object",
+              "V:ORI_State_Recruited",
+              true,
+              0
+            ]
+          ],
+          "set": [
+            [
+              "Object",
+              "V:OriginRemoveFromPartyAfterDialog",
+              true,
+              0
+            ]
+          ],
+          "children": [
+            "a_wait"
+          ]
+        },
+        "a_wait": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hf767ed04gffe4g4e57gb51ag2c0bdd062756",
+          "end": true
+        },
+        "q_dismiss": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "I want you gone. For good.",
+          "children": [
+            "a_dismiss_warn"
+          ]
+        },
+        "a_dismiss_warn": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "ha95f2694ga013g416eg8ba3g0260540c2564",
+          "children": [
+            "q_dismiss_confirm",
+            "q_dismiss_stay"
+          ],
+          "context": "Confirm-dismissal prompt."
+        },
+        "q_dismiss_confirm": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Yes. Leave, and don't come back.",
+          "set": [
+            [
+              "Object",
+              "@FLAG_Event_Dismiss",
+              true,
+              0
+            ]
+          ],
+          "children": [
+            "a_dismissed"
+          ]
+        },
+        "a_dismissed": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h31cb83e5g672eg45d6gb61eg8fe1201245c0",
+          "children": [
+            "a_dismissed_gap"
+          ]
+        },
+        "a_dismissed_gap": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "text": "Our association is ended. Don't expect me to come when you call.",
+          "gap": "c",
+          "end": true,
+          "context": "Gap line (c), subtitle only. Osiris then runs PROC_RJTP_DismissPermanently."
+        },
+        "q_dismiss_stay": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "No. Stay.",
+          "children": [
+            "a_stay"
+          ]
+        },
+        "a_stay": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hee8d7fe6gb893g4f8cg8d38g2846685709b3",
+          "end": true
+        },
+        "q_leave": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "<i>Leave.</i>",
+          "end": true
+        },
+        "q_private": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "You've been watching me all evening.",
+          "children": [
+            "a_charmed"
+          ],
+          "context": "Private scene (proposal 5.7). Optional; chosen by the player. No vanilla romance flag is touched.",
+          "check": [
+            [
+              "Global",
+              "@FLAG_RomanceEnabled",
+              true,
+              null
+            ]
+          ]
+        },
+        "a_charmed": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h9d54b589g356cg4e62ga249g8932363a24f2",
+          "children": [
+            "q_p_ways",
+            "q_p_decline"
+          ],
+          "set": [
+            [
+              "Object",
+              "@FLAG_Event_VoiceHaarlep",
+              true,
+              0
+            ]
+          ],
+          "context": "Raphael's own line. Its node raises RJTP_Event_VoiceHaarlep: 0.8 s later the SE layer switches his speaker id to Haarlep's, so the lines below (Haarlep's recordings) are voiced."
+        },
+        "q_close": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Why do you keep me so close, really?",
+          "check": [
+            [
+              "Object",
+              "@FLAG_State_Romanced",
+              true,
+              0
+            ]
+          ],
+          "children": [
+            "a_assets"
+          ]
+        },
+        "a_assets": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hb20104begea29g440cg82b7g41e73907f92f",
+          "children": [
+            "j_a_assets"
+          ]
+        },
+        "j_a_assets": {
+          "type": "Jump",
+          "target": "a_talk",
+          "point": 2
+        },
+        "q_p_ways": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "In what ways are you charmed, exactly?",
+          "children": [
+            "a_explore"
+          ]
+        },
+        "a_explore": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h809ed65agca72g4ad5ga56egdb44d287296f",
+          "voice": "HAARLEP",
+          "children": [
+            "q_p_bold",
+            "q_p_challenge",
+            "q_p_mine",
+            "q_p_decline"
+          ]
+        },
+        "q_p_challenge": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "You'd find me harder to charm than most.",
+          "children": [
+            "a_cub"
+          ]
+        },
+        "a_cub": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h64874f3agec63g43bbg9cd3g53917d81e892",
+          "voice": "HAARLEP",
+          "children": [
+            "j_a_cub"
+          ]
+        },
+        "j_a_cub": {
+          "type": "Jump",
+          "target": "a_explore",
+          "point": 2
+        },
+        "q_p_mine": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "And if I told you I was the one doing the charming?",
+          "children": [
+            "a_tut"
+          ]
+        },
+        "q_p_bold": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Careful, devil. I might take you up on that.",
+          "children": [
+            "a_naughty"
+          ]
+        },
+        "a_naughty": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "ha7c87b55g8252g4c8eg9244g5bfcc057ebab",
+          "voice": "HAARLEP",
+          "children": [
+            "q_p_here",
+            "q_p_lead",
+            "q_p_decline"
+          ]
+        },
+        "q_p_here": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Here? With the whole camp listening?",
+          "children": [
+            "a_rightplace"
+          ]
+        },
+        "a_rightplace": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h6bb9f0e1ga462g4133ga5dag1a9f219f7de7",
+          "voice": "HAARLEP",
+          "children": [
+            "q_p_lead",
+            "q_p_decline"
+          ]
+        },
+        "q_p_lead": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Lead the way.",
+          "children": [
+            "a_brilliant"
+          ]
+        },
+        "a_brilliant": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h8f476057g3c42g40bcgbb0cg67edb0dc5a45",
+          "voice": "HAARLEP",
+          "children": [
+            "a_delicious"
+          ]
+        },
+        "a_delicious": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h3e2259cag3f19g43c1g860fg171bb77af809",
+          "voice": "HAARLEP",
+          "set": [
+            [
+              "Object",
+              "@FLAG_Event_Private",
+              true,
+              0
+            ]
+          ],
+          "end": true,
+          "context": "Sets RJTP_Event_Private on the companion; RJTP_Private.txt fades the screen to black, then back."
+        },
+        "q_p_decline": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Not tonight, devil.",
+          "children": [
+            "a_nofun"
+          ]
+        },
+        "a_nofun": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h2448bdd4g16f8g4bceg8f25g05355a5ff613",
+          "voice": "HAARLEP",
+          "end": true
+        },
+        "a_tut": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "h61a1a0f0ga5c8g4f5egbd53g560c077c9021",
+          "voice": "HAARLEP",
+          "children": [
+            "j_a_tut"
+          ]
+        },
+        "j_a_tut": {
+          "type": "Jump",
+          "target": "a_explore",
+          "point": 2
+        }
+      },
+      "needs_donor_timeline": true
+    },
+    {
+      "name": "RJTP_Farewell",
+      "ids": "DLG_FAREWELL",
+      "subpath": "RJTP",
+      "automated": false,
+      "timeline_id": "",
+      "block_ftb": true,
+      "slot0": "route",
+      "require_unconditional_root": true,
+      "synopsis": "Partnered finale farewell (companion in slot 0, avatar in slot 1), queued in PROC_END_GameFinale_FatesSetup as a QueuedPartneredSpeakers row, like vanilla companion finales. Osiris sets DB_RJTP_FarewellDone on DialogEnded.",
+      "how_to_trigger": "Finale Fates queue, only when DB_RJTP_UseDialogs(1) and DB_RJTP_TimelinesReady(1) hold (never in v0.2a).",
+      "roots": [
+        "r_farewell"
+      ],
+      "nodes": {
+        "r_farewell": {
+          "type": "TagGreeting",
+          "speaker": 0,
+          "line": "h067af5f5g0b5cg403cg993ag5e6c6013e3fc",
+          "children": [
+            "q_pleasure",
+            "q_goodbye"
+          ]
+        },
+        "q_pleasure": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "It's been a pleasure, Raphael.",
+          "children": [
+            "a_door"
+          ]
+        },
+        "a_door": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hc74a0919g7e92g4227g9933g71c5485eaa01",
+          "children": [
+            "a_goodbye"
+          ]
+        },
+        "a_goodbye": {
+          "type": "TagAnswer",
+          "speaker": 0,
+          "line": "hee86b83bg66f6g4bdagafb2g170a3462dc50",
+          "end": true
+        },
+        "q_goodbye": {
+          "type": "TagQuestion",
+          "speaker": 1,
+          "text": "Goodbye, devil.",
+          "children": [
+            "a_goodbye"
+          ]
+        }
+      }
+    },
+    {
+      "name": "RJTP_AD_VoiceTestRekeyed",
+      "ids": "DLG_S1A",
+      "subpath": "RJTP_Spikes",
+      "automated": true,
+      "timeline_id": "",
+      "block_ftb": false,
+      "slot0": "companion",
+      "require_unconditional_root": true,
+      "synopsis": "Voice spike S1a (re-keyed bank route): one-line AD whose slot is the companion's own GUID, exactly as the main dialogs bind in the re-keyed route. No vanilla story rule reacts to it.",
+      "how_to_trigger": "Debug spell Shout_RJTP_Debug_VoiceS1a (RJTP_Dialogs.txt).",
+      "roots": [
+        "r_line"
+      ],
+      "nodes": {
+        "r_line": {
+          "type": "TagGreeting",
+          "speaker": 0,
+          "line": "ha15db615gad06g4578g98d7gb3e1843491e1",
+          "end": true
+        }
+      }
+    },
+    {
+      "name": "RJTP_AD_VoiceTestGroup",
+      "ids": "DLG_S1B",
+      "subpath": "RJTP_Spikes",
+      "automated": true,
+      "timeline_id": "",
+      "block_ftb": false,
+      "slot0": "group",
+      "require_unconditional_root": true,
+      "synopsis": "Voice spike S1b (speaker-group override route): one-line AD whose slot is GROUP_MonitorHumanForm (OverwriteSpeakerUuid = S_GLO_Monitor). The companion must be a member (S1b build variant) or the start fails.",
+      "how_to_trigger": "Debug spell Shout_RJTP_Debug_VoiceS1b (RJTP_Dialogs.txt), S1b spike build only.",
+      "roots": [
+        "r_line"
+      ],
+      "nodes": {
+        "r_line": {
+          "type": "TagGreeting",
+          "speaker": 0,
+          "line": "ha15db615gad06g4578g98d7gb3e1843491e1",
+          "end": true
+        }
+      }
+    },
+    {
+      "name": "RJTP_AD_PrivateAfter",
+      "ids": "DLG_PRIVATE_AFTER",
+      "subpath": "RJTP",
+      "automated": true,
+      "timeline_id": "",
+      "block_ftb": false,
+      "slot0": "companion",
+      "require_unconditional_root": true,
+      "synopsis": "One overhead line after the private scene's fade back in (14.17 s: too long for any phase of the camp dialog's donor timeline, so it plays as an automated dialog).",
+      "how_to_trigger": "RJTP_Private.txt, a few seconds after the screen fades back in.",
+      "roots": [
+        "r_line"
+      ],
+      "nodes": {
+        "r_line": {
+          "type": "TagGreeting",
+          "speaker": 0,
+          "line": "h12d10205g68e5g4ebega7e2gdf9b2c557ed0",
+          "end": true
+        }
+      }
+    }
+  ]
+}

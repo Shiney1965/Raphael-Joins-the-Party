@@ -1,0 +1,8 @@
+new entry "Projectile_RJTP_IgnitingSpark"
+type "SpellData"
+data "SpellType" "Projectile"
+using "Projectile_FireBolt"
+data "SpellSuccess" "DealDamage(LevelMapValue(D10Cantrip),Fire,Magical);ApplyStatus(BURNING,100,2)"
+data "DisplayName" "hd60d072dg1f2fg45baga914g9fe2fc671a15;4"
+data "Description" "hb4d272c0g7f3ag50fagaaa8g1bea69173e66;1"
+data "TooltipStatusApply" "ApplyStatus(BURNING,100,2)"

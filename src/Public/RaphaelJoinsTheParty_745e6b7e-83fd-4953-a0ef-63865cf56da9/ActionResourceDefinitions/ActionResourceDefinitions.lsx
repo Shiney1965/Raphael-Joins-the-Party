@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="326"/>
+    <region id="ActionResourceDefinitions">
+        <node id="root">
+            <children>
+                <node id="ActionResourceDefinition">
+                    <attribute id="Description" type="TranslatedString" handle="haa2294d1g670dg5818g8afbg9526eac2dac9" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="hf1dd1d4dgf1a6g52c8g9ac4gcff791134b57" version="1"/>
+                    <attribute id="MaxLevel" type="uint32" value="0"/>
+                    <attribute id="Name" type="FixedString" value="RJTP_InfernalCharge"/>
+                    <attribute id="ReplenishType" type="FixedString" value="Rest"/>
+                    <attribute id="ShowOnActionResourcePanel" type="bool" value="true"/>
+                    <attribute id="UUID" type="guid" value="459f529a-33df-5261-8340-7f870b8aae12"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

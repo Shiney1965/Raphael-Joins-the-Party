@@ -1,0 +1,63 @@
+[size=6][b]Raphael Joins the Party[/b][/size]
+
+[size=4]Made a deal with Raphael and kept your side of it? Then on your way out of the House of Hope he may decide to protect his investment in person. Invite him into your party, and he travels with you for the rest of Act 3: suit, devil form, infernal fire, sarcasm and all.[/size]
+
+[size=5][b]Features[/b][/size]
+[list]
+[*][size=4][b]Recruit Raphael at the House of Hope[/b] when you try to leave through the exit portal. This needs: you made the deal, your contract is not destroyed or stolen, Raphael is alive, and the base game's own confrontation at the portal has not already happened.[/size]
+[*][size=4][b]Your choices matter.[/b] Took something from the Archive? He wants it back first. Freed Hope? He still offers, and Hope stays free in her House. Refused him? He will not let you walk away: fight him (the base game's House of Hope battle), or yield your soul.[/size]
+[*][size=4][b]He arrives as in the base game[/b], with his own infernal teleport, next to the portal.[/size]
+[*][size=4][b]A full companion.[/b] You build his class on recruitment. [b]Infernal Heritage[/b] gives him Igniting Spark (a scaling fire cantrip that sets the target Burning), Flames of Avernus (a cone of infernal fire that uses his Infernal Charge, regained on a long rest), Infernal Guise (change his look), fire resistance and Heavy Armour proficiency. He also has Devil's Sight.[/size]
+[*][size=4][b]Optional traits[/b] from his base-game stat block, each switched on in MCM (all off by default): Soul Reaper (once per short rest, a killing blow gives back his Infernal Charge), Inevitable Resolve (once per short rest, in combat, a hold, domination or similar effect ends after 1 turn), Fiendish Blessing (+2 Armour Class) and Magic Resistance (Advantage on saving throws against spells).[/size]
+[*][size=4][b]His looks:[/b] Wardrobe (his own clothes and your armour), Signature (his base-game suit; shows Raphael appearance mods), Devil form, and Fiendish Ascension (in combat only; appearance only). He can wear the Helldusk Armour.[/size]
+[*][size=4][b]He talks, in his own voice.[/b] Combat barks, party banter with Karlach, Astarion, Gale, Lae'zel and Wyll, and his own conversation when you click him: talk, send him to wait at camp, bring him back, or dismiss him for good. Every spoken line is [b]one of Raphael's original recorded lines[/b] from the game.[/size]
+[*][size=4][b]He steps aside when his story needs him.[/b] At the Astral Plane, and at the end of the game, the base game's own Raphael scenes play unchanged. Destroy your contract while he travels with you, and he leaves for good.[/size]
+[/list]
+
+[size=5][b]Why the recruitment scene is written, not voiced[/b][/size]
+[size=4]The House of Hope offer appears as on-screen text, with your character's replies written out. That is a deliberate choice.[/size]
+
+[size=4]In a real game conversation, Raphael can only say lines his actor recorded for Baldur's Gate 3. A new recruitment scene needs new lines, and the only ways to make them sound like Raphael are an imitation or an AI clone of the actor's voice.[/size]
+[list]
+[*][size=4]Larian's CEO, Swen Vincke, has said the studio does not use generative AI to create the art, voices or writing in its games ([url=https://www.pcgamer.com/games/rpg/baldurs-gate-3-developer-larian-defends-itself-as-fans-react-to-generative-ai-use-im-not-entirely-sure-we-are-the-ideal-target-for-the-level-of-scorn/]PC Gamer, 16 December 2025[/url]).[/size]
+[*][size=4]Baldur's Gate 3's actors, including the narrator Amelia Tyler, have objected publicly to AI clones of their voices used without consent ([url=https://sg.news.yahoo.com/baldurs-gate-3-actors-tear-191952145.html]report[/url]).[/size]
+[*][size=4]Nexus Mods asks modders to avoid AI tools without explicit permission, which it says is "particularly true for AI-generated voice acting" ([url=https://www.nexusmods.com/news/14850]AI-Generated Content in Modding[/url]).[/size]
+[/list]
+[size=4]So this mod never clones or imitates a voice. Raphael's spoken lines are his real recordings, re-used. Where new words were needed, they appear as text.[/size]
+
+[size=5][b]Requirements[/b][/size]
+[list]
+[*][size=4]Baldur's Gate 3, Patch 8 or later.[/size]
+[*][size=4]Optional: [url=https://github.com/Norbyte/bg3se]BG3 Script Extender[/url] and [url=https://www.nexusmods.com/baldursgate3/mods/9162]Mod Configuration Menu[/url]. They add the settings menu: "Recruit anytime" mode, the optional traits, the banter switch, look hotkeys, other mods' Raphael forms and the "Prepare to uninstall" button. Without them the mod runs in Story mode, with banter on and the traits off.[/size]
+[/list]
+
+[size=5][b]Installation[/b][/size]
+[size=4]Copy RaphaelJoinsTheParty.pak into your Mods folder and activate it with BG3 Mod Manager (or the in-game mod manager). If you use MCM, keep MCM above this mod. It can be added to a game in progress. Full steps are in INSTALL.md in the download.[/size]
+
+[size=5][b]Uninstalling[/b][/size]
+[list]
+[*][size=4][b]With MCM:[/b] in a loaded save, outside combat, the host opens MCM → Raphael Joins the Party → Recruitment → [b]Prepare to uninstall[/b]. His own clothes are removed, and items you gave him go to one of your characters. Then save, quit and remove the mod.[/size]
+[*][size=4][b]Without MCM:[/b] click him, dismiss him for good, then save, quit and remove the mod. If he never joined you, remove the mod only while you are outside the House of Hope.[/size]
+[/list]
+
+[size=5][b]Compatibility[/b][/size]
+[list]
+[*][size=4]The offer uses the base game's House of Hope exit portal and Raphael's own arrival. Mods that replace that portal or his ambush have not been tested with it.[/size]
+[*][size=4]Raphael appearance mods show in his Signature look.[/size]
+[*][size=4]Multiplayer: the offer goes to the player who uses the portal, and the host runs the settings. Not tested in multiplayer yet, so reports are welcome.[/size]
+[/list]
+
+[size=5][b]Known limitations[/b][/size]
+[list]
+[*][size=4]The offer uses the game's message boxes, so the buttons say Yes and No. Your character's reply for each is written in the box.[/size]
+[*][size=4]The base game's cinematic camera for Raphael's arrival is not used.[/size]
+[/list]
+
+[size=5][b]Source code[/b][/size]
+[size=4][b][url=https://github.com/Shiney1965/Raphael-Joins-the-Party]github.com/Shiney1965/Raphael-Joins-the-Party[/url][/b] (MIT License)[/size]
+
+[size=5][b]Credits[/b][/size]
+[size=4]Larian Studios, and Andrew Wincott for Raphael's performance: every Raphael voice line here is his original recording. Norbyte (Script Extender, LSLib), AtilioA and contributors (MCM), LaughingLeader (BG3 Mod Manager), ShinyHobo (Multitool). Studied for technique, with no files copied: [url=https://www.nexusmods.com/baldursgate3/mods/12257]Alfira Joins The Party[/url], [url=https://www.nexusmods.com/baldursgate3/mods/24675]Mizora Joins the Party[/url] and [url=https://www.nexusmods.com/baldursgate3/mods/23665]Aylin and Isobel Join the Party[/url] (the last two by WorldWalker42).[/size]
+
+[size=5][b]AI disclosure[/b][/size]
+[size=4]The scripts, data and documentation were written with the help of an AI coding assistant (Claude, by Anthropic), under the author's direction and testing. No AI-generated voice, image, model or texture is used.[/size]

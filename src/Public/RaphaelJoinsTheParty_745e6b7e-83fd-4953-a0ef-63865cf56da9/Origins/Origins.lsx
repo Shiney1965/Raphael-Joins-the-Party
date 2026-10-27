@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+  <version major="4" minor="0" revision="9" build="328" />
+  <region id="Origins">
+    <node id="root">
+      <children>
+        <node id="Origin">
+          <attribute id="AppearanceLocked" type="bool" value="true" />
+          <attribute id="AvailableInCharacterCreation" type="uint8" value="2" />
+          <attribute id="BackgroundUUID" type="guid" value="76925f0b-3ec8-4f42-86a9-cd4f745af2ac" />
+          <attribute id="BodyShape" type="uint8" value="0" />
+          <attribute id="BodyType" type="uint8" value="0" />
+          <attribute id="ClassUUID" type="guid" value="b4225a4b-4bbe-4d97-9e3c-4719dbd1487c" />
+          <attribute id="DisplayName" type="TranslatedString" handle="h1ea7aa50g70c6g4ce4g85b2geedd37622b36" version="1" />
+          <attribute id="GlobalTemplate" type="guid" value="95a854c9-17cc-4774-83f0-ce6bf93924e2" />
+          <attribute id="Identity" type="uint8" value="1" />
+          <attribute id="LockClass" type="bool" value="false" />
+          <attribute id="LockRace" type="bool" value="true" />
+          <attribute id="Name" type="FixedString" value="RJTP_Raphael" />
+          <attribute id="Passives" type="LSString" value="DeathSavingThrows" />
+          <attribute id="RaceUUID" type="guid" value="0eb594cb-8820-4be6-a58d-8be7a1a98fba" />
+          <attribute id="SubClassUUID" type="guid" value="e1e4a21f-9405-46ec-81a0-ccc8d58d9736" />
+          <attribute id="UUID" type="guid" value="b9875bc8-4d6e-4814-b143-f10bdda50ae8" />
+          <attribute id="Unique" type="bool" value="true" />
+          <attribute id="VoiceTableUUID" type="guid" value="6cde9ec8-4777-4ca4-924e-9d24365ce26f" />
+          <children>
+            <node id="ReallyTags">
+              <attribute id="Object" type="guid" value="e6a8b93b-fb2a-4109-816f-dcb3fe82bb1c" />
+            </node>
+          </children>
+        </node>
+      </children>
+    </node>
+  </region>
+</save>

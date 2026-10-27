@@ -1,0 +1,4 @@
+new entry "RJTP_Raphael"
+type "Character"
+using "POC_Player_Warlock"
+data "Passives" "ShortResting;NonLethal;WeaponThrow;Perform;AttackOfOpportunity;DarknessRules;CombatStartAttack;DevilsSight;RJTP_Raphael_Infernal"

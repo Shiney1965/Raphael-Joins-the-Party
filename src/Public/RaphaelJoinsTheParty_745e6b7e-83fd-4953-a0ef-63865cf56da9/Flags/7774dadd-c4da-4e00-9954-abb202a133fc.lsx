@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="8" revision="0" build="500" />
+	<region id="Flags">
+		<node id="Flags">
+			<attribute id="UUID" type="guid" value="7774dadd-c4da-4e00-9954-abb202a133fc" />
+			<attribute id="Name" type="FixedString" value="RJTP_Offer_Theft" />
+			<attribute id="Description" type="LSString" value="RJTP offer dialog state: theft with an item to return." />
+			<attribute id="Usage" type="uint8" value="4" />
+		</node>
+	</region>
+</save>

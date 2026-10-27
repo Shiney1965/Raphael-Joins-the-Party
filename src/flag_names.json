@@ -1,0 +1,17 @@
+{
+ "88b83b89-9749-4690-b1a4-2ee2b7b3f46c": "RJTP_ORI_Raphael_State_IsInParty",
+ "fbcfdb3c-0db4-4816-91d9-b755df1459e4": "RJTP_GLO_Origin_PartOfTheTeam_Raphael",
+ "53694949-9b09-44be-b62e-1d58f0d627f7": "RJTP_GLO_Origin_Avatar_Raphael",
+ "c8dc6a27-3041-4b8c-93af-d2582fc9fe5f": "RJTP_ORI_Raphael_ControlledByUser",
+ "ff15e9aa-a2b6-4222-bbaf-33239ac65958": "RJTP_ORI_Raphael_Event_KickCompanion",
+ "d70e104c-08b8-4f5a-b94c-635c28671bb9": "RJTP_ORI_Raphael_State_CanBeKicked",
+ "fa950c89-4e07-44c5-a372-7ee56003fb20": "RJTP_RAPHAEL",
+ "8d64f09c-c5f3-4600-b889-655a04d7fd45": "RJTP_RAPHAELAVATAR",
+ "0af56629-9715-467d-b3e6-e475c27b39fa": "RJTP_RAPHAELCOMPANION",
+ "67624cf5-019a-4f03-9881-4a019b598157": "RJTP_RAPHAELPARTY",
+ "0ce21ad3-669a-4661-a0c7-a96870cc4ebe": "RJTP_RAPHAELCAMP",
+ "65cedcf6-adfc-4795-bf3e-47895ba122f3": "RJTP_CAMP_Jergal_State_CanResurrectRaphael",
+ "01d9fa07-b73a-42cf-a58f-1a10434602ac": "RJTP_CAMP_Jergal_State_WillResurrectRaphael",
+ "224f23f5-2b27-427d-a115-45e92dd7136f": "RJTP_ORI_Inclusion_Raphael",
+ "62b2826e-033e-4cec-977e-fbcdbc7d3487": "RJTP_ORI_Inclusion_End_Raphael"
+}

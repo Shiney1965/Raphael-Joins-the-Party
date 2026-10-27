@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<contentList>
+  <content contentuid="h477782c5g5a5ag5ba2gbeacgbe4ef8c6a0ac" version="1">Raphael</content>
+  <content contentuid="hffae62ffga64fg5674g891cg852aff75f17f" version="1">Infernal Heritage</content>
+  <content contentuid="hb1dff53bge9a1g5ff2gbb3bg5bcd4af5a025" version="1">Raphael keeps a sliver of his true nature: Igniting Spark, Flames of Avernus, Infernal Guise, Resistance to Fire damage and proficiency with Heavy Armour. Flames of Avernus uses an Infernal Charge, regained on a Long Rest.</content>
+  <content contentuid="hf1dd1d4dgf1a6g52c8g9ac4gcff791134b57" version="1">Infernal Charge</content>
+  <content contentuid="haa2294d1g670dg5818g8afbg9526eac2dac9" version="1">Fuels Raphael's Flames of Avernus. Regained on a Long Rest, or by Soul Reaper.</content>
+  <content contentuid="h34342377g5f97g5295ga371g006964d6dff7" version="1">Soul Reaper</content>
+  <content contentuid="hd7261e19g5ffag51edgaf87g19f190d5fac3" version="1">Once per Short Rest, when Raphael lands the killing blow on an enemy, he severs its soul and regains his Infernal Charge for Flames of Avernus.</content>
+  <content contentuid="hecbe5fb7g0001g5dbag8fe0g2bbffca105be" version="1">Inevitable Resolve</content>
+  <content contentuid="h0df35b79g013ag5b6aga9e7g17e039dde153" version="1">Once per Short Rest, in combat: when Raphael is Held, Dominated, Incapacitated, Restrained, Turned, Planar Bound or forced to dance, the effect ends after 1 turn.</content>
+  <content contentuid="h530b7282g0a80g5b7egb123g3b74a315c09e" version="1">Fiendish Blessing</content>
+  <content contentuid="h317c78ddg9ebfg56a3gade4g6cad19797011" version="1">Raphael's infernal nature grants him +2 Armour Class.</content>
+  <content contentuid="hb4d272c0g7f3ag50fagaaa8g1bea69173e66" version="1">Launch a mote of infernal flame at a target. On a hit it deals Fire damage that grows with your level, and sets the target Burning.</content>
+  <content contentuid="h657fe82eg3012g54b5ga3c6gb012e6f2a483" version="1">Loose a searing wave of infernal fire from your palms. Uses an Infernal Charge (regained on a Long Rest).</content>
+  <content contentuid="haf1ac8bfgb20bg56bega286g6d5dd2b3620c" version="1">RJTP TEST: Recruit Raphael here</content>
+  <content contentuid="h0bcb7c46g5cd8g59d5g949egd6495b93d809" version="1">RJTP TEST: Summon Raphael here (10 s)</content>
+  <content contentuid="h2064c32bgbe70g52d5ga73eg77706165d6bb" version="1">RJTP TEST: Show mod state</content>
+  <content contentuid="RJTP_Msg_Offer" version="1">Raphael steps out of the shadows beside the portal.&lt;br&gt;&lt;br&gt;"Leaving so soon? You walked my halls, you gazed upon our contract, and you left it whole. How refreshingly... honest.&lt;br&gt;&lt;br&gt;The road to the Crown runs through dangerous country. Perhaps I should see our investment protected personally."&lt;br&gt;&lt;br&gt;&lt;b&gt;Yes:&lt;/b&gt; "OK Raphael, if you are so nervous about it, why don't you join us, so long as you help and don't just make snarky jokes."&lt;br&gt;&lt;br&gt;&lt;b&gt;No:&lt;/b&gt; "Raphael, I think I would feel safer with you looking over us from Avernus. But I look forward to seeing you again."</content>
+  <content contentuid="RJTP_Msg_TheftDemand" version="1">Raphael steps out of the smoke, holding up a hand to still his servants.&lt;br&gt;&lt;br&gt;"You have something that belongs to my Archive. Return it, and this unpleasantness is forgotten. Keep it... and our contract permits me a great many things."&lt;br&gt;&lt;br&gt;&lt;b&gt;Yes:&lt;/b&gt; "Well, Raphael, since you asked so nicely, here you go."&lt;br&gt;&lt;br&gt;&lt;b&gt;No:&lt;/b&gt; "Raphael, I have had enough of your bossing. You stole the item, and now I stole it from you. Seems fair to me."</content>
+  <content contentuid="RJTP_Msg_ConfirmRefuse" version="1">"Think very carefully."&lt;br&gt;&lt;br&gt;&lt;b&gt;Yes:&lt;/b&gt; "I have thought about it. It stays with me."&lt;br&gt;&lt;br&gt;&lt;b&gt;No:&lt;/b&gt; "Fine, fine. Take your trinket back, before you sulk."&lt;br&gt;&lt;br&gt;(Keeping it means Raphael will not let you leave: you will have to fight him, or yield your soul.)</content>
+  <content contentuid="RJTP_Msg_ItemGone" version="1">Raphael's smile does not reach his eyes.&lt;br&gt;&lt;br&gt;"Gone? Then there is nothing left to return but what the contract promises me."</content>
+  <content contentuid="RJTP_Msg_OfferAfterReturn" version="1">The treasure returns to its place.&lt;br&gt;&lt;br&gt;"There. Was that so hard? Consider the matter closed.&lt;br&gt;Now - the road to the Crown is long, and you are clearly in need of supervision."&lt;br&gt;&lt;br&gt;&lt;b&gt;Yes:&lt;/b&gt; "I don't need your supervision, Raphael, but if you are willing to help and not just make snarky jokes, then by all means join us."&lt;br&gt;&lt;br&gt;&lt;b&gt;No:&lt;/b&gt; "The last thing I need is supervision by a sarcastic devil. I think we are better off using our own best judgment."</content>
+  <content contentuid="RJTP_Msg_OfferNothingToReturn" version="1">"You rummaged where you should not have, but nothing of mine left the room. I shall be generous.&lt;br&gt;The road to the Crown is long, and you are clearly in need of supervision."&lt;br&gt;&lt;br&gt;&lt;b&gt;Yes:&lt;/b&gt; "Generous? From you? Fine, Raphael, join us, but help, and keep the snarky jokes to a minimum."&lt;br&gt;&lt;br&gt;&lt;b&gt;No:&lt;/b&gt; "Thank you for your generosity, Raphael, but we will manage just fine without supervision from a sarcastic devil."</content>
+  <content contentuid="RJTP_Msg_Declined" version="1">"As you wish. Our contract stands. Do try not to die before you deliver."&lt;br&gt;Raphael vanishes.</content>
+  <content contentuid="RJTP_Msg_DeclinedAfterReturn" version="1">"As you wish. The debt is settled - this time."&lt;br&gt;Raphael vanishes.</content>
+  <content contentuid="RJTP_Msg_Joined" version="1">Raphael has joined your party.</content>
+  <content contentuid="RJTP_Msg_PartyFull" version="1">Your party is full. Raphael will wait for you in camp.</content>
+  <content contentuid="RJTP_Msg_InCombat" version="1">Finish the fight before you leave the House of Hope.</content>
+  <content contentuid="RJTP_Msg_Betrayal" version="1">Raphael's form flickers with hellfire.&lt;br&gt;&lt;br&gt;"You break faith with ME? Then our association is at an end."&lt;br&gt;Raphael has left the party.</content>
+  <content contentuid="RJTP_Msg_Dismissed" version="1">Raphael has left your company for good.</content>
+  <content contentuid="RJTP_Msg_Farewell" version="1">Raphael adjusts his cuffs.&lt;br&gt;&lt;br&gt;"Our business together is nearly concluded. I shall await my prize where it will be delivered. Do not keep me waiting."&lt;br&gt;Raphael has left the party.</content>
+  <content contentuid="RJTP_Msg_AstralWithdraw" version="1">Raphael watches the Astral Plane with open hunger.&lt;br&gt;&lt;br&gt;"This is where I leave you. I have business to attend to before the end."&lt;br&gt;Raphael has left the party for good. His belongings were handed to you.</content>
+  <content contentuid="RJTP_Msg_ConfirmDecline" version="1">"Are you quite certain? Offers from me are... rarely repeated. And no one refuses me and simply walks out of my House."&lt;br&gt;&lt;br&gt;&lt;b&gt;Yes:&lt;/b&gt; "Well, on second thought, only because you are such a handsome devil, OK."&lt;br&gt;&lt;br&gt;&lt;b&gt;No:&lt;/b&gt; "Well, on second thought... the answer is still No. I don't feel that you would be a good fit for our team."&lt;br&gt;&lt;br&gt;(If you still refuse, he will not let you leave in peace.)</content>
+  <content contentuid="RJTP_Msg_OfferHope" version="1">Raphael steps out beside the portal, and the air still smells of Hope's broken chains.&lt;br&gt;&lt;br&gt;"You set my little prisoner free. Our contract gives me every right to your soul for that, here and now. And yet... one soul is such a small thing beside a crown. Let her keep her freedom, and her House. You shall have me instead."&lt;br&gt;&lt;br&gt;&lt;b&gt;Yes:&lt;/b&gt; "Hope keeps her freedom and her House, and you keep your snarky jokes to yourself. Then we have a deal. Join us."&lt;br&gt;&lt;br&gt;&lt;b&gt;No:&lt;/b&gt; "Hope is free, and so are we. We will manage without you, Raphael."&lt;br&gt;&lt;br&gt;(Hope stays behind in the House.)</content>
+  <content contentuid="RJTP_Msg_Reckoning" version="1">Raphael's smile thins into something far older.&lt;br&gt;&lt;br&gt;"Then we come to the part of our contract you only skimmed."&lt;br&gt;&lt;br&gt;&lt;b&gt;Yes:&lt;/b&gt; "Then let's skip the fine print. Come and take it, devil." (The battle for the House of Hope begins.)&lt;br&gt;&lt;br&gt;&lt;b&gt;No:&lt;/b&gt; "...Fine. Take what you are owed." (Yield your soul; you will be asked to confirm.)</content>
+  <content contentuid="RJTP_Msg_ConfirmYield" version="1">"Wise. It hurts so much less this way."&lt;br&gt;&lt;br&gt;&lt;b&gt;Yes:&lt;/b&gt; "Get it over with." (This ends the game.)&lt;br&gt;&lt;br&gt;&lt;b&gt;No:&lt;/b&gt; "Not yet. Let me choose again." (Back to the choice.)</content>
+  <content contentuid="RJTP_Msg_BadAnswer" version="1">Raphael Joins the Party: the game returned an unreadable answer to that box, so nothing was done. Repeat what you were doing (at the House of Hope: use the portal again).</content>
+  <content contentuid="RJTP_Msg_TestTheft_NotAtPortal" version="1">RJTP TEST: cast this in the House of Hope foyer, next to the exit portal, with the whole party in the foyer (the spell "Go to the House of Hope" puts you there).</content>
+  <content contentuid="RJTP_Msg_TestTheft_AlarmUp" version="1">RJTP TEST: the House of Hope alarm is already up in this save. Load a save from before the alarm.</content>
+  <content contentuid="RJTP_Msg_TestTheft_NoOffer" version="1">RJTP TEST: the offer is not available in this save (no deal, contract gone, Raphael already met or answered). Cast "Show mod state" to see why.</content>
+  <content contentuid="RJTP_Msg_TestTheft_NoItem" version="1">RJTP TEST: neither Archive treasure (gauntlets, amulet) is left to take in this save.</content>
+  <content contentuid="RJTP_Msg_TestTheft_Go" version="1">RJTP TEST: theft staged. An Archive treasure is in your inventory and the house alarm is up. Use the exit portal now (the debtors gather in the hall, not here).</content>
+  <content contentuid="RJTP_Msg_TestHoH_Level" version="1">RJTP TEST: go to the Lower City first (fast-travel anywhere in it), then cast this again.</content>
+  <content contentuid="RJTP_Msg_TestHoH_Recruited" version="1">RJTP TEST: in this save Raphael has already joined, left or been answered, or his offer is open right now (answer it first), so the House of Hope offer cannot be made. Otherwise load a save from before he joined.</content>
+  <content contentuid="RJTP_Msg_TestHoH_Story" version="1">RJTP TEST: in this save Raphael is dead or has already appeared in the House of Hope, or the contract is gone. The offer cannot be made here.</content>
+  <content contentuid="RJTP_Msg_TestHoH_VisitedNoDeal" version="1">RJTP TEST: this save has already been to the House of Hope without the deal, so the house is set up for that run. Use a save from before the first visit.</content>
+  <content contentuid="RJTP_Msg_TestHoH_Alarm" version="1">RJTP TEST: the House of Hope alarm is already up for a reason other than theft or freeing Hope, so the base game plays out. Use another save.</content>
+  <content contentuid="RJTP_Msg_TestHoH_Busy" version="1">RJTP TEST: finish the fight or conversation first.</content>
+  <content contentuid="RJTP_Msg_TestHoH_Go" version="1">RJTP TEST: taking the party into the House of Hope. Once there, gather the whole party at the exit portal and use it.</content>
+  <content contentuid="RJTP_Msg_TestHoH_GoDeal" version="1">RJTP TEST: the deal with Raphael was set for testing (the Orphic Hammer is in your inventory).&lt;br&gt;&lt;br&gt;Taking the party into the House of Hope. Once there, gather the whole party at the exit portal and use it.</content>
+  <content contentuid="RJTP_Msg_TestHoH_ConfirmDeal" version="1">RJTP TEST: this save has no deal with Raphael. The test sets the deal (as the base game's own debug shortcut does) and gives you the Orphic Hammer. &lt;b&gt;This permanently alters this save's story&lt;/b&gt; - use a throwaway save.&lt;br&gt;&lt;br&gt;&lt;b&gt;Set the deal and go to the House of Hope?&lt;/b&gt;</content>
+  <content contentuid="RJTP_Msg_DebugState" version="1">RJTP test build loaded. Debug spells are in your spellbook.</content>
+  <content contentuid="RJTP_Msg_Dismissed_Gear" version="1">His belongings were handed to you.</content>
+  <content contentuid="RJTP_Msg_Uninstalled" version="1">Raphael Joins the Party: companion forms cleared and Raphael withdrawn. You can now save and remove the mod.</content>
+  <content contentuid="hf90611b6g1bacg5821g9144gab0f3f404951" version="1">Raphael</content>
+  <content contentuid="hda6d7e96gb495g5f3eg8feegeef77dce2cb7" version="1">Infernal Guise</content>
+  <content contentuid="hdd01e893g464ag56f1g8301g9d24ce457c0d" version="1">Change Raphael's appearance. His abilities, statistics and equipment stay exactly as they are.</content>
+  <content contentuid="h06055901gb8a9g5d93g918ag5216dd78cc95" version="1">Wardrobe</content>
+  <content contentuid="h0d451ec2g8b47g532cgac09gdc3e3c6d3b33" version="1">Raphael appears as he is dressed: in his own suit, or in whatever armour and clothing you give him.</content>
+  <content contentuid="hfc8659d5g2446g50adg9833g4754ff574c1c" version="1">Signature Look</content>
+  <content contentuid="hc0626040g3ef1g5e1ag89begee1095792e5f" version="1">Raphael takes on his signature appearance, immaculate suit and all. His equipment still works but is not shown.</content>
+  <content contentuid="h89a0fe6bg7f80g561bg9947g3f941edabfba" version="1">Devil Form</content>
+  <content contentuid="h9a227d9ag8d09g5e77gac36g916cbfb9e5f1" version="1">Raphael reveals his true infernal form. His equipment still works but is not shown.</content>
+  <content contentuid="hbceb4cddgce73g5916gb923g1167633664c0" version="1">Fiendish Ascension</content>
+  <content contentuid="h8fbe6d8cg843eg53d7g8a68g46b6f76eeb22" version="1">Only in combat. Raphael becomes the Ascended Fiend until the fight ends. This form never appears in dialogues or cutscenes. Appearance only: his abilities do not change.</content>
+  <content contentuid="hef7eebc3gb032g5a17gb191g2b5e0b74a45f" version="1">Fiendish Ascension (Towering Devil)</content>
+  <content contentuid="h55aefae8g620eg5de1g80b1g2ae7631fbcec" version="1">Only in combat. Raphael's devil form at twice its size, until the fight ends. Appearance only.</content>
+  <content contentuid="h60ea1affgac35g557agb47eg0863c5bd41de" version="1">Wardrobe Look</content>
+  <content contentuid="hd4c9b3f7g38d1g5098g8a40gbdcdf173fa0c" version="1">Raphael appears as he is dressed.</content>
+  <content contentuid="h82220aa6g74e6g5272g85d8g872c3bc7ea24" version="1">Signature Look</content>
+  <content contentuid="he17af1a0g49e6g54ceg8455g561f58f3a27e" version="1">Raphael wears his signature appearance. Equipment is not shown.</content>
+  <content contentuid="he41428e2g94beg5759g8286g40dad5432e27" version="1">Devil Form</content>
+  <content contentuid="hae3f4f33g73dbg5d2eg93a5g043b5d164fd4" version="1">Raphael shows his true infernal form. Equipment is not shown.</content>
+  <content contentuid="h53ff9b2eg3f48g588fgb577g6bc0192b2f78" version="1">Ascended Fiend</content>
+  <content contentuid="h33d5b5d9gbcedg5e81gb745g9ca8f73946d2" version="1">Raphael towers as the Ascended Fiend. Ends when combat ends.</content>
+  <content contentuid="h39bc5c30gfad6g53f8g8ac4ge7aa7fa5ff6e" version="1">Ascended Fiend (Towering Devil)</content>
+  <content contentuid="hecf0c443g5f62g5670g8859g690ba086b7c3" version="1">Raphael towers in devil form. Ends when combat ends.</content>
+  <content contentuid="h3feb4860gc3ecg5b0bg98bbgaa0d2cf47efd" version="1">Raphael's Suit</content>
+  <content contentuid="h842ad06bg55beg5704ga29cg65ea44859bcb" version="1">An impeccably tailored doublet and trousers. It offers no protection beyond excellent taste.</content>
+  <content contentuid="h1d1f3ed0g7f35g5a5eg9230gee85ff7773a8" version="1">Raphael's Shoes</content>
+  <content contentuid="h48dafcc0geb58g59c7gaa0dgfd3002b95a0a" version="1">Polished leather, never scuffed, whatever the road.</content>
+  <content contentuid="h5353e574g95f3g537cgb8f7ga805362df5ed" version="1">Raphael's Suit (Camp Clothes)</content>
+  <content contentuid="hef5d1989gebeag5de4gb876gdd51f0f1e2a4" version="1">The same immaculate suit, worn at camp and on special occasions.</content>
+  <content contentuid="h2c03e44bgae13g562cgbd06gbbc15073231d" version="1">Raphael's Shoes (Camp Clothes)</content>
+  <content contentuid="h1ecb8928gb0eeg5e38ga102g480f2f77d33c" version="1">The same polished shoes, worn at camp.</content>
+  <content contentuid="h3728f1e8gc71fg5e19gb210gc767dd31438e" version="1">RJTP TEST: Run the House of Hope alarm cure</content>
+  <content contentuid="hacd40866g93f0g5045ga6c0g4c828c32edf5" version="1">RJTP TEST: Show v0.2 state (cure, form, version)</content>
+  <content contentuid="hbaf4cd1eg2e1dg5c20g9146gbbd82cd4820b" version="1">RJTP TEST: Toggle Raphael's camp clothes</content>
+  <content contentuid="h793a7b95g1d78g55f7g995cgacb43f5bed51" version="1">RJTP TEST: Uninstall step (clear forms, withdraw Raphael)</content>
+  <content contentuid="h81eabdadg9021g5b0dgb92cge7822735e712" version="1">RJTP TEST: Toggle Raphael's own dialogs (spike D0, no timelines yet)</content>
+  <content contentuid="h377a36f0g0f82g5887ga5dfgdac7f2e55b7d" version="1">RJTP TEST: Voice test S1a (his own dialog slot)</content>
+  <content contentuid="h8facd047g82abg5f26gbfe4g6d89a7da7dbf" version="1">RJTP TEST: Voice test S1b (speaker-group route; S1b build only)</content>
+  <content contentuid="h387d6a6dgfadcg5b68g8863gd6461cc440ec" version="1">RJTP TEST: Next bark (his solo lines, one per cast)</content>
+  <content contentuid="h97de1b09gc1bcg5eadga051g4883de7a578a" version="1">RJTP TEST: Next banter (Raphael and a companion in your party)</content>
+  <content contentuid="hb0bfead9g9babg5f0cgba26g0421feedcddb" version="1">RJTP TEST: Natural banter on/off (only after the banter test works)</content>
+  <content contentuid="h5bccfeafg3cc8g5284g90afg7f753a5c0864" version="1">RJTP TEST: Start his camp conversation (timeline experiment)</content>
+  <content contentuid="h24c3ef99g36bbg5633gaa5dg3ef999f51ac9" version="1">RJTP TEST: Go to the House of Hope (sets up the offer)</content>
+  <content contentuid="h1f2bade4g268bg577ag881ag6557f8968d80" version="1">RJTP TEST: Stage an Archive theft (cast at the House of Hope exit portal)</content>
+  <content contentuid="h73a263d8gc8e4g5dfcgb090g4329ba189ad6" version="1">Return what you took from my Archive.</content>
+  <content contentuid="heb6f1c8bg4c66g5c5cgb890g0647d5b99ae1" version="1">Let me travel at your side until the Crown is within reach. Consider it an investment in our partnership.</content>
+  <content contentuid="hb7772297ga888g51efg81a2gfecba024f373" version="1">Very well. Join us.</content>
+  <content contentuid="hb6104969gb63fg5c25g8ed2g4481421b67b0" version="1">No. We'll manage without you.</content>
+  <content contentuid="hbe15cfe5gba86g5a8fgb29bg1ea1badf2d27" version="1">&lt;i&gt;Leave.&lt;/i&gt;</content>
+  <content contentuid="hc78e0077g7fdeg5228g919bg44e53a9bb0ba" version="1">[Return the stolen items] Fine. Take them back.</content>
+  <content contentuid="hb5f73b8eg443cg51d5g9177g364e3ccebf10" version="1">No. You'll get nothing back from me.</content>
+  <content contentuid="h53ea67a9gbb7dg51f2gb1d1g6b6662167417" version="1">&lt;i&gt;Leave.&lt;/i&gt;</content>
+  <content contentuid="h6487c094g708bg59b1gb13ag89a9375d0514" version="1">I'm sure. The answer is no.</content>
+  <content contentuid="h33cfa1bcg25ecg5a40gb0b0g0bf225388b26" version="1">On second thought - join us.</content>
+  <content contentuid="hb2ad9ac1ge84bg5791gb00dg2063807e49fa" version="1">&lt;i&gt;Leave.&lt;/i&gt;</content>
+  <content contentuid="h438080bdgd232g5db7ga939gd65ac529e8b3" version="1">There. All is forgiven - this once.</content>
+  <content contentuid="h9e018daegb53ag5b50gbafdg0fa0223436c8" version="1">[Refuse] So be it. I'm keeping them.</content>
+  <content contentuid="h79058dafg9e34g5bccga2e5gc9aa765228bd" version="1">Wait - take them back.</content>
+  <content contentuid="hd2ba42cfg7db1g5c4eg9d36g6b7a5c766bee" version="1">Let's talk.</content>
+  <content contentuid="h985e3266g91e4g55a7gba9dg9e4b5a6e71ec" version="1">You've been watching me all evening.</content>
+  <content contentuid="hbeb61f84ga02bg5b2cgbd6cg5846fee1a9b2" version="1">Join me.</content>
+  <content contentuid="hcd91b9a4gffe4g5537g9a77g792517e01b14" version="1">Join me.</content>
+  <content contentuid="h9f4dbf3cgef21g5146ga302gad001473789d" version="1">Wait for me at camp.</content>
+  <content contentuid="h00419e0ag3287g55d8g8ec9g36b8957a8553" version="1">I want you gone. For good.</content>
+  <content contentuid="h02316e49g8c1dg5d58gb82cg8cba49fc4d54" version="1">&lt;i&gt;Leave.&lt;/i&gt;</content>
+  <content contentuid="h4637e676g7b83g5d81gb943g8f94e43c121b" version="1">Why are you really here, devil?</content>
+  <content contentuid="hf2d9bdf3g8b20g5b6cg956cgf1b6bcf77e80" version="1">You want something from me. More than you've said.</content>
+  <content contentuid="h8b48f8b5g1dcbg51d3ga60dge4c162c67ba3" version="1">Keep your claws where I can see them and we'll get along.</content>
+  <content contentuid="hb9f5b732g22bag575ag8873g5309012137bb" version="1">Talk straight or don't talk, hellspawn.</content>
+  <content contentuid="hbcdc9233gfa85g58e4g86d2g245b0e1c89bf" version="1">Admit it. I've handled all this rather deftly.</content>
+  <content contentuid="hcdc5f23dg052fg5b08gb0b4gb6db2c8d74a6" version="1">You never warn me about what's ahead.</content>
+  <content contentuid="h5b1b0adag7597g511cg828bg1b705ff310d3" version="1">What do I owe you for your help?</content>
+  <content contentuid="hd84d73bbg885dg55fdgafa3g8fa951f502f4" version="1">I don't like where this is going. But I'll see it through.</content>
+  <content contentuid="h8ad715c7gda66g57b3ga3c8geb500ba86ad6" version="1">Why do you keep me so close, really?</content>
+  <content contentuid="h80cf359fgd626g5a92g9824g54b812f5204f" version="1">Something else.</content>
+  <content contentuid="hc3d2e422gdf4ag58c4gb459g9951bd5aa19b" version="1">I'll leave you to it.</content>
+  <content contentuid="h39351bcag6aa1g5183gbeaag9a731c7888c7" version="1">In what ways are you charmed, exactly?</content>
+  <content contentuid="hce46b7cbg38b5g5838ga685g58fc11a27724" version="1">Not tonight, devil.</content>
+  <content contentuid="h4112306ag9290g5369ga403g78fa1e394bfb" version="1">Yes. Leave, and don't come back.</content>
+  <content contentuid="h9aea2ae3g8612g5bbega67bg99bd45a206fc" version="1">No. Stay.</content>
+  <content contentuid="h67343539g3682g55fbg90b0g6d4bb9bf84e2" version="1">Then name it.</content>
+  <content contentuid="hcadb1491g16c8g57deg95efg8ba95781f091" version="1">Careful, devil. I might take you up on that.</content>
+  <content contentuid="h7d53c9eag71a5g51dag935dge86372cfa1a6" version="1">You'd find me harder to charm than most.</content>
+  <content contentuid="h729afc57g06e7g517dgbfdbg7b989872a8f9" version="1">And if I told you I was the one doing the charming?</content>
+  <content contentuid="hec18f04bga502g5e41gbf6dg2b6519f7abf1" version="1">Our association is ended. Don't expect me to come when you call.</content>
+  <content contentuid="h3b92b17egac45g56c6g9014gb3e454d1a269" version="1">Here? With the whole camp listening?</content>
+  <content contentuid="h140e29d0ge504g5290g8d2fg455270979a48" version="1">Lead the way.</content>
+  <content contentuid="hcb4f0fd7g5d61g5763g97d1gd40087366537" version="1">It's been a pleasure, Raphael.</content>
+  <content contentuid="haaefc5dag069dg5de0g8e7egffe54d1c213c" version="1">Goodbye, devil.</content>
+</contentList>

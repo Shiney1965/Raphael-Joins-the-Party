@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pkl
+_vanilla_ref/
+_vanilla_story/
+research/
+build/
+dist/
+src/Mods/*/Localization/English/Soundbanks/
+src/Public/*/Timeline/Generated/

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="8" revision="0" build="500" />
+	<region id="Flags">
+		<node id="Flags">
+			<attribute id="UUID" type="guid" value="62b2826e-033e-4cec-977e-fbcdbc7d3487" />
+			<attribute id="Name" type="FixedString" value="RJTP_ORI_Inclusion_End_Raphael" />
+			<attribute id="Description" type="LSString" value="Inclusion end flag for Raphael (RJTP)." />
+			<attribute id="Usage" type="uint8" value="4" />
+		</node>
+	</region>
+</save>

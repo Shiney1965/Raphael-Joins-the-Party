@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="0" revision="9" build="0" lslib_meta="v1,bswap_guids,lsf_adjacency" />
+	<region id="TimelineBank">
+		<node id="TimelineBank">
+			<children>
+				<node id="Resource">
+					<attribute id="BodyPartMocap" type="int32" value="1" />
+					<attribute id="DialogResourceId" type="guid" value="b8de429b-ac5c-46e5-af00-822da8d57f97" />
+					<attribute id="EditorSourceFile" type="LSString" value="Editor/Mods/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Timeline/Generated/RJTP_CAMP_Raphael.tml" />
+					<attribute id="EditorTimelineType" type="int32" value="0" />
+					<attribute id="FadeOutDuration" type="float" value="0" />
+					<attribute id="FadeOutOnEnd" type="bool" value="False" />
+					<attribute id="ID" type="FixedString" value="b115cd9c-5cbf-40df-94eb-2b28d88176a2" />
+					<attribute id="IsGenerated" type="bool" value="True" />
+					<attribute id="Name" type="LSString" value="RJTP_CAMP_Raphael" />
+					<attribute id="SourceFile" type="LSString" value="Public/RaphaelJoinsTheParty_745e6b7e-83fd-4953-a0ef-63865cf56da9/Timeline/Generated/RJTP_CAMP_Raphael.lsf" />
+					<attribute id="_OriginalFileVersion_" type="int64" value="144537400540922156" />
+					<children>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="b8de429b-ac5c-46e5-af00-822da8d57f97" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="95a854c9-17cc-4774-83f0-ce6bf93924e2" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="e2badbf0-159a-4ef5-9e73-7bbeb3d1015a" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="ad9af97d-75da-406a-ae13-7071c563f604" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="f9238f68-72e2-4b66-80f2-02a7d16b1bbb" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="19dc6cab-aa38-4f09-b9cf-546e1c0ecb8a" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="0e8f89b2-3efe-4271-be81-2e110a51f774" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="2ed5d13f-a709-45b1-b3d8-6ff941b709be" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="3278f064-5353-4c08-ab96-c2f432d0fda0" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="e55c9798-c75a-4667-9539-cc0686183489" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="091907a7-a7e1-4b1a-9eba-3017e373375f" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="31ddf82b-27a1-4f50-9f1e-32cf2f0c99dd" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="fbd6e753-7536-41d5-9a76-a5d9edb02e07" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="afc2d91c-691f-4bbb-9a0d-b87f4cceb97e" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="ac13c998-bf8e-4e49-b876-d79af9732336" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="03096a07-bd78-4601-b601-ac62be8f8237" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="a1996ef7-6ecf-44d1-a796-a28d40fafd3c" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="2f790c4e-06aa-455d-9de8-0b6797e882b2" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="07fb6657-ec28-4849-b511-b874ead45497" />
+						</node>
+						<node id="DependencyCache">
+							<attribute id="Object" type="guid" value="3c7e3f62-6067-4862-b009-291cde85a020" />
+						</node>
+					</children>
+				</node>
+			</children>
+		</node>
+	</region>
+</save>

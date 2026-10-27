@@ -1,0 +1,438 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+// Raphael Joins the Party (RJTP) - v0.2 TEST BUILD (v0.2 logic lives in RJTP_Cure_v02 and RJTP_Forms)
+// Companion Raphael is a separate global character (S_RJTP_Raphael). Vanilla Raphael (S_GLO_Monitor) is never edited.
+
+DB_RJTP_Companion((CHARACTER)S_RJTP_Raphael_95a854c9-17cc-4774-83f0-ce6bf93924e2);
+
+// Camp spots: borrowed from the Oathbreaker Knight (only present on oathbreaker-paladin runs)
+DB_RJTP_CampData("FARM",(TRIGGER)S_CAMP_FARM_Oathbreaker_a13c4691-9f9e-406b-88b6-2957273c907c);
+DB_RJTP_CampData("SLUMS",(TRIGGER)S_CAMP_SLUMS_Oathbreaker_13826dad-fd78-42e3-98b4-f049056688e8);
+DB_RJTP_CampData("ELFSONG",(TRIGGER)S_CAMP_ELFSONG_Oathbreaker_11f4722e-d002-45bd-9f04-d7a0a18cdde7);
+// Acts 1 and 2 (recruit-anytime mode, 2026-10-03): the same vanilla Oathbreaker camp spots
+DB_RJTP_CampData("WLDMAIN",(TRIGGER)S_CAMP_WLDMAIN_Oathbreaker_f401f1b7-cb09-4e95-b21d-e425865dd263);
+DB_RJTP_CampData("WLDCAVGRN",(TRIGGER)S_CAMP_WLDCAVGRN_Oathbreaker_fce87636-d5e1-4a6d-9454-ed8590729412);
+DB_RJTP_CampData("WLDCAVSND",(TRIGGER)S_CAMP_WLDCAVSND_Oathbreaker_0a3c55db-39ae-412d-8f7b-54298ac36f8b);
+DB_RJTP_CampData("WLDDUNABB",(TRIGGER)S_CAMP_WLDDUNABB_Oathbreaker_6f01e06d-d48b-4f5a-a997-8d7b2962c612);
+DB_RJTP_CampData("WLDBAS",(TRIGGER)S_CAMP_WLDBAS_Oathbreaker_40fe55e5-d4bd-4e8c-bed8-24acc115a231);
+DB_RJTP_CampData("WLDDUNSHA",(TRIGGER)S_CAMP_WLDDUNSHA_Oathbreaker_7cffb828-8cce-4485-8e1e-f2fb252e9562);
+DB_RJTP_CampData("WLDUND",(TRIGGER)S_CAMP_WLDUND_Oathbreaker_0dcd2fc5-e442-4ef5-8076-cf47d737d9ef);
+DB_RJTP_CampData("CREMAIN",(TRIGGER)S_CAMP_CRE_Oathbreaker_6090af73-a83a-42ca-a8be-427610c19178);
+DB_RJTP_CampData("CREINSIDE",(TRIGGER)S_CAMP_CREIN_Oathbreaker_75119780-fad3-497c-bb3a-25f30e40f7fa);
+DB_RJTP_CampData("SCLMAIN",(TRIGGER)S_CAMP_SCLMAIN_Oathbreaker_2086906f-43bf-4124-96ff-bb39d23192d5);
+DB_RJTP_CampData("SHARTEMPLE",(TRIGGER)S_CAMP_SHARTEMPLE_Oathbreaker_b6b499b3-8a1e-4f74-80da-22850082db9b);
+DB_RJTP_CampData("HAVEN",(TRIGGER)S_CAMP_HAVEN_Oathbreaker_908825f1-995e-4bdd-88f9-3b54bd27fe13);
+DB_RJTP_CampData("MOONRISE",(TRIGGER)S_CAMP_MOONRISE_Oathbreaker_2bfa8e97-5e34-4ee7-96ef-ab1a92bcc251);
+DB_RJTP_CampData("INTMAIN",(TRIGGER)S_CAMP_INT_Oathbreaker_5bff936b-b445-4214-a0ce-6c76a14f0d0c);
+
+// House of Hope Archive treasures: item, pressure plate, return position (research 06 section 3.1)
+DB_RJTP_HoHTreasure((ITEM)S_LOW_HouseOfHope_Treasures_Gauntlets_HillGiantStrength_1cb8450d-016f-43d4-bb44-79688170f073,S_LOW_HouseOfHope_PressurePlate_Treasure01_1e1c7ec3-1c83-424d-aaac-6a37bb807745,-6548.8,8.0,2939.8);
+DB_RJTP_HoHTreasure((ITEM)S_LOW_HouseOfHope_Treasures_Amulet_50c4fc37-881c-4ced-9940-7f3757943475,S_LOW_HouseOfHope_PressurePlate_Treasure05_32f458fd-2342-428c-8a82-1dfb8c3f8dc8,-6548.7,7.9,2900.9);
+
+// Crimes seen by the Archivist that count as "theft" (the author: pickpocket and vandalism do not)
+DB_RJTP_TheftCrime("Steal");
+DB_RJTP_TheftCrime("MoveForbiddenItem");
+DB_RJTP_TheftCrime("UseForbiddenItem");
+DB_RJTP_TheftCrime("SneakUseForbiddenItem");
+
+// Release 1.0.0: the test harness is off. DB_RJTP_TestBuild(0) keeps the DB written (its readers stay in place);
+// saves made with test builds lose the (1) fact and every test spell on load (rules below).
+DB_RJTP_TestBuild(0);
+DB_RJTP_DebugSpell("Shout_RJTP_Debug_Summon");
+DB_RJTP_DebugSpell("Shout_RJTP_Debug_Status");
+KBSECTION
+//REGION Message layer (review 08 S1: resolve the loca key first, as WW_AIJP does; fall back to the raw key)
+PROC
+PROC_RJTP_Box((CHARACTER)_Player, (STRING)_Key, (INTEGER)_YesNo)
+AND
+ResolveTranslatedString(_Key, _Text)
+AND
+_Text != ""
+AND
+DB_RJTP_BoxText(_Key, _Old)
+AND
+_Old != _Text
+THEN
+NOT DB_RJTP_BoxText(_Key, _Old);
+
+PROC
+PROC_RJTP_Box((CHARACTER)_Player, (STRING)_Key, (INTEGER)_YesNo)
+AND
+ResolveTranslatedString(_Key, _Text)
+AND
+_Text != ""
+AND
+NOT DB_RJTP_BoxText(_Key, _Text)
+THEN
+DB_RJTP_BoxText(_Key, _Text);
+
+PROC
+PROC_RJTP_Box((CHARACTER)_Player, (STRING)_Key, (INTEGER)_YesNo)
+AND
+NOT DB_RJTP_BoxText(_Key, _)
+THEN
+DB_RJTP_BoxText(_Key, _Key);
+
+PROC
+PROC_RJTP_Box((CHARACTER)_Player, (STRING)_Key, 1)
+AND
+DB_RJTP_Step(_OldStep)
+THEN
+NOT DB_RJTP_Step(_OldStep);
+
+// v0.3e CRASH FIX (2026-10-15, Osiris log of the author's crash): a Yes/No box opened with the RESOLVED text (346 bytes)
+// came back as MessageBoxYesNoClosed(_, text, 1936485473) - the answer was text bytes 92-95 ("alls" of "halls"),
+// and the game crashed at once. The engine overruns a fixed buffer with a long message. Vanilla only ever passes a
+// short loca KEY to OpenMessageBoxYesNo and matches the answer on that key (Act1_PLA_TavernInvestigation_Surroundings
+// .txt:626, :655), so Yes/No boxes now do exactly that. Plain boxes (no answer value) keep the resolved text.
+PROC
+PROC_RJTP_Box((CHARACTER)_Player, (STRING)_Key, 1)
+THEN
+DB_RJTP_Step(_Key);
+OpenMessageBoxYesNo(_Player, _Key);
+
+PROC
+PROC_RJTP_Box((CHARACTER)_Player, "RJTP_Msg_ItemGone", 0)
+AND
+DB_RJTP_Step(_OldStep)
+THEN
+NOT DB_RJTP_Step(_OldStep);
+
+PROC
+PROC_RJTP_Box((CHARACTER)_Player, "RJTP_Msg_ItemGone", 0)
+THEN
+DB_RJTP_Step("RJTP_Msg_ItemGone");
+
+// v0.3e (crash-fix review SF1): plain boxes pass the key too, exactly as vanilla does (Act3b_LOW_HouseOfHope2.txt:3643
+// OpenMessageBox(_Player, "LOW_HouseOfHope_GatherParty")); the text comes from Localization/RJTP_MessageKeys
+PROC
+PROC_RJTP_Box((CHARACTER)_Player, (STRING)_Key, 0)
+THEN
+OpenMessageBox(_Player, _Key);
+
+IF
+MessageBoxYesNoClosed(_Player, _Key, _Result)
+AND
+DB_RJTP_Step(_Key)
+AND
+_Key != "RJTP_Msg_ItemGone"
+AND
+_Result >= 0
+AND
+_Result <= 1
+THEN
+NOT DB_RJTP_Step(_Key);
+PROC_RJTP_BoxAnswered(_Player, _Key, _Result);
+
+// Never act on an unreadable answer (the v0.3d crash delivered 1936485473): record it, close the step, cancel any
+// open offer (the next portal use offers again) and say so
+IF
+MessageBoxYesNoClosed(_Player, _Key, _Result)
+AND
+DB_RJTP_Step(_Key)
+AND
+_Key != "RJTP_Msg_ItemGone"
+AND
+_Result > 1
+THEN
+NOT DB_RJTP_Step(_Key);
+DB_RJTP_BadBoxResult(_Key, _Result);
+PROC_RJTP_BadAnswer(_Player);
+
+IF
+MessageBoxYesNoClosed(_Player, _Key, _Result)
+AND
+DB_RJTP_Step(_Key)
+AND
+_Key != "RJTP_Msg_ItemGone"
+AND
+_Result < 0
+THEN
+NOT DB_RJTP_Step(_Key);
+DB_RJTP_BadBoxResult(_Key, _Result);
+PROC_RJTP_BadAnswer(_Player);
+
+// Only the plain OK box (ItemGone) is answered by a plain close; a Yes/No box never is (review 10 SF-A)
+IF
+MessageBoxClosed(_Player, "RJTP_Msg_ItemGone")
+AND
+DB_RJTP_Step("RJTP_Msg_ItemGone")
+THEN
+NOT DB_RJTP_Step("RJTP_Msg_ItemGone");
+PROC_RJTP_BoxClosed(_Player, "RJTP_Msg_ItemGone");
+
+// An unreadable answer: close an open offer (only then; review MINOR 3), and say so
+PROC
+PROC_RJTP_BadAnswer((CHARACTER)_Player)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+PROC_RJTP_CancelOffer();
+
+PROC
+PROC_RJTP_BadAnswer((CHARACTER)_Player)
+THEN
+PROC_RJTP_Box(_Player, "RJTP_Msg_BadAnswer", 0);
+
+// Catch-all definitions so every key has a handler
+PROC
+PROC_RJTP_BoxAnswered((CHARACTER)_Player, (STRING)_Key, (INTEGER)_Result)
+THEN
+DB_NOOP(1);
+
+PROC
+PROC_RJTP_BoxClosed((CHARACTER)_Player, (STRING)_Key)
+THEN
+DB_NOOP(1);
+
+PROC
+PROC_RJTP_TellAvatars((STRING)_Key)
+AND
+DB_Avatars(_Avatar)
+THEN
+PROC_RJTP_Box(_Avatar, _Key, 0);
+//END_REGION
+
+//REGION Initialisation (new game and existing saves)
+IF
+SavegameLoaded()
+AND
+NOT DB_RJTP_Initialized(1)
+THEN
+DB_RJTP_Initialized(1);
+PROC_RJTP_Init();
+
+PROC
+PROC_Shared_CharacterCreationFinished()
+AND
+NOT DB_RJTP_Initialized(1)
+THEN
+DB_RJTP_Initialized(1);
+PROC_RJTP_Init();
+
+PROC
+PROC_RJTP_Init()
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+SetOnStage(_Comp, 0);
+
+// v0.2: new game or first install. Never in an INIT section, so v0.1 saves still migrate (review 17 N2).
+PROC
+PROC_RJTP_Init()
+THEN
+DB_RJTP_ModVersion(2);
+DB_RJTP_Form("Wardrobe");
+
+// Added to a save made after the House of Hope alarm: the cause is unknown, so play vanilla
+PROC
+PROC_RJTP_Init()
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+NOT DB_RJTP_AlarmCause(_)
+THEN
+DB_RJTP_AlarmCause("Unknown");
+
+// Keep the companion off-stage on every load unless he is recruited or an offer is on screen
+IF
+SavegameLoaded()
+AND
+DB_RJTP_Companion(_Comp)
+AND
+NOT DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_OfferInProgress(1)
+THEN
+SetOnStage(_Comp, 0);
+
+// v0.1.1: re-apply the hireling voice tag on every load (reaches saves recruited with v0.1)
+IF
+SavegameLoaded()
+AND
+DB_RJTP_OriginRegistered(1)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+SetTag(_Comp, (TAG)GENERIC_VOICE_5_MALE_75cbe7ab-c39e-498e-a08d-b3c9ba05038e);
+
+// A message box does not survive a reload: re-open the pending offer once gameplay has started (review 08 B1(i))
+IF
+SavegameLoaded()
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+DB_RJTP_ReopenPending(1);
+
+IF
+LevelGameplayStarted(_, _)
+AND
+DB_RJTP_ReopenPending(1)
+AND
+DB_RJTP_OfferPlayer(_Player)
+THEN
+NOT DB_RJTP_ReopenPending(1);
+PROC_RJTP_ReopenOffer(_Player);
+//END_REGION
+
+//REGION Test harness (v0.1 only)
+// Release 1.0.0 (plan review B1): no test spell is ever granted. Saves made with test builds: the test-build fact
+// goes, and every test spell is taken off every avatar, on every load (unconditional; RemoveSpell of a spell the
+// character does not have is harmless).
+IF
+SavegameLoaded()
+AND
+DB_RJTP_TestBuild(1)
+THEN
+NOT DB_RJTP_TestBuild(1);
+
+IF
+SavegameLoaded()
+AND
+DB_Avatars(_Avatar)
+AND
+DB_RJTP_DebugSpell(_Spell)
+THEN
+RemoveSpell(_Avatar, _Spell, 0);
+
+// The "Recruit Raphael here" test spell is gone (the author, 2026-10-03: story mode = the House of Hope offer only;
+// recruit-anytime mode = the MCM button, PROC_RJTP_RecruitAnytime in RJTP_Companion). Saves made with older paks
+// still hold the DB row and the spell on the avatars: remove both. The spell's stat entry is kept on purpose.
+IF
+SavegameLoaded()
+AND
+DB_RJTP_DebugSpell("Shout_RJTP_Debug_Recruit")
+THEN
+NOT DB_RJTP_DebugSpell("Shout_RJTP_Debug_Recruit");
+
+IF
+SavegameLoaded()
+AND
+DB_Avatars(_Avatar)
+THEN
+RemoveSpell(_Avatar, "Shout_RJTP_Debug_Recruit", 0);
+
+// Spike S0: does the new global character exist in this save? (the S1 voice test needs a v0.2 dialog, review 08 S9)
+IF
+CastedSpell(_Caster, "Shout_RJTP_Debug_Summon", _, _, _)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+NOT DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_OfferInProgress(1)
+THEN
+SetOnStage(_Comp, 1);
+TeleportTo(_Comp, _Caster, "", 0, 0, 0, 0, 1);
+ObjectTimerLaunch(_Comp, "RJTP_SummonTestEnd", 10000, 0);
+
+IF
+ObjectTimerFinished(_Comp, "RJTP_SummonTestEnd")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+NOT DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_OfferInProgress(1)
+THEN
+SetOnStage(_Comp, 0);
+
+// One message box with the whole state (review 08 M7)
+IF
+CastedSpell(_Caster, "Shout_RJTP_Debug_Status", _, _, _)
+THEN
+PROC_RJTP_DebugReport((CHARACTER)_Caster);
+
+PROC
+PROC_RJTP_DebugReport((CHARACTER)_Caster)
+THEN
+DB_RJTP_Dbg("offer=NO");
+DB_RJTP_Dbg2(" | cause=none");
+DB_RJTP_Dbg3(" | hold=none");
+DB_RJTP_Dbg4(" | step=none");
+
+PROC
+PROC_RJTP_DebugReport((CHARACTER)_Caster)
+AND
+QRY_RJTP_OfferAllowed()
+THEN
+NOT DB_RJTP_Dbg("offer=NO");
+DB_RJTP_Dbg("offer=YES");
+
+PROC
+PROC_RJTP_DebugReport((CHARACTER)_Caster)
+AND
+DB_RJTP_Step(_Step)
+AND
+Concatenate(" | step=", _Step, _StepStr)
+THEN
+NOT DB_RJTP_Dbg4(" | step=none");
+DB_RJTP_Dbg4(_StepStr);
+
+// An offer that is open when this is cast is reported and cancelled, so a stuck portal is always recoverable
+PROC
+PROC_RJTP_DebugReport((CHARACTER)_Caster)
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+DB_RJTP_Dbg(_Old)
+THEN
+NOT DB_RJTP_Dbg(_Old);
+DB_RJTP_Dbg("offer=OPEN, now CANCELLED (use the portal again to re-offer)");
+PROC_RJTP_CancelOffer();
+
+PROC
+PROC_RJTP_DebugReport((CHARACTER)_Caster)
+AND
+DB_RJTP_AlarmCause(_Cause)
+AND
+Concatenate(" | cause=", _Cause, _Str)
+THEN
+NOT DB_RJTP_Dbg2(" | cause=none");
+DB_RJTP_Dbg2(_Str);
+
+PROC
+PROC_RJTP_DebugReport((CHARACTER)_Caster)
+AND
+DB_RJTP_HoldingVanillaAmbush(1)
+THEN
+NOT DB_RJTP_Dbg3(" | hold=none");
+DB_RJTP_Dbg3(" | hold=temporary");
+
+PROC
+PROC_RJTP_DebugReport((CHARACTER)_Caster)
+AND
+DB_RJTP_PermanentHold(1)
+THEN
+NOT DB_RJTP_Dbg3(" | hold=none");
+DB_RJTP_Dbg3(" | hold=permanent");
+
+PROC
+PROC_RJTP_DebugReport((CHARACTER)_Caster)
+AND
+DB_RJTP_Dbg(_A)
+AND
+DB_RJTP_Dbg2(_B)
+AND
+DB_RJTP_Dbg3(_C)
+AND
+DB_RJTP_Dbg4(_D)
+AND
+Concatenate("RJTP v0.1 state: ", _A, _S1)
+AND
+Concatenate(_S1, _B, _S2)
+AND
+Concatenate(_S2, _C, _S3)
+AND
+Concatenate(_S3, _D, _S4)
+THEN
+OpenMessageBox(_Caster, _S4);
+NOT DB_RJTP_Dbg(_A);
+NOT DB_RJTP_Dbg2(_B);
+NOT DB_RJTP_Dbg3(_C);
+NOT DB_RJTP_Dbg4(_D);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION

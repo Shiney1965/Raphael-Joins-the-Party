@@ -1,0 +1,1326 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+// Raphael Joins the Party - v0.2 appearance forms, suit items, camp hold, uninstall (plan v0.2 sections 4, 8, 9).
+// State is Osiris-owned: DB_RJTP_Form(_Form) = the player's chosen look out of combat; DB_RJTP_Ascended(1) only
+// while the combat form is on. No keeper passives, no _ON toggles, no in-proc guard DB (review 17 (a): status
+// events arrive after the calling proc finishes).
+
+// Form -> status. Wardrobe has no row (no status) except in legacy saves (the migration adds it).
+DB_RJTP_FormStatus("Signature", "RJTP_FORM_SUIT");
+DB_RJTP_FormStatus("Devil", "RJTP_FORM_DEVIL");
+DB_RJTP_AscendStatus("RJTP_FORM_ASCENDED");
+DB_RJTP_AscendStatus("RJTP_FORM_ASCENDED_X2");
+
+// Player-choice spells (pure triggers; empty SpellProperties) -> form
+DB_RJTP_FormSpell("Shout_RJTP_Form_Wardrobe", "Wardrobe");
+DB_RJTP_FormSpell("Shout_RJTP_Form_Signature", "Signature");
+DB_RJTP_FormSpell("Shout_RJTP_Form_Devil", "Devil");
+DB_RJTP_AscendSpell("Shout_RJTP_Form_Ascended", "RJTP_FORM_ASCENDED");
+DB_RJTP_AscendSpell("Shout_RJTP_Form_AscendedX2", "RJTP_FORM_ASCENDED_X2");
+
+// Suit items: template, slot class. "Breast" is left unequipped when he starts in the Helldusk (plan section 12 (b)).
+DB_RJTP_SuitTemplate((ITEMROOT)RJTP_ARM_RaphaelSuit_7308eb8d-cde0-401e-b2c8-610c98ee8fff, "Breast");
+DB_RJTP_SuitTemplate((ITEMROOT)RJTP_ARM_RaphaelShoes_12ee06a5-e67d-48db-a115-41177786b107, "Boots");
+DB_RJTP_SuitTemplate((ITEMROOT)RJTP_ARM_RaphaelSuit_Camp_20e04ab2-ff25-40fa-88a3-7bd08673ed68, "Camp");
+DB_RJTP_SuitTemplate((ITEMROOT)RJTP_ARM_RaphaelShoes_Camp_cf0a8a16-35d5-4b1b-acc8-f049b624e9f8, "Camp");
+// Underwear (the author, 2026-10-04: "let's give him both incubus sets you can default to A"): the two BASE-GAME Incubus
+// underwear items (SharedDev root templates; both have Human Male visuals). A is equipped, B waits in his inventory
+// ("UnderwearSpare" = created, never equipped by the mod). They replace the third-party Kas' Lingerie set of
+// 2026-10-03, whose fishnet tights the author did not want. Only the migration below still names that template.
+DB_RJTP_SuitTemplate((ITEMROOT)Underwear_Incubus_5fa043bf-0445-49ad-9e82-0df77c639fe2, "Underwear");
+DB_RJTP_SuitTemplate((ITEMROOT)Underwear_Incubus_B_82c84433-0464-442a-8e5a-0891d829f99a, "UnderwearSpare");
+
+// Osiris treats a database that is read but never written as a compile error ('orphan'; vanilla exempts its own in
+// Story/story_orphanqueries_ignore.txt). v0.2a failed to load in game because of exactly this (2026-09-26). These
+// placeholder facts make the DBs written; the rules only ever test the value 1 / "Crowned", so they change nothing.
+DB_RJTP_StartInHelldusk(0);
+DB_RJTP_CompatAlive("None");
+KBSECTION
+//REGION Player choice: PROC_RJTP_SetForm (spell, MCM, hotkey). Plan section 4.1; reviews 17 N1/N4/m2, 18 F1-F3.
+IF
+CastedSpell(_Caster, _Spell, _, _, _)
+AND
+DB_RJTP_Companion((CHARACTER)_Caster)
+AND
+DB_RJTP_FormSpell(_Spell, _Form)
+THEN
+PROC_RJTP_SetForm((CHARACTER)_Caster, _Form);
+
+// 0. A player's choice clears the loop-breaker latch (review 18 F3)
+PROC
+PROC_RJTP_SetForm((CHARACTER)_Comp, (STRING)_Form)
+AND
+DB_RJTP_ReassertStopped(1)
+THEN
+NOT DB_RJTP_ReassertStopped(1);
+
+// 1. Same form already recorded and shown: no-op (review 17 N1)
+PROC
+PROC_RJTP_SetForm((CHARACTER)_Comp, (STRING)_Form)
+AND
+DB_RJTP_Form(_Form)
+AND
+DB_RJTP_FormStatus(_Form, _Status)
+AND
+HasActiveStatus(_Comp, _Status, 1)
+THEN
+DB_RJTP_SetFormNoop(1);
+
+PROC
+PROC_RJTP_SetForm((CHARACTER)_Comp, "Wardrobe")
+AND
+DB_RJTP_Form("Wardrobe")
+AND
+NOT DB_RJTP_FormStatus("Wardrobe", _)
+AND
+NOT DB_RJTP_ModdedForm(_)
+THEN
+DB_RJTP_SetFormNoop(1);
+
+// 2. While Ascended or held for camp: only record; applied when that ends (review 17 m2, review 18 F1)
+PROC
+PROC_RJTP_SetForm((CHARACTER)_Comp, (STRING)_Form)
+AND
+NOT DB_RJTP_SetFormNoop(1)
+AND
+DB_RJTP_Ascended(1)
+THEN
+DB_RJTP_SetFormDeferred(1);
+
+PROC
+PROC_RJTP_SetForm((CHARACTER)_Comp, (STRING)_Form)
+AND
+NOT DB_RJTP_SetFormNoop(1)
+AND
+DB_RJTP_CampHold(1)
+THEN
+DB_RJTP_SetFormDeferred(1);
+
+// 3. Record
+PROC
+PROC_RJTP_SetForm((CHARACTER)_Comp, (STRING)_Form)
+AND
+NOT DB_RJTP_SetFormNoop(1)
+AND
+DB_RJTP_Form(_Old)
+THEN
+NOT DB_RJTP_Form(_Old);
+
+PROC
+PROC_RJTP_SetForm((CHARACTER)_Comp, (STRING)_Form)
+AND
+NOT DB_RJTP_SetFormNoop(1)
+THEN
+DB_RJTP_Form(_Form);
+
+// 4. Remove only the OTHER form statuses (their deferred StatusRemoved is ignored: not the recorded status)
+PROC
+PROC_RJTP_SetForm((CHARACTER)_Comp, (STRING)_Form)
+AND
+NOT DB_RJTP_SetFormNoop(1)
+AND
+NOT DB_RJTP_SetFormDeferred(1)
+AND
+DB_RJTP_FormStatus(_Other, _Status)
+AND
+_Other != _Form
+AND
+HasActiveStatus(_Comp, _Status, 1)
+THEN
+RemoveStatus(_Comp, _Status);
+
+// 5. Leaving a modded form: RemoveTransforms only then, and apply the new status after it lands (review 17 N4).
+//    Runs even when the apply is deferred, or the Transform would outlive the choice (SE-layer finding 1).
+PROC
+PROC_RJTP_SetForm((CHARACTER)_Comp, (STRING)_Form)
+AND
+NOT DB_RJTP_SetFormNoop(1)
+AND
+DB_RJTP_ModdedForm(_Template)
+THEN
+NOT DB_RJTP_ModdedForm(_Template);
+RemoveTransforms(_Comp);
+DB_RJTP_ApplyAfterModded(1);
+RealtimeObjectTimerLaunch(_Comp, "RJTP_ApplyAfterModded", 300);
+
+// 6. Apply the target's status if missing
+PROC
+PROC_RJTP_SetForm((CHARACTER)_Comp, (STRING)_Form)
+AND
+NOT DB_RJTP_SetFormNoop(1)
+AND
+NOT DB_RJTP_SetFormDeferred(1)
+AND
+NOT DB_RJTP_ApplyAfterModded(1)
+AND
+DB_RJTP_FormStatus(_Form, _Status)
+AND
+HasActiveStatus(_Comp, _Status, 0)
+THEN
+ApplyStatus(_Comp, _Status, -1.0, 1, _Comp);
+
+// 7. Clean up the per-call markers
+PROC
+PROC_RJTP_SetForm((CHARACTER)_Comp, (STRING)_Form)
+AND
+DB_RJTP_SetFormNoop(1)
+THEN
+NOT DB_RJTP_SetFormNoop(1);
+
+PROC
+PROC_RJTP_SetForm((CHARACTER)_Comp, (STRING)_Form)
+AND
+DB_RJTP_SetFormDeferred(1)
+THEN
+NOT DB_RJTP_SetFormDeferred(1);
+
+// 8. A choice made while Ascended takes effect now (the author, 2026-10-03: "switch between the forms when the player
+//    makes the choice"). The form was only recorded above; dropping the combat form runs EndAscended (from its
+//    StatusRemoved, or directly below if the status is already gone), which shows the recorded form.
+//    Not for the modded-form path: PROC_RJTP_ApplyModdedForm still refuses while Ascended.
+PROC
+PROC_RJTP_SetForm((CHARACTER)_Comp, (STRING)_Form)
+AND
+DB_RJTP_Ascended(1)
+THEN
+PROC_RJTP_DropAscended(_Comp);
+PROC_RJTP_ClearStaleAscended(_Comp);
+
+IF
+ObjectTimerFinished(_Comp, "RJTP_ApplyAfterModded")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_ApplyAfterModded(1)
+THEN
+NOT DB_RJTP_ApplyAfterModded(1);
+PROC_RJTP_ApplyRecordedFormNow((CHARACTER)_Comp);
+
+PROC
+PROC_RJTP_ApplyRecordedFormNow((CHARACTER)_Comp)
+AND
+DB_RJTP_Form(_Form)
+AND
+DB_RJTP_FormStatus(_Form, _Status)
+AND
+HasActiveStatus(_Comp, _Status, 0)
+AND
+NOT DB_RJTP_Ascended(1)
+AND
+NOT DB_RJTP_CampHold(1)
+THEN
+ApplyStatus(_Comp, _Status, -1.0, 1, _Comp);
+//END_REGION
+
+//REGION Modded form (SE/MCM only; review 18 F2). DB_RJTP_Form("Modded") has no FormStatus row: the re-assert ignores it.
+// Always two-phase (SE-layer review S1): take off whatever he shows now, then Transform 300 ms later, because
+// status removal and RemoveTransforms land after the proc (review 17 (a)).
+PROC
+PROC_RJTP_ApplyModdedForm((CHARACTER)_Comp, (GUIDSTRING)_Template)
+AND
+NOT DB_RJTP_Ascended(1)
+AND
+NOT DB_RJTP_CampHold(1)
+AND
+DB_RJTP_Form(_Old)
+THEN
+NOT DB_RJTP_Form(_Old);
+
+PROC
+PROC_RJTP_ApplyModdedForm((CHARACTER)_Comp, (GUIDSTRING)_Template)
+AND
+NOT DB_RJTP_Ascended(1)
+AND
+NOT DB_RJTP_CampHold(1)
+AND
+DB_RJTP_ModdedForm(_OldT)
+THEN
+NOT DB_RJTP_ModdedForm(_OldT);
+RemoveTransforms(_Comp);
+
+PROC
+PROC_RJTP_ApplyModdedForm((CHARACTER)_Comp, (GUIDSTRING)_Template)
+AND
+NOT DB_RJTP_Ascended(1)
+AND
+NOT DB_RJTP_CampHold(1)
+AND
+DB_RJTP_FormStatus(_, _Status)
+AND
+HasActiveStatus(_Comp, _Status, 1)
+THEN
+RemoveStatus(_Comp, _Status);
+
+PROC
+PROC_RJTP_ApplyModdedForm((CHARACTER)_Comp, (GUIDSTRING)_Template)
+AND
+NOT DB_RJTP_Ascended(1)
+AND
+NOT DB_RJTP_CampHold(1)
+AND
+DB_RJTP_PendingModded(_OldP)
+THEN
+NOT DB_RJTP_PendingModded(_OldP);
+
+PROC
+PROC_RJTP_ApplyModdedForm((CHARACTER)_Comp, (GUIDSTRING)_Template)
+AND
+NOT DB_RJTP_Ascended(1)
+AND
+NOT DB_RJTP_CampHold(1)
+THEN
+DB_RJTP_Form("Modded");
+DB_RJTP_PendingModded(_Template);
+RealtimeObjectTimerLaunch(_Comp, "RJTP_ApplyPendingModded", 300);
+
+IF
+ObjectTimerFinished(_Comp, "RJTP_ApplyPendingModded")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_PendingModded(_Template)
+AND
+DB_RJTP_Form("Modded")
+THEN
+NOT DB_RJTP_PendingModded(_Template);
+DB_RJTP_ModdedForm(_Template);
+Transform(_Comp, _Template, (SHAPESHIFTRULE)RJTP_Form_Visual_fffe2a96-57a5-481e-a313-a5c9a97da997);
+
+// A player choice made inside the 300 ms window wins: the pending Transform is dropped
+IF
+ObjectTimerFinished(_Comp, "RJTP_ApplyPendingModded")
+AND
+DB_RJTP_PendingModded(_Template)
+AND
+NOT DB_RJTP_Form("Modded")
+THEN
+NOT DB_RJTP_PendingModded(_Template);
+
+// SE-layer review B1: Lua may be unable to read Osiris DBs (Osi.DB_X:Get failed in another mod), so state goes
+// through procs. PROC_RJTP_ModdedFormIs is a report hook Lua listens to (Ext.Osiris.RegisterListener).
+PROC
+PROC_RJTP_Report()
+AND
+DB_RJTP_ModdedForm(_Template)
+THEN
+PROC_RJTP_ModdedFormIs(_Template);
+
+PROC
+PROC_RJTP_Report()
+AND
+DB_RJTP_Form(_Form)
+THEN
+PROC_RJTP_FormIs(_Form);
+
+PROC
+PROC_RJTP_ModdedFormIs((GUIDSTRING)_Template)
+THEN
+DB_NOOP(1);
+
+PROC
+PROC_RJTP_FormIs((STRING)_Form)
+THEN
+DB_NOOP(1);
+
+PROC
+PROC_RJTP_SetAutoAscend(1)
+AND
+DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_AutoAscend(1)
+THEN
+DB_RJTP_AutoAscend(1);
+
+PROC
+PROC_RJTP_SetAutoAscend(0)
+AND
+DB_RJTP_AutoAscend(1)
+THEN
+NOT DB_RJTP_AutoAscend(1);
+
+// Camp night with a modded look: take it off like a form status, put it back on release
+PROC
+PROC_RJTP_RemoveAllFormStatuses((CHARACTER)_Comp)
+AND
+DB_RJTP_CampHold(1)
+AND
+DB_RJTP_ModdedForm(_Template)
+THEN
+RemoveTransforms(_Comp);
+
+PROC
+PROC_RJTP_ReleaseCampHold((CHARACTER)_Comp)
+AND
+DB_RJTP_ModdedForm(_Template)
+THEN
+Transform(_Comp, _Template, (SHAPESHIFTRULE)RJTP_Form_Visual_fffe2a96-57a5-481e-a313-a5c9a97da997);
+//END_REGION
+
+//REGION Safety nets: PROC_RJTP_ReassertForm only ever APPLIES a missing status (review 17 N1)
+PROC
+PROC_RJTP_ReassertForm((CHARACTER)_Comp)
+THEN
+RealtimeObjectTimerLaunch(_Comp, "RJTP_Reassert", 500);
+
+IF
+ObjectTimerFinished(_Comp, "RJTP_Reassert")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_Withdrawn(1)
+AND
+DB_RJTP_Form(_Form)
+AND
+DB_RJTP_FormStatus(_Form, _Status)
+AND
+HasActiveStatus(_Comp, _Status, 0)
+AND
+NOT DB_RJTP_Ascended(1)
+AND
+NOT DB_RJTP_CampHold(1)
+AND
+NOT DB_RJTP_ModdedForm(_)
+AND
+NOT DB_RJTP_ReassertStopped(1)
+AND
+IsDead(_Comp, 0)
+AND
+DB_CurrentLevel(_)
+THEN
+ApplyStatus(_Comp, _Status, -1.0, 1, _Comp);
+PROC_RJTP_CountReassert(_Comp);
+
+// Loop breaker: the 3rd re-apply inside one 10 s window latches (review 18 F3)
+PROC
+PROC_RJTP_CountReassert((CHARACTER)_Comp)
+AND
+NOT DB_RJTP_ReassertCount(_)
+THEN
+DB_RJTP_ReassertCount(0);
+RealtimeObjectTimerLaunch(_Comp, "RJTP_ReassertWindow", 10000);
+
+PROC
+PROC_RJTP_CountReassert((CHARACTER)_Comp)
+AND
+DB_RJTP_ReassertCount(_N)
+AND
+IntegerSum(_N, 1, _M)
+THEN
+NOT DB_RJTP_ReassertCount(_N);
+DB_RJTP_ReassertCount(_M);
+
+PROC
+PROC_RJTP_CountReassert((CHARACTER)_Comp)
+AND
+DB_RJTP_ReassertCount(_M)
+AND
+_M >= 3
+THEN
+DB_RJTP_ReassertStopped(1);
+
+IF
+ObjectTimerFinished(_, "RJTP_ReassertWindow")
+AND
+DB_RJTP_ReassertCount(_N)
+THEN
+NOT DB_RJTP_ReassertCount(_N);
+
+// Triggers
+IF
+StatusRemoved(_Comp, _Status, _, _)
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_Form(_Form)
+AND
+DB_RJTP_FormStatus(_Form, _Status)
+AND
+NOT DB_RJTP_Ascended(1)
+AND
+NOT DB_RJTP_CampHold(1)
+THEN
+PROC_RJTP_ReassertForm((CHARACTER)_Comp);
+
+IF
+Resurrected(_Comp)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_ReassertForm(_Comp);
+
+IF
+RespecCompleted(_Comp)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_ReassertForm(_Comp);
+
+IF
+LeveledUp(_Comp)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_ReassertForm(_Comp);
+
+IF
+SavegameLoaded()
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_RJTP_ReassertStopped(1)
+THEN
+NOT DB_RJTP_ReassertStopped(1);
+
+// Review 21 SF4: a save made inside the 300 ms window loses the timer; the re-assert below applies the form instead
+IF
+SavegameLoaded()
+AND
+DB_RJTP_ApplyAfterModded(1)
+THEN
+NOT DB_RJTP_ApplyAfterModded(1);
+
+IF
+SavegameLoaded()
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_RJTP_Recruited(1)
+THEN
+PROC_RJTP_GrantFormSpell(_Comp);
+PROC_RJTP_ReassertForm(_Comp);
+
+IF
+LevelGameplayStarted(_, _)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_RJTP_Recruited(1)
+THEN
+PROC_RJTP_ReassertForm(_Comp);
+
+// Rejoining the party keeps his look (review 16 M3)
+PROC
+PROC_GLO_PartyMembers_AddHook((CHARACTER)_Comp, (CHARACTER)_Player)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_GrantFormSpell(_Comp);
+PROC_RJTP_ReassertForm(_Comp);
+//END_REGION
+
+//REGION The combat-only Ascended Fiend (plan section 4.3; review 16 S5; review 17 (b); review 18 F7)
+// the author: "if his largest form is reserved for combat that's fine. So it would never appear in cutscenes or dialogue".
+IF
+CastedSpell(_Caster, _Spell, _, _, _)
+AND
+DB_RJTP_Companion((CHARACTER)_Caster)
+AND
+DB_RJTP_AscendSpell(_Spell, _Status)
+THEN
+PROC_RJTP_Ascend((CHARACTER)_Caster, _Status);
+
+// Already ascended and the player picks the OTHER ascended form: switch (the author, 2026-10-03). All form statuses share
+// one StackId with StackType Overwrite, so applying the new one removes the old one. Events arrive after this rule
+// ends, in either order: the marker covers "old removed first", the other-status check covers "new applied first".
+// Must stay ABOVE the fresh-ascend rule (that one sets DB_RJTP_Ascended).
+PROC
+PROC_RJTP_Ascend((CHARACTER)_Comp, (STRING)_Status)
+AND
+DB_RJTP_Ascended(1)
+AND
+DB_RJTP_AscendStatus(_Status)
+AND
+HasActiveStatus(_Comp, _Status, 0)
+AND
+IsInCombat(_Comp, 1)
+AND
+IsDead(_Comp, 0)
+AND
+NOT SpeakerGetDialog(_Comp, 0, _, _)
+AND
+NOT DB_RJTP_Downed(1)
+AND
+NOT DB_RJTP_ModdedForm(_)
+THEN
+DB_RJTP_AscendSwitching(1);
+ApplyStatus(_Comp, _Status, -1.0, 1, _Comp);
+
+PROC
+PROC_RJTP_Ascend((CHARACTER)_Comp, (STRING)_Status)
+AND
+NOT DB_RJTP_Ascended(1)
+AND
+IsInCombat(_Comp, 1)
+AND
+IsDead(_Comp, 0)
+AND
+NOT SpeakerGetDialog(_Comp, 0, _, _)
+AND
+NOT DB_RJTP_Downed(1)
+AND
+NOT DB_RJTP_ModdedForm(_)
+THEN
+DB_RJTP_Ascended(1);
+ApplyStatus(_Comp, _Status, -1.0, 1, _Comp);
+
+// Ascended ended (any cause, incl. dispel and the status's own "not Combat()"): clear and restore the chosen look
+// Not while a switch is in flight, and not while the OTHER ascended status is on him (a switch that already landed)
+IF
+StatusRemoved(_Comp, _Status, _, _)
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_AscendStatus(_Status)
+AND
+DB_RJTP_Ascended(1)
+AND
+NOT DB_RJTP_AscendSwitching(1)
+AND
+NOT QRY_RJTP_HasOtherAscendStatus((CHARACTER)_Comp, _Status)
+THEN
+PROC_RJTP_EndAscended((CHARACTER)_Comp);
+
+// An ascended status that lands while the flag is clear (a one-tick race with a drop): set the flag, so every
+// drop net (dialog, downed, combat end) still sees him as ascended (diff review 2026-10-03, M1)
+IF
+StatusApplied(_Comp, _Status, _, _)
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_AscendStatus(_Status)
+AND
+NOT DB_RJTP_Ascended(1)
+THEN
+DB_RJTP_Ascended(1);
+
+// The switch landed: the marker is done
+IF
+StatusApplied(_Comp, _Status, _, _)
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_AscendStatus(_Status)
+AND
+DB_RJTP_AscendSwitching(1)
+THEN
+NOT DB_RJTP_AscendSwitching(1);
+
+// A failed apply: clear the marker first; he stays ascended only if the other ascended status is still on him
+IF
+StatusAttemptFailed(_Comp, _Status, _, _)
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_AscendStatus(_Status)
+AND
+DB_RJTP_AscendSwitching(1)
+THEN
+NOT DB_RJTP_AscendSwitching(1);
+
+IF
+StatusAttemptFailed(_Comp, _Status, _, _)
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_AscendStatus(_Status)
+AND
+DB_RJTP_Ascended(1)
+AND
+NOT QRY_RJTP_HasOtherAscendStatus((CHARACTER)_Comp, _Status)
+THEN
+PROC_RJTP_EndAscended((CHARACTER)_Comp);
+
+QRY
+QRY_RJTP_HasOtherAscendStatus((CHARACTER)_Comp, (STRING)_Status)
+AND
+DB_RJTP_AscendStatus(_Other)
+AND
+_Other != _Status
+AND
+HasActiveStatus(_Comp, _Other, 1)
+THEN
+DB_NOOP(1);
+
+PROC
+PROC_RJTP_EndAscended((CHARACTER)_Comp)
+THEN
+NOT DB_RJTP_Ascended(1);
+NOT DB_RJTP_AscendSwitching(1);
+
+// Remove any stale non-recorded form status, then re-apply the recorded one (review 18 F7)
+PROC
+PROC_RJTP_EndAscended((CHARACTER)_Comp)
+AND
+DB_RJTP_Form(_Form)
+AND
+DB_RJTP_FormStatus(_Other, _Status)
+AND
+_Other != _Form
+AND
+HasActiveStatus(_Comp, _Status, 1)
+THEN
+RemoveStatus(_Comp, _Status);
+
+PROC
+PROC_RJTP_EndAscended((CHARACTER)_Comp)
+THEN
+PROC_RJTP_ReassertForm(_Comp);
+
+// Strip the Ascended form. Removal only; its StatusRemoved runs EndAscended. A deliberate drop cancels a switch
+// in flight, so a stuck marker can never block the end.
+PROC
+PROC_RJTP_DropAscended((CHARACTER)_Comp)
+THEN
+NOT DB_RJTP_AscendSwitching(1);
+
+PROC
+PROC_RJTP_DropAscended((CHARACTER)_Comp)
+AND
+DB_RJTP_AscendStatus(_Status)
+AND
+HasActiveStatus(_Comp, _Status, 1)
+THEN
+RemoveStatus(_Comp, _Status);
+
+// Never in dialog or cutscene: any non-automated dialog start drops it (fires for any dialog in the world;
+// accepted under the author's absolute rule). Automated dialogs (combat barks) are left out on purpose.
+IF
+DialogStarted(_, _)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_RJTP_Ascended(1)
+THEN
+PROC_RJTP_DropAscended(_Comp);
+
+IF
+DialogStartRequested(_, _)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_RJTP_Ascended(1)
+THEN
+PROC_RJTP_DropAscended(_Comp);
+
+// Automated dialogs are left out here too (v0.3a: his own barks and banters are automated dialogs he joins, and
+// DialogActorJoined fires for those as well; without this test the Ascend bark would undo the ascension).
+IF
+DialogActorJoined(_Dialog, _, _Comp, _)
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DialogIsAutomated(_Dialog, 0)
+THEN
+PROC_RJTP_DropAscended((CHARACTER)_Comp);
+
+IF
+LeftCombat(_Comp, _)
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+THEN
+PROC_RJTP_DropAscended((CHARACTER)_Comp);
+PROC_RJTP_ClearStaleAscended((CHARACTER)_Comp);
+
+IF
+CombatEnded(_)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+IsInCombat(_Comp, 0)
+THEN
+PROC_RJTP_DropAscended(_Comp);
+PROC_RJTP_ClearStaleAscended(_Comp);
+
+IF
+DownedChanged(_Comp, 1)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+DB_RJTP_Downed(1);
+PROC_RJTP_DropAscended(_Comp);
+
+IF
+DownedChanged(_Comp, 0)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_RJTP_Downed(1)
+THEN
+NOT DB_RJTP_Downed(1);
+
+IF
+Died(_Comp)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_DropAscended(_Comp);
+
+IF
+TeleportedToCamp(_Comp)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_DropAscended(_Comp);
+
+IF
+LevelUnloading(_)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_DropAscended(_Comp);
+
+IF
+LevelGameplayStarted(_, _)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+IsInCombat(_Comp, 0)
+THEN
+PROC_RJTP_DropAscended(_Comp);
+
+// A switch marker never survives a load (its events are gone)
+IF
+SavegameLoaded()
+AND
+DB_RJTP_AscendSwitching(1)
+THEN
+NOT DB_RJTP_AscendSwitching(1);
+
+// A save loaded outside combat: drop it; if the status is already gone, clear the flag directly
+IF
+SavegameLoaded()
+AND
+DB_RJTP_Companion(_Comp)
+AND
+IsInCombat(_Comp, 0)
+THEN
+PROC_RJTP_DropAscended(_Comp);
+PROC_RJTP_ClearStaleAscended(_Comp);
+
+PROC
+PROC_RJTP_ClearStaleAscended((CHARACTER)_Comp)
+AND
+DB_RJTP_Ascended(1)
+AND
+NOT QRY_RJTP_HasAscendStatus(_Comp)
+THEN
+PROC_RJTP_EndAscended(_Comp);
+
+QRY
+QRY_RJTP_HasAscendStatus((CHARACTER)_Comp)
+AND
+DB_RJTP_AscendStatus(_Status)
+AND
+HasActiveStatus(_Comp, _Status, 1)
+THEN
+DB_NOOP(1);
+
+// Optional auto-ascend (MCM checkbox writes DB_RJTP_AutoAscend): on his first turn, never on EnteredCombat
+IF
+TurnStarted(_Comp)
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_AutoAscend(1)
+AND
+DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_AutoAscendedThisCombat(1)
+THEN
+DB_RJTP_AutoAscendedThisCombat(1);
+PROC_RJTP_AutoAscend((CHARACTER)_Comp);
+
+// The once-per-combat flag is set even when he is already ascended, so auto-ascend never re-ascends him against a
+// form the player picks later in the same fight, and never switches a form the player chose (diff review 2026-10-03)
+PROC
+PROC_RJTP_AutoAscend((CHARACTER)_Comp)
+AND
+NOT DB_RJTP_Ascended(1)
+THEN
+PROC_RJTP_Ascend(_Comp, "RJTP_FORM_ASCENDED");
+
+IF
+LeftCombat(_Comp, _)
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_AutoAscendedThisCombat(1)
+THEN
+NOT DB_RJTP_AutoAscendedThisCombat(1);
+
+IF
+CombatEnded(_)
+AND
+DB_RJTP_AutoAscendedThisCombat(1)
+THEN
+NOT DB_RJTP_AutoAscendedThisCombat(1);
+//END_REGION
+
+//REGION Camp transitions (review 17 N10; review 18 F1): drop his form for camp night, restore it after
+IF
+DB_Camp_WaitingForPlayersCleaned(_)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_Players(_Comp)
+AND
+NOT DB_RJTP_CampHold(1)
+THEN
+DB_RJTP_CampHold(1);
+PROC_RJTP_DropAscended(_Comp);
+PROC_RJTP_RemoveAllFormStatuses(_Comp);
+
+IF
+LongRestFinished()
+AND
+DB_RJTP_CampHold(1)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_ReleaseCampHold(_Comp);
+
+IF
+TeleportedFromCamp(_Comp)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_RJTP_CampHold(1)
+THEN
+PROC_RJTP_ReleaseCampHold(_Comp);
+
+// Vanilla warns the camp events can be missed (GLO_Camp.txt:2363): release on the next level start
+IF
+LevelGameplayStarted(_, _)
+AND
+DB_RJTP_CampHold(1)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+NOT DB_Camp_WaitingForPlayersCleaned(_)
+AND
+NOT DB_Camp_NightMode(1)
+THEN
+PROC_RJTP_ReleaseCampHold(_Comp);
+
+PROC
+PROC_RJTP_ReleaseCampHold((CHARACTER)_Comp)
+THEN
+NOT DB_RJTP_CampHold(1);
+PROC_RJTP_ReassertForm(_Comp);
+
+PROC
+PROC_RJTP_RemoveAllFormStatuses((CHARACTER)_Comp)
+AND
+DB_RJTP_FormStatus(_, _Status)
+AND
+HasActiveStatus(_Comp, _Status, 1)
+THEN
+RemoveStatus(_Comp, _Status);
+//END_REGION
+
+//REGION The Change Form spell reaches every save (review 16 S8): passive UnlockSpell + this fallback
+PROC
+PROC_RJTP_GrantFormSpell((CHARACTER)_Comp)
+AND
+HasSpell(_Comp, "Shout_RJTP_ChangeForm", 0)
+THEN
+AddSpell(_Comp, "Shout_RJTP_ChangeForm", 0, 1);
+//END_REGION
+
+//REGION Suit items (plan section 4.2; review 17 N6): adopt, create missing, equip on arrival; never duplicate
+// First rule of Dress: retire the old (Kas' Lingerie) underwear row, on every path that dresses him (portal offer,
+// migration, recruit, load timer), so a Raphael dressed before he is recruited is covered too (diff review 2026-10-04)
+PROC
+PROC_RJTP_Dress((CHARACTER)_Comp)
+THEN
+PROC_RJTP_DropOldUnderwear(_Comp);
+
+// The underwear items are base-game items the player can also own: never adopt a copy found on him, because adopted
+// items are destroyed on withdraw (diff review 2026-10-03). A copy he already carries also stops the create rule.
+PROC
+PROC_RJTP_Dress((CHARACTER)_Comp)
+AND
+DB_RJTP_SuitTemplate(_Template, _Slot)
+AND
+_Slot != "Underwear"
+AND
+_Slot != "UnderwearSpare"
+AND
+NOT DB_RJTP_SuitItem(_Template, _)
+AND
+GetItemByTemplateInInventory(_Template, _Comp, _Item)
+THEN
+DB_RJTP_SuitItem(_Template, _Item);
+PROC_RJTP_EquipSuitItem(_Comp, _Template, _Item);
+
+PROC
+PROC_RJTP_Dress((CHARACTER)_Comp)
+AND
+DB_RJTP_SuitTemplate(_Template, _)
+AND
+NOT DB_RJTP_SuitItem(_Template, _)
+AND
+TemplateIsInInventory(_Template, _Comp, 0)
+AND
+NOT DB_RJTP_SuitCreating(_Template)
+THEN
+DB_RJTP_SuitCreating(_Template);
+TemplateAddTo(_Template, _Comp, 1, 0);
+
+// Last rule of Dress: if set A already existed, nothing was created and the equip rule never ran
+PROC
+PROC_RJTP_Dress((CHARACTER)_Comp)
+THEN
+PROC_RJTP_ForceUnderwear(_Comp);
+
+IF
+TemplateAddedTo(_Template, _Item, _Holder, _)
+AND
+DB_RJTP_Companion((CHARACTER)_Holder)
+AND
+DB_RJTP_SuitTemplate((ITEMROOT)_Template, _)
+AND
+DB_RJTP_SuitCreating((ITEMROOT)_Template)
+THEN
+NOT DB_RJTP_SuitCreating((ITEMROOT)_Template);
+DB_RJTP_SuitItem((ITEMROOT)_Template, (ITEM)_Item);
+PROC_RJTP_EquipSuitItem((CHARACTER)_Holder, (ITEMROOT)_Template, (ITEM)_Item);
+
+// A failed creation can retry: the next Dress (offer re-open, recruit, load) sees no SuitCreating after a load
+IF
+SavegameLoaded()
+AND
+DB_RJTP_SuitCreating(_Template)
+THEN
+NOT DB_RJTP_SuitCreating(_Template);
+
+// A "replace his old underwear" request never survives a load (plan review 2026-10-04)
+IF
+SavegameLoaded()
+AND
+DB_RJTP_UnderwearForce(1)
+THEN
+NOT DB_RJTP_UnderwearForce(1);
+
+// Camp clothes are always put on (his camp slots are otherwise empty)
+PROC
+PROC_RJTP_EquipSuitItem((CHARACTER)_Comp, (ITEMROOT)_Template, (ITEM)_Item)
+AND
+DB_RJTP_SuitTemplate(_Template, "Camp")
+THEN
+Equip(_Comp, _Item, 1, 0, 0);
+
+// Armour-slot pieces: not over armour the player already gave him (v0.1 save upgraded while recruited)
+PROC
+PROC_RJTP_EquipSuitItem((CHARACTER)_Comp, (ITEMROOT)_Template, (ITEM)_Item)
+AND
+DB_RJTP_SuitTemplate(_Template, "Boots")
+AND
+NOT DB_RJTP_KeepCurrentArmour(1)
+THEN
+Equip(_Comp, _Item, 1, 0, 0);
+
+PROC
+PROC_RJTP_EquipSuitItem((CHARACTER)_Comp, (ITEMROOT)_Template, (ITEM)_Item)
+AND
+DB_RJTP_SuitTemplate(_Template, "Breast")
+AND
+NOT DB_RJTP_StartInHelldusk(1)
+AND
+NOT DB_RJTP_KeepCurrentArmour(1)
+THEN
+Equip(_Comp, _Item, 1, 0, 0);
+
+// Underwear: only into an empty slot, so underwear the player chose is never replaced
+PROC
+PROC_RJTP_EquipSuitItem((CHARACTER)_Comp, (ITEMROOT)_Template, (ITEM)_Item)
+AND
+DB_RJTP_SuitTemplate(_Template, "Underwear")
+AND
+NOT DB_RJTP_KeepCurrentArmour(1)
+AND
+NOT DB_RJTP_UnderwearForce(1)
+AND
+NOT QRY_RJTP_SlotUsed(_Comp, "Underwear")
+THEN
+Equip(_Comp, _Item, 1, 0, 0);
+
+// Replacing the old (Kas' Lingerie) set that he was wearing: equip the new one even though the just-deleted item
+// may still read as equipped when this runs. Must stay BELOW the rule above.
+PROC
+PROC_RJTP_EquipSuitItem((CHARACTER)_Comp, (ITEMROOT)_Template, (ITEM)_Item)
+AND
+DB_RJTP_SuitTemplate(_Template, "Underwear")
+AND
+DB_RJTP_UnderwearForce(1)
+THEN
+NOT DB_RJTP_UnderwearForce(1);
+Equip(_Comp, _Item, 1, 0, 0);
+
+// Review 21 SF2: on an upgraded save, never take armour off him, but do fill an EMPTY slot.
+// "UnderwearSpare" is not a real slot name (GetEquippedItem would fail and the spare would be equipped): excluded.
+PROC
+PROC_RJTP_EquipSuitItem((CHARACTER)_Comp, (ITEMROOT)_Template, (ITEM)_Item)
+AND
+DB_RJTP_KeepCurrentArmour(1)
+AND
+DB_RJTP_SuitTemplate(_Template, _Slot)
+AND
+_Slot != "Camp"
+AND
+_Slot != "UnderwearSpare"
+AND
+NOT QRY_RJTP_SlotUsed(_Comp, _Slot)
+THEN
+Equip(_Comp, _Item, 1, 0, 0);
+
+QRY
+QRY_RJTP_SlotUsed((CHARACTER)_Comp, (STRING)_Slot)
+AND
+GetEquippedItem(_Comp, _Slot, (ITEM)_Equipped)
+THEN
+DB_NOOP(1);
+
+// Saves already upgraded by an earlier v0.2a pak: fill empty armour slots on load (review 21 SF2)
+IF
+SavegameLoaded()
+AND
+DB_RJTP_KeepCurrentArmour(1)
+AND
+DB_RJTP_Recruited(1)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_RJTP_SuitItem(_Template, _Item)
+AND
+DB_RJTP_SuitTemplate(_Template, _Slot)
+AND
+_Slot != "Camp"
+AND
+_Slot != "Underwear"
+AND
+_Slot != "UnderwearSpare"
+AND
+NOT QRY_RJTP_SlotUsed(_Comp, _Slot)
+THEN
+Equip(_Comp, _Item, 1, 0, 0);
+
+// Saves made before these rows existed: INIT rows of an already-active goal are not re-run on load (vanilla
+// re-inserts such rows in its SavegamePatches goals), so set them here. Facts are sets: this is idempotent.
+// The Kas' Lingerie row of 2026-10-03 is withdrawn.
+IF
+SavegameLoaded()
+THEN
+NOT DB_RJTP_SuitTemplate((ITEMROOT)Kascayde_M_Incubus_new_v1_71c931fd-ed37-432c-9c0c-0a3417c76aff, "Underwear");
+DB_RJTP_SuitTemplate((ITEMROOT)Underwear_Incubus_5fa043bf-0445-49ad-9e82-0df77c639fe2, "Underwear");
+DB_RJTP_SuitTemplate((ITEMROOT)Underwear_Incubus_B_82c84433-0464-442a-8e5a-0891d829f99a, "UnderwearSpare");
+
+// An already-recruited Raphael is updated after load. On a timer, so the load clean-up rules above have run first
+// (plan review 2026-10-03). Never for a withdrawn or uninstalled Raphael.
+IF
+SavegameLoaded()
+AND
+DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_Withdrawn(1)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+QRY_RJTP_UnderwearPending(_Comp)
+THEN
+RealtimeObjectTimerLaunch(_Comp, "RJTP_UnderwearPatch", 1500);
+
+// Osiris has no OR: one definition per reason. A copy he already carries (untracked, e.g. given by the player)
+// counts as "has one", so this does not stay pending on every load.
+QRY
+QRY_RJTP_UnderwearPending((CHARACTER)_Comp)
+AND
+DB_RJTP_SuitItem((ITEMROOT)Kascayde_M_Incubus_new_v1_71c931fd-ed37-432c-9c0c-0a3417c76aff, _)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_UnderwearPending((CHARACTER)_Comp)
+AND
+NOT DB_RJTP_SuitItem((ITEMROOT)Underwear_Incubus_5fa043bf-0445-49ad-9e82-0df77c639fe2, _)
+AND
+TemplateIsInInventory((ITEMROOT)Underwear_Incubus_5fa043bf-0445-49ad-9e82-0df77c639fe2, _Comp, 0)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_RJTP_UnderwearPending((CHARACTER)_Comp)
+AND
+NOT DB_RJTP_SuitItem((ITEMROOT)Underwear_Incubus_B_82c84433-0464-442a-8e5a-0891d829f99a, _)
+AND
+TemplateIsInInventory((ITEMROOT)Underwear_Incubus_B_82c84433-0464-442a-8e5a-0891d829f99a, _Comp, 0)
+THEN
+DB_NOOP(1);
+
+IF
+ObjectTimerFinished(_Comp, "RJTP_UnderwearPatch")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_Withdrawn(1)
+THEN
+NOT DB_RJTP_SuitTemplate((ITEMROOT)Kascayde_M_Incubus_new_v1_71c931fd-ed37-432c-9c0c-0a3417c76aff, "Underwear");
+DB_RJTP_SuitTemplate((ITEMROOT)Underwear_Incubus_5fa043bf-0445-49ad-9e82-0df77c639fe2, "Underwear");
+DB_RJTP_SuitTemplate((ITEMROOT)Underwear_Incubus_B_82c84433-0464-442a-8e5a-0891d829f99a, "UnderwearSpare");
+PROC_RJTP_Dress(_Comp);
+
+// The Kas' Lingerie set this mod created on 2026-10-03: untrack it. It is NOT deleted: it stays where it is as an
+// ordinary item (so withdraw no longer destroys it, and nothing is taken from another character who wears it). If
+// HE was wearing it, the new set A is equipped in its place (DB_RJTP_UnderwearForce); otherwise set A only goes into
+// an empty underwear slot.
+PROC
+PROC_RJTP_DropOldUnderwear((CHARACTER)_Comp)
+AND
+DB_RJTP_SuitItem((ITEMROOT)Kascayde_M_Incubus_new_v1_71c931fd-ed37-432c-9c0c-0a3417c76aff, _Item)
+AND
+GetEquippedItem(_Comp, "Underwear", _Item)
+THEN
+DB_RJTP_UnderwearForce(1);
+
+PROC
+PROC_RJTP_DropOldUnderwear((CHARACTER)_Comp)
+AND
+DB_RJTP_SuitItem((ITEMROOT)Kascayde_M_Incubus_new_v1_71c931fd-ed37-432c-9c0c-0a3417c76aff, _Item)
+THEN
+NOT DB_RJTP_SuitItem((ITEMROOT)Kascayde_M_Incubus_new_v1_71c931fd-ed37-432c-9c0c-0a3417c76aff, _Item);
+
+// Set A already existed and is tracked (so Dress created nothing and the equip rule never ran): equip it now (plan
+// review 2026-10-04). When Dress has just created A, its TemplateAddedTo event has not arrived yet, A is still
+// untracked, and this does nothing; the equip rule then uses the flag.
+PROC
+PROC_RJTP_ForceUnderwear((CHARACTER)_Comp)
+AND
+DB_RJTP_UnderwearForce(1)
+AND
+DB_RJTP_SuitItem((ITEMROOT)Underwear_Incubus_5fa043bf-0445-49ad-9e82-0df77c639fe2, _ItemA)
+THEN
+NOT DB_RJTP_UnderwearForce(1);
+Equip(_Comp, _ItemA, 1, 0, 0);
+
+// Recruit: dress him (idempotent) and give the spell
+PROC
+PROC_RJTP_Recruit((CHARACTER)_Player)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_Dress(_Comp);
+PROC_RJTP_GrantFormSpell(_Comp);
+
+// Suit items are destroyed, never handed to the avatar (called from Withdraw's first rule, before MoveAllItemsTo)
+PROC
+PROC_RJTP_RemoveBoundItems()
+AND
+DB_RJTP_SuitItem(_Template, _Item)
+THEN
+NOT DB_RJTP_SuitItem(_Template, _Item);
+RequestDelete(_Item);
+
+PROC
+PROC_RJTP_RemoveBoundItems()
+AND
+DB_RJTP_UnderwearForce(1)
+THEN
+NOT DB_RJTP_UnderwearForce(1);
+//END_REGION
+
+//REGION Withdraw and uninstall (plan sections 4.1 and 9)
+PROC
+PROC_RJTP_ClearForms((CHARACTER)_Comp)
+AND
+DB_RJTP_Form(_Form)
+THEN
+NOT DB_RJTP_Form(_Form);
+
+PROC
+PROC_RJTP_ClearForms((CHARACTER)_Comp)
+THEN
+NOT DB_RJTP_ApplyAfterModded(1);
+NOT DB_RJTP_Ascended(1);
+NOT DB_RJTP_CampHold(1);
+NOT DB_RJTP_ReassertStopped(1);
+PROC_RJTP_RemoveAllFormStatuses(_Comp);
+PROC_RJTP_DropAscended(_Comp);
+
+PROC
+PROC_RJTP_ClearForms((CHARACTER)_Comp)
+AND
+DB_RJTP_ModdedForm(_Template)
+THEN
+NOT DB_RJTP_ModdedForm(_Template);
+RemoveTransforms(_Comp);
+
+PROC
+PROC_RJTP_ClearForms((CHARACTER)_Comp)
+AND
+DB_RJTP_PendingModded(_Template)
+THEN
+NOT DB_RJTP_PendingModded(_Template);
+
+PROC
+PROC_RJTP_ClearForms((CHARACTER)_Comp)
+AND
+DB_RJTP_AutoAscend(1)
+THEN
+NOT DB_RJTP_AutoAscend(1);
+
+PROC
+PROC_RJTP_Uninstall((CHARACTER)_Caster)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_ClearForms(_Comp);
+PROC_RJTP_Withdraw();
+DB_RJTP_Uninstalled(1);
+PROC_RJTP_Box(_Caster, "RJTP_Msg_Uninstalled", 0);
+//END_REGION
+
+//REGION Compatibility-pak liveness (review 18 F5): a removed compat pak leaves its FormStatus row behind
+IF
+SavegameLoaded()
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+RealtimeObjectTimerLaunch(_Comp, "RJTP_CompatCheck", 1000);
+
+IF
+ObjectTimerFinished(_Comp, "RJTP_CompatCheck")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_Form("Crowned")
+AND
+NOT DB_RJTP_CompatAlive("Crowned")
+THEN
+PROC_RJTP_SetForm(_Comp, "Wardrobe");
+
+IF
+ObjectTimerFinished(_Comp, "RJTP_CompatCheck")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+NOT DB_RJTP_CompatAlive("Crowned")
+AND
+DB_RJTP_FormStatus("Crowned", _Status)
+THEN
+NOT DB_RJTP_FormStatus("Crowned", _Status);
+
+IF
+ObjectTimerFinished(_Comp, "RJTP_CompatCheck")
+AND
+DB_RJTP_CompatAlive(_Name)
+THEN
+NOT DB_RJTP_CompatAlive(_Name);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION

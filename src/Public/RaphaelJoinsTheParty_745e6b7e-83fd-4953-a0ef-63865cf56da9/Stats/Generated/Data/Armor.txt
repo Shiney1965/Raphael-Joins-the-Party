@@ -1,0 +1,19 @@
+new entry "RJTP_ARM_RaphaelSuit"
+type "Armor"
+using "ARM_Robe_Body"
+data "RootTemplate" "7308eb8d-cde0-401e-b2c8-610c98ee8fff"
+
+new entry "RJTP_ARM_RaphaelShoes"
+type "Armor"
+using "ARM_Shoes"
+data "RootTemplate" "12ee06a5-e67d-48db-a115-41177786b107"
+
+new entry "RJTP_ARM_RaphaelSuit_Camp"
+type "Armor"
+using "ARM_Camp_Body"
+data "RootTemplate" "20e04ab2-ff25-40fa-88a3-7bd08673ed68"
+
+new entry "RJTP_ARM_RaphaelShoes_Camp"
+type "Armor"
+using "ARM_Camp_Shoes"
+data "RootTemplate" "cf0a8a16-35d5-4b1b-acc8-f049b624e9f8"

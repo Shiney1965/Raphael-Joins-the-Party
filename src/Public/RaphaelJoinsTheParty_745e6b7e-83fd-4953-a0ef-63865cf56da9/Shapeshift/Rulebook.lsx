@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="8" revision="0" build="500"/>
+    <region id="Rulebook">
+        <node id="root">
+            <children>
+                <node id="Rule">
+                    <attribute id="ApplySpellsFromTemplate" type="bool" value="false"/>
+                    <attribute id="ApplyTagsFromTemplate" type="bool" value="false"/>
+                    <attribute id="ApplyVisual" type="bool" value="true"/>
+                    <attribute id="ApplyVisualInCC" type="bool" value="false"/>
+                    <attribute id="BaseACOverride" type="bool" value="false"/>
+                    <attribute id="BlockLevelUp" type="bool" value="false"/>
+                    <attribute id="ChangeAi" type="bool" value="false"/>
+                    <attribute id="ChangeBodyType" type="bool" value="false"/>
+                    <attribute id="ChangeIcon" type="bool" value="true"/>
+                    <attribute id="ChangeRace" type="bool" value="false"/>
+                    <attribute id="DisableEquipmentSlots" type="bool" value="false"/>
+                    <attribute id="FootstepsType" type="bool" value="true"/>
+                    <attribute id="IgnoreCustomLooks" type="bool" value="true"/>
+                    <attribute id="KillEntityAtZeroHP" type="bool" value="false"/>
+                    <attribute id="MuteEquipmentSound" type="bool" value="false"/>
+                    <attribute id="RemoveOldTags" type="bool" value="false"/>
+                    <attribute id="RemovePrevSpells" type="bool" value="false"/>
+                    <attribute id="RetainDisplayName" type="bool" value="true"/>
+                    <attribute id="UnarmedAbilityFromTemplate" type="bool" value="false"/>
+                    <attribute id="UseShapeshiftIdentity" type="bool" value="false"/>
+                    <attribute id="UseTemplateEquipmentSet" type="bool" value="false"/>
+                    <attribute id="WildShapeHotBar" type="bool" value="false"/>
+                    <attribute id="RuleName" type="LSString" value="RJTP_Form_Visual"/>
+                    <attribute id="UUID" type="guid" value="fffe2a96-57a5-481e-a313-a5c9a97da997"/>
+                </node>
+                <node id="Rule">
+                    <attribute id="ApplySpellsFromTemplate" type="bool" value="false"/>
+                    <attribute id="ApplyTagsFromTemplate" type="bool" value="false"/>
+                    <attribute id="ApplyVisual" type="bool" value="true"/>
+                    <attribute id="ApplyVisualInCC" type="bool" value="false"/>
+                    <attribute id="BaseACOverride" type="bool" value="false"/>
+                    <attribute id="BlockLevelUp" type="bool" value="false"/>
+                    <attribute id="ChangeAi" type="bool" value="false"/>
+                    <attribute id="ChangeBodyType" type="bool" value="false"/>
+                    <attribute id="ChangeIcon" type="bool" value="true"/>
+                    <attribute id="ChangeRace" type="bool" value="false"/>
+                    <attribute id="DisableEquipmentSlots" type="bool" value="false"/>
+                    <attribute id="FootstepsType" type="bool" value="true"/>
+                    <attribute id="IgnoreCustomLooks" type="bool" value="true"/>
+                    <attribute id="KillEntityAtZeroHP" type="bool" value="false"/>
+                    <attribute id="MuteEquipmentSound" type="bool" value="false"/>
+                    <attribute id="RemoveOldTags" type="bool" value="false"/>
+                    <attribute id="RemovePrevSpells" type="bool" value="false"/>
+                    <attribute id="RetainDisplayName" type="bool" value="true"/>
+                    <attribute id="UnarmedAbilityFromTemplate" type="bool" value="false"/>
+                    <attribute id="UseShapeshiftIdentity" type="bool" value="false"/>
+                    <attribute id="UseTemplateEquipmentSet" type="bool" value="false"/>
+                    <attribute id="WildShapeHotBar" type="bool" value="false"/>
+                    <attribute id="RuleName" type="LSString" value="RJTP_Form_Visual_Scaled"/>
+                    <attribute id="UUID" type="guid" value="4a44037a-5ffc-45ef-a44e-2b281043e65c"/>
+                    <children>
+                        <node id="Scale">
+                            <attribute id="type" type="uint8" value="4"/>
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

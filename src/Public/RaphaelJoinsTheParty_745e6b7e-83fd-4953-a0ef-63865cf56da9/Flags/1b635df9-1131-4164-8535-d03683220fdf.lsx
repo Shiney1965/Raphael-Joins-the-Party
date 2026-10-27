@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="8" revision="0" build="500" />
+	<region id="Flags">
+		<node id="Flags">
+			<attribute id="UUID" type="guid" value="1b635df9-1131-4164-8535-d03683220fdf" />
+			<attribute id="Name" type="FixedString" value="RJTP_Event_VoiceHaarlep" />
+			<attribute id="Description" type="LSString" value="RJTP camp dialog: set on the companion by the first line of the private scene; RJTP_Private.txt then asks the SE layer to let him speak Haarlep&#x27;s recorded lines until the dialog ends." />
+			<attribute id="Usage" type="uint8" value="4" />
+		</node>
+	</region>
+</save>

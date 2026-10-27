@@ -1,0 +1,1037 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+// Raphael Joins the Party - v0.2 dialog layer (plan PLAN_v0_2.md section 6; research 14 and 20).
+// DORMANT in v0.2a: nothing here acts unless DB_RJTP_UseDialogs(1) holds (debug spell Shout_RJTP_Debug_Dialogs, spike
+// D0). The finale farewell also needs DB_RJTP_TimelinesReady(1), which v0.2a never sets. Message boxes stay the
+// fallback for every dialog path. All outcomes call the existing v0.1 outcome procs; none of their logic is repeated.
+// Osiris timing rule (review 17 (a)): events arrive after the calling proc finishes, so every guard that must survive
+// until an event is cleared in that event's handler. (StartOk, Toggling and SpikeStarted are set and cleared in one
+// proc on purpose: they are read only by synchronous conditions inside that same proc.)
+
+// Debug spells (granted by RJTP_AAA_Init while DB_RJTP_TestBuild(1) holds)
+DB_RJTP_DebugSpell("Shout_RJTP_Debug_Dialogs");
+DB_RJTP_DebugSpell("Shout_RJTP_Debug_VoiceS1a");
+DB_RJTP_DebugSpell("Shout_RJTP_Debug_VoiceS1b");
+
+// Offer state pushed into RJTP_HoH_Offer as Object flags on the companion (speaker 0). "Quiet" has no flag.
+DB_RJTP_DlgStateFlag("ItemGone", (FLAG)RJTP_Offer_ItemGone_abefdac9-839a-4c23-96d8-17abde65ba8f);
+DB_RJTP_DlgStateFlag("AfterReturn", (FLAG)RJTP_Offer_Returned_a816e647-9a68-412e-850d-fc75175f1433);
+DB_RJTP_DlgStateFlag("Theft", (FLAG)RJTP_Offer_Theft_7774dadd-c4da-4e00-9954-abb202a133fc);
+DB_RJTP_DlgStateFlag("NothingToReturn", (FLAG)RJTP_Offer_NothingToReturn_3e77c4a5-5da2-480b-a217-2d3a1afe02b8);
+
+// Flags cleared on the companion before every offer start and after every offer end (RJTP_Offer_Seen is persistent)
+DB_RJTP_DlgTransientFlag((FLAG)RJTP_Offer_ItemGone_abefdac9-839a-4c23-96d8-17abde65ba8f);
+DB_RJTP_DlgTransientFlag((FLAG)RJTP_Offer_Returned_a816e647-9a68-412e-850d-fc75175f1433);
+DB_RJTP_DlgTransientFlag((FLAG)RJTP_Offer_Theft_7774dadd-c4da-4e00-9954-abb202a133fc);
+DB_RJTP_DlgTransientFlag((FLAG)RJTP_Offer_NothingToReturn_3e77c4a5-5da2-480b-a217-2d3a1afe02b8);
+DB_RJTP_DlgTransientFlag((FLAG)RJTP_Event_Accept_4af9efb1-f3ab-4a1b-b264-60a221b202c6);
+DB_RJTP_DlgTransientFlag((FLAG)RJTP_Event_Decline_33bce9b2-18f7-4353-9d99-25c3af82ff65);
+DB_RJTP_DlgTransientFlag((FLAG)RJTP_Event_Return_10c1e652-b028-4928-823d-e052cbf5beb5);
+DB_RJTP_DlgTransientFlag((FLAG)RJTP_Event_Refuse_85514d9d-c15f-4d65-890e-7ac39c954216);
+DB_RJTP_DlgTransientFlag((FLAG)RJTP_Event_Abort_304f219a-099a-4b72-a936-9a0643f076b7);
+
+// Muting statuses (invisibility etc.) are dropped when the offer starts, as vanilla does for its own HoH scene
+DB_DropMutingStatussesDialog((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e);
+
+// Osiris treats a database that is read but never written as a compile error ('orphan'; vanilla exempts its own in
+// Story/story_orphanqueries_ignore.txt). v0.2a failed to load in game because of exactly this (2026-09-26). These
+// placeholder facts make the DBs written; the rules only ever test the value 1 / "Crowned", so they change nothing.
+DB_RJTP_TimelinesReady(0);
+KBSECTION
+//REGION Offer: entry point
+// Called from the second PROC_RJTP_StartOffer rule in RJTP_HoH_Offer.txt (edit made 2026-09-26). With dialogs off
+// the rule below calls ReopenOffer exactly as v0.1 did, so v0.2a behaviour is unchanged.
+PROC
+PROC_RJTP_PresentOffer((CHARACTER)_Player)
+AND
+DB_RJTP_DialogFallbackActive((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e)
+THEN
+NOT DB_RJTP_DialogFallbackActive((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e);
+
+PROC
+PROC_RJTP_PresentOffer((CHARACTER)_Player)
+AND
+NOT DB_RJTP_UseDialogs(1)
+THEN
+PROC_RJTP_ReopenOffer(_Player);
+
+PROC
+PROC_RJTP_PresentOffer((CHARACTER)_Player)
+AND
+DB_RJTP_UseDialogs(1)
+THEN
+PROC_RJTP_Dlg_ClassifyOffer();
+
+// Alarm up but not a theft: no dialog state; the box logic cancels the offer (RJTP_HoH_Offer ReopenOffer catch-all)
+PROC
+PROC_RJTP_PresentOffer((CHARACTER)_Player)
+AND
+DB_RJTP_UseDialogs(1)
+AND
+NOT DB_RJTP_DlgOfferState(_)
+THEN
+PROC_RJTP_ReopenOffer(_Player);
+
+// Push the state flags now and start 0.8 s later: the companion was just put on stage and teleported by StartOffer
+PROC
+PROC_RJTP_PresentOffer((CHARACTER)_Player)
+AND
+DB_RJTP_UseDialogs(1)
+AND
+DB_RJTP_DlgOfferState(_State)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_Dlg_ClearFlags(_Comp);
+PROC_RJTP_Dlg_PushState(_Comp, _State);
+PROC_RJTP_Dlg_QueueOffer(_Comp, _Player);
+
+PROC
+PROC_RJTP_Dlg_QueueOffer((CHARACTER)_Comp, (CHARACTER)_Player)
+AND
+DB_RJTP_DlgQueued(_Old)
+THEN
+NOT DB_RJTP_DlgQueued(_Old);
+
+PROC
+PROC_RJTP_Dlg_QueueOffer((CHARACTER)_Comp, (CHARACTER)_Player)
+THEN
+DB_RJTP_DlgQueued(_Player);
+RealtimeObjectTimerLaunch(_Comp, "RJTP_DlgOfferStart", 800);
+
+PROC
+PROC_RJTP_Dlg_PushState((CHARACTER)_Comp, (STRING)_State)
+AND
+DB_RJTP_DlgStateFlag(_State, _Flag)
+THEN
+SetFlag(_Flag, _Comp);
+
+PROC
+PROC_RJTP_Dlg_ClearFlags((CHARACTER)_Comp)
+AND
+DB_RJTP_DlgTransientFlag(_Flag)
+THEN
+ClearFlag(_Flag, _Comp);
+//END_REGION
+
+//REGION Offer: which root plays (mirrors PROC_RJTP_ReopenOffer's box choice in RJTP_HoH_Offer; the boxes stay the fallback)
+PROC
+PROC_RJTP_Dlg_ClassifyOffer()
+AND
+DB_RJTP_DlgOfferState(_Old)
+THEN
+NOT DB_RJTP_DlgOfferState(_Old);
+
+// Same rule as ReopenOffer: a taken treasure that no longer exists = the item is gone
+PROC
+PROC_RJTP_Dlg_ClassifyOffer()
+AND
+DB_RJTP_AlarmCause("Theft")
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+NOT DB_RJTP_ItemsReturned(1)
+AND
+DB_RJTP_Taken(_Item)
+AND
+DB_RJTP_HoHTreasure(_Item, _, _, _, _)
+AND
+Exists(_Item, 0)
+THEN
+DB_RJTP_ItemGone(1);
+
+PROC
+PROC_RJTP_Dlg_ClassifyOffer()
+AND
+NOT DB_LOW_HouseOfHope_AlarmIsReady(1)
+THEN
+DB_RJTP_DlgOfferState("Quiet");
+
+PROC
+PROC_RJTP_Dlg_ClassifyOffer()
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+DB_RJTP_AlarmCause("Theft")
+AND
+DB_RJTP_ItemsReturned(1)
+THEN
+DB_RJTP_DlgOfferState("AfterReturn");
+
+PROC
+PROC_RJTP_Dlg_ClassifyOffer()
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+DB_RJTP_AlarmCause("Theft")
+AND
+NOT DB_RJTP_ItemsReturned(1)
+AND
+DB_RJTP_ItemGone(1)
+THEN
+DB_RJTP_DlgOfferState("ItemGone");
+
+PROC
+PROC_RJTP_Dlg_ClassifyOffer()
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+DB_RJTP_AlarmCause("Theft")
+AND
+NOT DB_RJTP_ItemsReturned(1)
+AND
+NOT DB_RJTP_ItemGone(1)
+AND
+DB_RJTP_Taken(_)
+THEN
+DB_RJTP_DlgOfferState("Theft");
+
+PROC
+PROC_RJTP_Dlg_ClassifyOffer()
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+AND
+DB_RJTP_AlarmCause("Theft")
+AND
+NOT DB_RJTP_ItemsReturned(1)
+AND
+NOT DB_RJTP_Taken(_)
+THEN
+DB_RJTP_DlgOfferState("NothingToReturn");
+//END_REGION
+
+//REGION Offer: start, 12 s watchdog, message-box fallback (review 16 M10; research 14 section 5.5 R2)
+IF
+ObjectTimerFinished(_Comp, "RJTP_DlgOfferStart")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_DlgQueued(_Player)
+THEN
+NOT DB_RJTP_DlgQueued(_Player);
+PROC_RJTP_Dlg_TryStartOffer((CHARACTER)_Player);
+
+// A box opened in the meantime (portal clicked again, alarm classified): stay on the box path
+PROC
+PROC_RJTP_Dlg_TryStartOffer((CHARACTER)_Player)
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+DB_RJTP_Step(_)
+THEN
+PROC_RJTP_Dlg_Abandon();
+
+PROC
+PROC_RJTP_Dlg_TryStartOffer((CHARACTER)_Player)
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+NOT DB_RJTP_Step(_)
+AND
+DB_RJTP_DlgOfferState(_)
+AND
+NOT DB_RJTP_DialogFallbackActive((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+QRY_StartDialog_Fixed((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Comp, _Player)
+THEN
+DB_RJTP_DlgStartOk(1);
+DB_RJTP_DlgPending((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Player);
+RealtimeObjectTimerLaunch(_Comp, "RJTP_DlgWatchdog", 12000);
+
+// The start query failed at once (or the offer was cancelled meanwhile): message boxes
+PROC
+PROC_RJTP_Dlg_TryStartOffer((CHARACTER)_Player)
+AND
+NOT DB_RJTP_DlgStartOk(1)
+AND
+NOT DB_RJTP_Step(_)
+THEN
+PROC_RJTP_Dlg_Fallback(_Player);
+
+PROC
+PROC_RJTP_Dlg_TryStartOffer((CHARACTER)_Player)
+AND
+DB_RJTP_DlgStartOk(1)
+THEN
+NOT DB_RJTP_DlgStartOk(1);
+
+// Review 20 S1: a box opened during the pending window (portal clicked again) owns the offer
+IF
+DialogStarted((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Inst)
+AND
+DB_RJTP_DlgPending((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Player)
+AND
+DB_RJTP_Step(_)
+THEN
+PROC_RJTP_Dlg_Abandon();
+
+IF
+DialogStarted((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Inst)
+AND
+DB_RJTP_DlgPending((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Player)
+AND
+NOT DB_RJTP_Step(_)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+NOT DB_RJTP_DlgPending((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Player);
+RealtimeObjectTimerCancel(_Comp, "RJTP_DlgWatchdog");
+DB_RJTP_DlgInstance((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Inst);
+
+// A dialog that starts after the fallback opened the boxes is stopped (review 16 M10). Its DialogEnded is ignored,
+// because its instance was never recorded.
+IF
+DialogStarted((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Inst)
+AND
+DB_RJTP_DialogFallbackActive((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e)
+AND
+NOT DB_RJTP_DlgInstance((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Inst)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+DialogRequestStopForDialog((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Comp);
+
+IF
+DialogRequestFailed((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _)
+AND
+DB_RJTP_DlgPending((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Player)
+THEN
+PROC_RJTP_Dlg_Fallback(_Player);
+
+// Watchdog: a start that "succeeds" but never raises DialogStarted (missing or broken timeline, research 14 1.8)
+IF
+ObjectTimerFinished(_Comp, "RJTP_DlgWatchdog")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_DlgPending((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Player)
+THEN
+PROC_RJTP_Dlg_Fallback(_Player);
+
+// A theft alarm classified while an offer is open: RJTP_HoH_Offer's own ClassifyAlarm rule re-opens the offer as a
+// box in the same call, so a queued, pending or running offer dialog gives way to it. A PROC rule, not a rule on
+// DB_RJTP_AlarmCause: a DB-joined rule would also fire when the dialog instance is recorded later.
+// Review 20 B1: no DB_RJTP_AlarmCause test here. The cause is set by a rule of the same PROC in RJTP_HoH_Offer,
+// and the order of PROC rules across goals is not controllable. Any classification abandons the dialog; for a
+// non-theft cause RJTP_HoH_Offer cancels the offer anyway.
+PROC
+PROC_RJTP_ClassifyAlarm()
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+DB_RJTP_UseDialogs(1)
+THEN
+PROC_RJTP_Dlg_Abandon();
+
+PROC
+PROC_RJTP_Dlg_Fallback((CHARACTER)_Player)
+THEN
+PROC_RJTP_Dlg_Abandon();
+
+PROC
+PROC_RJTP_Dlg_Fallback((CHARACTER)_Player)
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+NOT DB_RJTP_Step(_)
+THEN
+PROC_RJTP_ReopenOffer(_Player);
+
+// Give up on the dialog for this offer: forget its state, clear its flags, stop it if it is (or later gets) running
+PROC
+PROC_RJTP_Dlg_Abandon()
+THEN
+DB_RJTP_DialogFallbackActive((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e);
+PROC_RJTP_Dlg_ForgetOffer();
+
+PROC
+PROC_RJTP_Dlg_Abandon()
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+RealtimeObjectTimerCancel(_Comp, "RJTP_DlgWatchdog");
+PROC_RJTP_Dlg_ClearFlags(_Comp);
+DialogRequestStopForDialog((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Comp);
+
+PROC
+PROC_RJTP_Dlg_ForgetOffer()
+AND
+DB_RJTP_DlgOfferState(_State)
+THEN
+NOT DB_RJTP_DlgOfferState(_State);
+
+PROC
+PROC_RJTP_Dlg_ForgetOffer()
+AND
+DB_RJTP_DlgPending((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Player)
+THEN
+NOT DB_RJTP_DlgPending((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Player);
+
+PROC
+PROC_RJTP_Dlg_ForgetOffer()
+AND
+DB_RJTP_DlgInstance((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Inst)
+THEN
+NOT DB_RJTP_DlgInstance((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Inst);
+
+PROC
+PROC_RJTP_Dlg_ForgetOffer()
+AND
+DB_RJTP_DlgOutcome(_Out)
+THEN
+NOT DB_RJTP_DlgOutcome(_Out);
+
+PROC
+PROC_RJTP_Dlg_ForgetOffer()
+AND
+DB_RJTP_DlgQueued(_Player)
+THEN
+NOT DB_RJTP_DlgQueued(_Player);
+
+// Review 20 S2: CancelOffer (release, non-theft alarm, debug report) stops a running offer dialog. DlgOutcome exists
+// only while an Abort outcome is being dispatched, so this cannot re-enter itself.
+PROC
+PROC_RJTP_CancelOffer()
+AND
+DB_RJTP_UseDialogs(1)
+AND
+NOT DB_RJTP_DlgOutcome(_)
+THEN
+PROC_RJTP_Dlg_Abandon();
+//END_REGION
+
+//REGION Offer: mid-dialog item return (same three steps as the "RJTP_Msg_TheftDemand" Yes answer in RJTP_HoH_Offer)
+IF
+FlagSet((FLAG)RJTP_Event_Return_10c1e652-b028-4928-823d-e052cbf5beb5, _Speaker, _Inst)
+AND
+DB_RJTP_Companion((CHARACTER)_Speaker)
+AND
+DB_RJTP_DlgInstance((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Inst)
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+NOT DB_RJTP_ItemsReturned(1)
+THEN
+PROC_RJTP_ReturnTaken();
+PROC_RJTP_CureAlarm();
+DB_RJTP_ItemsReturned(1);
+//END_REGION
+
+//REGION Offer: outcomes on DialogEnded, only while DB_RJTP_OfferInProgress(1) (review 16 M10)
+IF
+DialogEnded((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Inst)
+AND
+DB_RJTP_DlgInstance((DIALOGRESOURCE)RJTP_HoH_Offer_a5650de7-56bb-4fdc-adcf-93245cfc010e, _Inst)
+THEN
+PROC_RJTP_Dlg_OfferEnded();
+
+PROC
+PROC_RJTP_Dlg_OfferEnded()
+AND
+DB_RJTP_Companion(_Comp)
+AND
+GetFlag((FLAG)RJTP_Event_Refuse_85514d9d-c15f-4d65-890e-7ac39c954216, _Comp, 1)
+THEN
+DB_RJTP_DlgOutcome("Refuse");
+
+PROC
+PROC_RJTP_Dlg_OfferEnded()
+AND
+NOT DB_RJTP_DlgOutcome(_)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+GetFlag((FLAG)RJTP_Event_Accept_4af9efb1-f3ab-4a1b-b264-60a221b202c6, _Comp, 1)
+THEN
+DB_RJTP_DlgOutcome("Accept");
+
+PROC
+PROC_RJTP_Dlg_OfferEnded()
+AND
+NOT DB_RJTP_DlgOutcome(_)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+GetFlag((FLAG)RJTP_Event_Decline_33bce9b2-18f7-4353-9d99-25c3af82ff65, _Comp, 1)
+THEN
+DB_RJTP_DlgOutcome("Decline");
+
+// ItemGone is a refusal however the dialog ended, as the plain OK box is (RJTP_HoH_Offer "RJTP_Msg_ItemGone")
+PROC
+PROC_RJTP_Dlg_OfferEnded()
+AND
+NOT DB_RJTP_DlgOutcome(_)
+AND
+DB_RJTP_DlgOfferState("ItemGone")
+THEN
+DB_RJTP_DlgOutcome("Refuse");
+
+// "[Leave]" (RJTP_Event_Abort) or any other end = abort: the offer repeats at the next portal use (plan 5.3)
+PROC
+PROC_RJTP_Dlg_OfferEnded()
+AND
+NOT DB_RJTP_DlgOutcome(_)
+THEN
+DB_RJTP_DlgOutcome("Abort");
+
+PROC
+PROC_RJTP_Dlg_OfferEnded()
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_Dlg_ClearFlags(_Comp);
+
+PROC
+PROC_RJTP_Dlg_OfferEnded()
+AND
+DB_RJTP_DlgOutcome(_Out)
+AND
+DB_RJTP_OfferPlayer(_Player)
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+NOT DB_RJTP_Step(_)
+THEN
+PROC_RJTP_Dlg_OfferOutcome(_Out, _Player);
+
+PROC
+PROC_RJTP_Dlg_OfferEnded()
+THEN
+PROC_RJTP_Dlg_ForgetOffer();
+
+PROC
+PROC_RJTP_Dlg_OfferOutcome((STRING)_Out, (CHARACTER)_Player)
+AND
+_Out == "Refuse"
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+PROC_RJTP_Refuse(_Player);
+
+// Nothing to return: the box path cures the alarm on either answer (RJTP_HoH_Offer "RJTP_Msg_OfferNothingToReturn")
+PROC
+PROC_RJTP_Dlg_OfferOutcome((STRING)_Out, (CHARACTER)_Player)
+AND
+_Out == "Accept"
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+DB_RJTP_DlgOfferState("NothingToReturn")
+THEN
+PROC_RJTP_CureAlarm();
+
+PROC
+PROC_RJTP_Dlg_OfferOutcome((STRING)_Out, (CHARACTER)_Player)
+AND
+_Out == "Accept"
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+PROC_RJTP_Accept(_Player);
+
+PROC
+PROC_RJTP_Dlg_OfferOutcome((STRING)_Out, (CHARACTER)_Player)
+AND
+_Out == "Decline"
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+DB_RJTP_DlgOfferState("NothingToReturn")
+AND
+NOT DB_RJTP_ItemsReturned(1)
+THEN
+PROC_RJTP_CureAlarm();
+DB_RJTP_ItemsReturned(1);
+
+// After a return (or nothing to return), declining plays as if nothing was stolen (the author Q-C)
+PROC
+PROC_RJTP_Dlg_OfferOutcome((STRING)_Out, (CHARACTER)_Player)
+AND
+_Out == "Decline"
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+DB_RJTP_ItemsReturned(1)
+THEN
+PROC_RJTP_DeclineAfterReturn(_Player);
+
+PROC
+PROC_RJTP_Dlg_OfferOutcome((STRING)_Out, (CHARACTER)_Player)
+AND
+_Out == "Decline"
+AND
+DB_RJTP_OfferInProgress(1)
+AND
+NOT DB_RJTP_ItemsReturned(1)
+THEN
+PROC_RJTP_DeclineQuiet(_Player);
+
+PROC
+PROC_RJTP_Dlg_OfferOutcome((STRING)_Out, (CHARACTER)_Player)
+AND
+_Out == "Abort"
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+PROC_RJTP_CancelOffer();
+//END_REGION
+
+//REGION Camp dialog: RJTP_CAMP_Raphael replaces the borrowed Hireling dialog while dialogs are on (review 16 M12)
+// The GENERIC_VOICE_5_MALE tag stays: the party-full "Join me" nests vanilla GLO_CompanionSwap_Camp (review 13 (b)).
+// Release 1.0.0 (the author, 2026-10-26: "Start it by talking to him"): his own conversation is his in-party dialog
+// in every save, not only while the test switch DB_RJTP_UseDialogs is on. It has a donor timeline since v0.3a, so
+// the 2026-10-04 no-timeline freeze no longer applies (the author confirmed it in game). The Hireling dialog comes
+// back after an uninstall (DB_RJTP_CampDialogOff, set before Apply; plan review S1) or a failed start (fallback).
+PROC
+PROC_RJTP_Dlg_ApplyCampDialog()
+AND
+NOT DB_RJTP_CampDialogOff(1)
+AND
+NOT DB_RJTP_Uninstalled(1)
+AND
+NOT DB_RJTP_DialogFallbackActive((DIALOGRESOURCE)RJTP_CAMP_Raphael_b8de429b-ac5c-46e5-af00-822da8d57f97)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_Dlg_SwapCamp(_Comp, (DIALOGRESOURCE)Hireling_418bd530-1088-9cdc-6d6e-83335b9723b8, (DIALOGRESOURCE)RJTP_CAMP_Raphael_b8de429b-ac5c-46e5-af00-822da8d57f97);
+
+PROC
+PROC_RJTP_Dlg_ApplyCampDialog()
+AND
+DB_RJTP_CampDialogOff(1)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_Dlg_SwapCamp(_Comp, (DIALOGRESOURCE)RJTP_CAMP_Raphael_b8de429b-ac5c-46e5-af00-822da8d57f97, (DIALOGRESOURCE)Hireling_418bd530-1088-9cdc-6d6e-83335b9723b8);
+
+PROC
+PROC_RJTP_Dlg_ApplyCampDialog()
+AND
+NOT DB_RJTP_CampDialogOff(1)
+AND
+DB_RJTP_Uninstalled(1)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_Dlg_SwapCamp(_Comp, (DIALOGRESOURCE)RJTP_CAMP_Raphael_b8de429b-ac5c-46e5-af00-822da8d57f97, (DIALOGRESOURCE)Hireling_418bd530-1088-9cdc-6d6e-83335b9723b8);
+
+PROC
+PROC_RJTP_Dlg_ApplyCampDialog()
+AND
+DB_RJTP_DialogFallbackActive((DIALOGRESOURCE)RJTP_CAMP_Raphael_b8de429b-ac5c-46e5-af00-822da8d57f97)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_Dlg_SwapCamp(_Comp, (DIALOGRESOURCE)RJTP_CAMP_Raphael_b8de429b-ac5c-46e5-af00-822da8d57f97, (DIALOGRESOURCE)Hireling_418bd530-1088-9cdc-6d6e-83335b9723b8);
+
+// Only acts when the old dialog is his in-party dialog (i.e. he was registered as an Origin at recruit). The live
+// dialog entry goes through vanilla's own setter; the in-party record is swapped without two rows ever coexisting.
+PROC
+PROC_RJTP_Dlg_SwapCamp((CHARACTER)_Comp, (DIALOGRESOURCE)_Old, (DIALOGRESOURCE)_New)
+AND
+DB_OriginInPartyDialog(_Comp, _Old)
+AND
+DB_Dialogs(_Comp, _Old)
+THEN
+PROC_GLO_PartyMembers_SetInpartyDialog(_Comp, _New);
+
+PROC
+PROC_RJTP_Dlg_SwapCamp((CHARACTER)_Comp, (DIALOGRESOURCE)_Old, (DIALOGRESOURCE)_New)
+AND
+DB_OriginInPartyDialog(_Comp, _Old)
+THEN
+NOT DB_OriginInPartyDialog(_Comp, _Old);
+DB_OriginInPartyDialog(_Comp, _New);
+
+// First recruit: PROC_RJTP_RegisterOrigin inserts the Hireling row; swap it straight away (not after an uninstall)
+IF
+DB_OriginInPartyDialog(_Comp, (DIALOGRESOURCE)Hireling_418bd530-1088-9cdc-6d6e-83335b9723b8)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+NOT DB_RJTP_CampDialogOff(1)
+AND
+NOT DB_RJTP_Uninstalled(1)
+AND
+NOT DB_RJTP_DialogFallbackActive((DIALOGRESOURCE)RJTP_CAMP_Raphael_b8de429b-ac5c-46e5-af00-822da8d57f97)
+THEN
+PROC_RJTP_Dlg_SwapCamp(_Comp, (DIALOGRESOURCE)Hireling_418bd530-1088-9cdc-6d6e-83335b9723b8, (DIALOGRESOURCE)RJTP_CAMP_Raphael_b8de429b-ac5c-46e5-af00-822da8d57f97);
+
+// Every load: a failed start is retried (plan review S2), then his dialog is (re)applied
+IF
+SavegameLoaded()
+AND
+DB_RJTP_DialogFallbackActive((DIALOGRESOURCE)RJTP_CAMP_Raphael_b8de429b-ac5c-46e5-af00-822da8d57f97)
+THEN
+NOT DB_RJTP_DialogFallbackActive((DIALOGRESOURCE)RJTP_CAMP_Raphael_b8de429b-ac5c-46e5-af00-822da8d57f97);
+
+IF
+SavegameLoaded()
+THEN
+PROC_RJTP_Dlg_ApplyCampDialog();
+
+// The camp dialog could not start: back to the Hireling dialog until the D0 toggle is used again (research 14 5.3)
+IF
+DialogRequestFailed((DIALOGRESOURCE)RJTP_CAMP_Raphael_b8de429b-ac5c-46e5-af00-822da8d57f97, _)
+AND
+NOT DB_RJTP_DialogFallbackActive((DIALOGRESOURCE)RJTP_CAMP_Raphael_b8de429b-ac5c-46e5-af00-822da8d57f97)
+THEN
+DB_RJTP_DialogFallbackActive((DIALOGRESOURCE)RJTP_CAMP_Raphael_b8de429b-ac5c-46e5-af00-822da8d57f97);
+PROC_RJTP_Dlg_ApplyCampDialog();
+PROC_RJTP_Dlg_TestNote("RJTP TEST: the camp dialog failed to start. The borrowed hireling dialog is back; cast the dialogs toggle twice to retry.");
+
+// "Leave for good" (Join and Wait use vanilla's OriginAddToParty / OriginRemoveFromPartyAfterDialog flags)
+IF
+DialogEnded((DIALOGRESOURCE)RJTP_CAMP_Raphael_b8de429b-ac5c-46e5-af00-822da8d57f97, _)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+GetFlag((FLAG)RJTP_Event_Dismiss_d0533b0f-d437-4ae0-8860-8cc5cdfab43e, _Comp, 1)
+THEN
+ClearFlag((FLAG)RJTP_Event_Dismiss_d0533b0f-d437-4ae0-8860-8cc5cdfab43e, _Comp);
+PROC_RJTP_Dlg_CampDismiss(_Comp);
+
+PROC
+PROC_RJTP_Dlg_CampDismiss((CHARACTER)_Comp)
+AND
+NOT DB_RJTP_Dismissed(1)
+AND
+NOT DB_RJTP_Betrayed(1)
+THEN
+PROC_RJTP_DismissPermanently(_Comp);
+//END_REGION
+
+//REGION Uninstall (review 20 M6): dialogs off, borrowed camp dialog back
+PROC
+PROC_RJTP_Uninstall((CHARACTER)_Caster)
+THEN
+DB_RJTP_CampDialogOff(1);
+NOT DB_RJTP_UseDialogs(1);
+PROC_RJTP_Dlg_ApplyCampDialog();
+//END_REGION
+
+//REGION Finale farewell: partnered (companion + avatar), vanilla QueuedPartneredSpeakers shape (review 17 N8)
+// Act3c_END_GameFinale.txt:898-911 starts it with QRY_StartDialog_Fixed(_Dialogue, _Partner, _Avatar) = slot order of
+// RJTP_Farewell. Gated on a harvested timeline: a timeline-less dialog that never ends would stall the finale queue.
+// QRY_OnlyOnce is last, because FatesSetup has two callers (FIN:242, 264).
+PROC
+PROC_END_GameFinale_FatesSetup()
+AND
+DB_RJTP_UseDialogs(1)
+AND
+DB_RJTP_TimelinesReady(1)
+AND
+DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_Betrayed(1)
+AND
+NOT DB_RJTP_Withdrawn(1)
+AND
+NOT DB_RJTP_FarewellDone(1)
+AND
+DB_END_BrainBattle_CombatOverScene(1)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_Players(_Comp)
+AND
+QRY_GetBestAvatarForCompanion(_Comp)
+AND
+DB_QRYRTN_GetBestAvatarForCompanion(_Comp, _Avatar)
+AND
+QRY_OnlyOnce("RJTP_FarewellQueued")
+THEN
+DB_RJTP_FarewellQueued(1);
+DB_END_GameFinale_FatesGroupDialogues((DIALOGRESOURCE)RJTP_Farewell_eb1bd142-1100-44a8-b72b-aefe1b47836c);
+DB_END_GameFinale_QueuedPartneredSpeakers((DIALOGRESOURCE)RJTP_Farewell_eb1bd142-1100-44a8-b72b-aefe1b47836c, (CHARACTER)_Avatar, (CHARACTER)_Comp);
+
+// The v0.1 farewell box in StartEpilogue (RJTP_Endgame) is skipped once FarewellDone is set
+IF
+DialogEnded((DIALOGRESOURCE)RJTP_Farewell_eb1bd142-1100-44a8-b72b-aefe1b47836c, _)
+THEN
+DB_RJTP_FarewellDone(1);
+DB_RJTP_DlgFarewellPlayed(1);
+
+// ...so the Withdraw that RJTP_Endgame does together with the box is done here instead, still in StartEpilogue
+PROC
+PROC_END_GameFinale_StartEpilogue()
+AND
+DB_RJTP_DlgFarewellPlayed(1)
+AND
+NOT DB_RJTP_Withdrawn(1)
+THEN
+PROC_RJTP_Withdraw();
+//END_REGION
+
+//REGION Load: no dialog survives a load (mid-dialog saves are blocked), so drop any half-started dialog state
+IF
+SavegameLoaded()
+AND
+DB_RJTP_DlgQueued(_Player)
+THEN
+NOT DB_RJTP_DlgQueued(_Player);
+
+IF
+SavegameLoaded()
+AND
+DB_RJTP_DlgPending(_Dialog, _Player)
+THEN
+NOT DB_RJTP_DlgPending(_Dialog, _Player);
+
+IF
+SavegameLoaded()
+AND
+DB_RJTP_DlgInstance(_Dialog, _Inst)
+THEN
+NOT DB_RJTP_DlgInstance(_Dialog, _Inst);
+
+IF
+SavegameLoaded()
+AND
+DB_RJTP_DlgOfferState(_State)
+THEN
+NOT DB_RJTP_DlgOfferState(_State);
+
+IF
+SavegameLoaded()
+AND
+DB_RJTP_UseDialogs(1)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_Dlg_ClearFlags(_Comp);
+
+// Spike D0 is answered (the author, 2026-10-04): without a cinematic timeline his own camp dialog freezes the game in
+// dialog mode. A save in which the D0 toggle was left ON is therefore switched back to the borrowed hireling
+// dialog on load. Must stay BELOW the two load rules above, which need DB_RJTP_UseDialogs(1).
+IF
+SavegameLoaded()
+AND
+DB_RJTP_UseDialogs(1)
+AND
+NOT DB_RJTP_TimelinesReady(1)
+THEN
+NOT DB_RJTP_UseDialogs(1);
+PROC_RJTP_Dlg_DropFallbacks();
+PROC_RJTP_Dlg_ApplyCampDialog();
+
+PROC
+PROC_RJTP_Dlg_DropFallbacks()
+AND
+DB_RJTP_DialogFallbackActive(_Dialog)
+THEN
+NOT DB_RJTP_DialogFallbackActive(_Dialog);
+//END_REGION
+
+//REGION Test harness: D0 toggle and voice spikes S1a / S1b (plan sections 6.3 and 7; research 14 section 5.4)
+IF
+CastedSpell(_Caster, "Shout_RJTP_Debug_Dialogs", _, _, _)
+AND
+DB_RJTP_TestBuild(1)
+THEN
+PROC_RJTP_Dlg_Toggle((CHARACTER)_Caster);
+
+PROC
+PROC_RJTP_Dlg_Toggle((CHARACTER)_Caster)
+AND
+DB_RJTP_UseDialogs(1)
+THEN
+NOT DB_RJTP_UseDialogs(1);
+DB_RJTP_DlgToggling(1);
+
+PROC
+PROC_RJTP_Dlg_Toggle((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_UseDialogs(1)
+AND
+NOT DB_RJTP_DlgToggling(1)
+AND
+DB_RJTP_TimelinesReady(1)
+THEN
+DB_RJTP_UseDialogs(1);
+
+PROC
+PROC_RJTP_Dlg_Toggle((CHARACTER)_Caster)
+AND
+DB_RJTP_DlgToggling(1)
+THEN
+NOT DB_RJTP_DlgToggling(1);
+
+PROC
+PROC_RJTP_Dlg_Toggle((CHARACTER)_Caster)
+AND
+DB_RJTP_DialogFallbackActive(_Dialog)
+THEN
+NOT DB_RJTP_DialogFallbackActive(_Dialog);
+
+PROC
+PROC_RJTP_Dlg_Toggle((CHARACTER)_Caster)
+THEN
+PROC_RJTP_Dlg_ApplyCampDialog();
+
+PROC
+PROC_RJTP_Dlg_Toggle((CHARACTER)_Caster)
+AND
+DB_RJTP_UseDialogs(1)
+THEN
+OpenMessageBox(_Caster, "RJTP TEST (D0): dialogs ON. Camp clicks use RJTP_CAMP_Raphael; the portal offer uses RJTP_HoH_Offer once RJTP_HoH_Offer.txt calls PROC_RJTP_PresentOffer. Message boxes stay the fallback.");
+
+PROC
+PROC_RJTP_Dlg_Toggle((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_UseDialogs(1)
+AND
+DB_RJTP_TimelinesReady(1)
+THEN
+OpenMessageBox(_Caster, "RJTP TEST (D0): dialogs OFF. Message boxes and the borrowed hireling camp dialog, as in v0.1.");
+
+PROC
+PROC_RJTP_Dlg_Toggle((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_UseDialogs(1)
+AND
+NOT DB_RJTP_TimelinesReady(1)
+THEN
+OpenMessageBox(_Caster, "RJTP TEST: Raphael's own dialogs stay OFF in this build. Without cinematic timelines the dialog freezes (test D0, 2026-10-04). He keeps the borrowed hireling camp dialog.");
+
+PROC
+PROC_RJTP_Dlg_TestNote((STRING)_Text)
+AND
+DB_RJTP_TestBuild(1)
+AND
+DB_Avatars(_Avatar)
+THEN
+OpenMessageBox(_Avatar, _Text);
+
+// S1a = re-keyed soundbank route (slot bound to the companion's GUID); S1b = GROUP_MonitorHumanForm override route.
+// Each plays the one-line AD "Enough! The deal is off the table." on the companion; neither AD has vanilla story rules.
+IF
+CastedSpell(_Caster, "Shout_RJTP_Debug_VoiceS1a", _, _, _)
+AND
+DB_RJTP_TestBuild(1)
+THEN
+PROC_RJTP_Dlg_VoiceSpike((CHARACTER)_Caster, (DIALOGRESOURCE)RJTP_AD_VoiceTestRekeyed_fc440a39-8d81-45a9-9985-f2ee9ed7c229, "S1a");
+
+IF
+CastedSpell(_Caster, "Shout_RJTP_Debug_VoiceS1b", _, _, _)
+AND
+DB_RJTP_TestBuild(1)
+THEN
+PROC_RJTP_Dlg_VoiceSpike((CHARACTER)_Caster, (DIALOGRESOURCE)RJTP_AD_VoiceTestGroup_db220430-84e7-43b2-bf9b-1b17760c95bc, "S1b");
+
+PROC
+PROC_RJTP_Dlg_VoiceSpike((CHARACTER)_Caster, (DIALOGRESOURCE)_AD, (STRING)_Tag)
+AND
+DB_RJTP_SpikeRun(_OldAD, _OldTag, _OldCaster)
+THEN
+NOT DB_RJTP_SpikeRun(_OldAD, _OldTag, _OldCaster);
+
+PROC
+PROC_RJTP_Dlg_VoiceSpike((CHARACTER)_Caster, (DIALOGRESOURCE)_AD, (STRING)_Tag)
+THEN
+DB_RJTP_SpikeRun(_AD, _Tag, _Caster);
+
+// Not recruited: bring him on stage next to the caster for the test (as the v0.1 Summon test does).
+// Never after a permanent departure (review 22 M5).
+PROC
+PROC_RJTP_Dlg_VoiceSpike((CHARACTER)_Caster, (DIALOGRESOURCE)_AD, (STRING)_Tag)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+NOT DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_OfferInProgress(1)
+AND
+NOT DB_RJTP_Withdrawn(1)
+AND
+NOT DB_RJTP_Betrayed(1)
+AND
+NOT DB_RJTP_Dismissed(1)
+THEN
+DB_RJTP_SpikeSummoned(1);
+SetOnStage(_Comp, 1);
+TeleportTo(_Comp, _Caster, "", 0, 0, 0, 0, 1);
+
+PROC
+PROC_RJTP_Dlg_VoiceSpike((CHARACTER)_Caster, (DIALOGRESOURCE)_AD, (STRING)_Tag)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+RealtimeObjectTimerLaunch(_Comp, "RJTP_SpikePlay", 1500);
+
+IF
+ObjectTimerFinished(_Comp, "RJTP_SpikePlay")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_SpikeRun(_AD, _Tag, _Caster)
+THEN
+PROC_RJTP_Dlg_SpikePlay((CHARACTER)_Comp, (DIALOGRESOURCE)_AD, (STRING)_Tag, (CHARACTER)_Caster);
+
+PROC
+PROC_RJTP_Dlg_SpikePlay((CHARACTER)_Comp, (DIALOGRESOURCE)_AD, (STRING)_Tag, (CHARACTER)_Caster)
+AND
+QRY_StartDialog_Fixed(_AD, _Comp)
+THEN
+DB_RJTP_SpikeStarted(1);
+
+PROC
+PROC_RJTP_Dlg_SpikePlay((CHARACTER)_Comp, (DIALOGRESOURCE)_AD, (STRING)_Tag, (CHARACTER)_Caster)
+AND
+NOT DB_RJTP_SpikeStarted(1)
+AND
+Concatenate(_Tag, ": the test AD did not start (its speaker slot did not accept the companion).", _Msg)
+THEN
+OpenMessageBox(_Caster, _Msg);
+
+PROC
+PROC_RJTP_Dlg_SpikePlay((CHARACTER)_Comp, (DIALOGRESOURCE)_AD, (STRING)_Tag, (CHARACTER)_Caster)
+THEN
+NOT DB_RJTP_SpikeStarted(1);
+RealtimeObjectTimerLaunch(_Comp, "RJTP_SpikeEnd", 15000);
+
+IF
+AutomatedDialogRequestFailed(_AD, _)
+AND
+DB_RJTP_SpikeRun(_AD, _Tag, _Caster)
+AND
+Concatenate(_Tag, ": the test AD request failed (its speaker slot did not accept the companion).", _Msg)
+THEN
+NOT DB_RJTP_SpikeRun(_AD, _Tag, _Caster);
+OpenMessageBox(_Caster, _Msg);
+
+IF
+AutomatedDialogEnded(_AD, _)
+AND
+DB_RJTP_SpikeRun(_AD, _Tag, _Caster)
+AND
+Concatenate(_Tag, " played. Did you HEAR Raphael say: Enough! The deal is off the table.? Voice = this route works. Subtitle bubble only = no audio for this route.", _Msg)
+THEN
+NOT DB_RJTP_SpikeRun(_AD, _Tag, _Caster);
+OpenMessageBox(_Caster, _Msg);
+
+IF
+ObjectTimerFinished(_Comp, "RJTP_SpikeEnd")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_SpikeSummoned(1)
+THEN
+NOT DB_RJTP_SpikeSummoned(1);
+PROC_RJTP_Dlg_SpikeOffstage((CHARACTER)_Comp);
+
+PROC
+PROC_RJTP_Dlg_SpikeOffstage((CHARACTER)_Comp)
+AND
+NOT DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_OfferInProgress(1)
+THEN
+SetOnStage(_Comp, 0);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION

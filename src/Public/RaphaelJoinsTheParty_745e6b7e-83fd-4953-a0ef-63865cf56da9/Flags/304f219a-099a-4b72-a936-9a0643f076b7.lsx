@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="8" revision="0" build="500" />
+	<region id="Flags">
+		<node id="Flags">
+			<attribute id="UUID" type="guid" value="304f219a-099a-4b72-a936-9a0643f076b7" />
+			<attribute id="Name" type="FixedString" value="RJTP_Event_Abort" />
+			<attribute id="Description" type="LSString" value="RJTP offer outcome: [Leave] = abort; the offer repeats at the next portal use." />
+			<attribute id="Usage" type="uint8" value="4" />
+		</node>
+	</region>
+</save>

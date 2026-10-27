@@ -1,0 +1,632 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION Recruit-time "fake Origin" registration (plan section 6.1). Nothing Origin-related exists until he is recruited.
+PROC
+PROC_RJTP_RegisterOrigin()
+AND
+DB_RJTP_Companion(_Comp)
+AND
+NOT DB_RJTP_OriginRegistered(1)
+THEN
+DB_RJTP_OriginRegistered(1);
+// v0.1.1: the borrowed Hireling dialog only has lines for speakers carrying one of the 8 generic hireling voice
+// tags (Hireling.lsj greeting TaggedText rules). Without one the dialog never starts ("click does nothing").
+// The tag only selects the dialog's TEXT. Since 2026-10-04 his Origin has its own voice table whose speaker id is
+// vanilla Raphael's, so these borrowed hireling lines show as captions without audio; his own lines are Raphael's.
+SetTag(_Comp, (TAG)GENERIC_VOICE_5_MALE_75cbe7ab-c39e-498e-a08d-b3c9ba05038e);
+DB_Origins(_Comp);
+DB_Origins_UnavailableForRandom(_Comp);
+DB_OriginInPartyDialog(_Comp, (DIALOGRESOURCE)Hireling_418bd530-1088-9cdc-6d6e-83335b9723b8);
+DB_OriginInPartyGlobal(_Comp, (FLAG)RJTP_ORI_Raphael_State_IsInParty_88b83b89-9749-4690-b1a4-2ee2b7b3f46c);
+DB_OriginPartOfTheTeamFlag(_Comp, (FLAG)RJTP_GLO_Origin_PartOfTheTeam_Raphael_fbcfdb3c-0db4-4816-91d9-b755df1459e4, (FLAG)RJTP_GLO_Origin_Avatar_Raphael_53694949-9b09-44be-b62e-1d58f0d627f7, (FLAG)RJTP_ORI_Raphael_ControlledByUser_c8dc6a27-3041-4b8c-93af-d2582fc9fe5f);
+DB_OriginKickFromPartyFlags(_Comp, (FLAG)RJTP_ORI_Raphael_Event_KickCompanion_ff15e9aa-a2b6-4222-bbaf-33239ac65958, (FLAG)RJTP_ORI_Raphael_State_CanBeKicked_d70e104c-08b8-4f5a-b94c-635c28671bb9);
+DB_OriginCampFlags(_Comp, (FLAG)RJTP_RAPHAEL_fa950c89-4e07-44c5-a372-7ee56003fb20, (FLAG)RJTP_RAPHAELAVATAR_8d64f09c-c5f3-4600-b889-655a04d7fd45, (FLAG)RJTP_RAPHAELCOMPANION_0af56629-9715-467d-b3e6-e475c27b39fa, (FLAG)RJTP_RAPHAELPARTY_67624cf5-019a-4f03-9881-4a019b598157, (FLAG)RJTP_RAPHAELCAMP_0ce21ad3-669a-4661-a0c7-a96870cc4ebe);
+DB_Inclusion_Object(_Comp, (FLAG)RJTP_ORI_Inclusion_Raphael_224f23f5-2b27-427d-a115-45e92dd7136f, (FLAG)RJTP_ORI_Inclusion_End_Raphael_62b2826e-033e-4cec-977e-fbcdbc7d3487);
+DB_CompanionOnlyFaction(_Comp, (FACTION)RJTP_RaphaelCompanion_92e572ba-3995-4ddf-8d80-c8d94bd93eb2);
+DB_GLO_PartyMembers_DefaultFaction(_Comp, (FACTION)RJTP_RaphaelCompanion_92e572ba-3995-4ddf-8d80-c8d94bd93eb2);
+DB_GLO_Jergal_CompanionResurrectionFlags(_Comp, (FLAG)RJTP_CAMP_Jergal_State_CanResurrectRaphael_65cedcf6-adfc-4795-bf3e-47895ba122f3, (FLAG)RJTP_CAMP_Jergal_State_WillResurrectRaphael_01d9fa07-b73a-42cf-a58f-1a10434602ac);
+DB_ORI_DarkUrge_FavouriteExcluded(_Comp);
+DB_RecruitableNpcHardCoreStatus(_Comp, "HARD", "HEALTHBOOST_HARDCORE");
+DB_RecruitableNpcHardCoreStatus(_Comp, "EASY", "HEALTHREDUCTION_EASYMODE");
+DB_NoLowAttitudeDialog(_Comp);
+DB_GLO_Tags_GameStartTagExclusionTag((TAG)ILLITHID_1eec74e8-3673-4500-abec-57b7ed8469ed, (TAG)RJTP_REALLY_RAPHAEL_e6a8b93b-fb2a-4109-816f-dcb3fe82bb1c);
+DB_GLO_Tags_GameStartTagExclusionTag((TAG)BALDURIAN_f15e9b0d-676c-4f52-9abf-365cff89ef0f, (TAG)RJTP_REALLY_RAPHAEL_e6a8b93b-fb2a-4109-816f-dcb3fe82bb1c);
+// Runtime insert still fires vanilla _GLO_Shared_Origins.txt:238 (review 05 S7)
+DB_OriginNPCAlignment(_Comp, (FACTION)RJTP_RaphaelNPC_a1003392-4017-4652-ab8f-174747bd6f2e);
+
+// Camp spots
+PROC
+PROC_RJTP_RegisterOrigin()
+THEN
+PROC_RJTP_EnsureCampRows();
+
+PROC
+PROC_RJTP_RegisterOrigin()
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_RJTP_CampData(_Camp, _Trigger)
+AND
+NOT DB_ORI_OriginCampData(_Comp, _Camp, _)
+THEN
+DB_ORI_OriginCampData(_Comp, _Camp, _Trigger);
+
+// Acts 1 and 2 camp rows for saves made before they were INIT rows (INIT is not re-run on load). Idempotent.
+PROC
+PROC_RJTP_EnsureCampRows()
+THEN
+DB_RJTP_CampData("WLDMAIN",(TRIGGER)S_CAMP_WLDMAIN_Oathbreaker_f401f1b7-cb09-4e95-b21d-e425865dd263);
+DB_RJTP_CampData("WLDCAVGRN",(TRIGGER)S_CAMP_WLDCAVGRN_Oathbreaker_fce87636-d5e1-4a6d-9454-ed8590729412);
+DB_RJTP_CampData("WLDCAVSND",(TRIGGER)S_CAMP_WLDCAVSND_Oathbreaker_0a3c55db-39ae-412d-8f7b-54298ac36f8b);
+DB_RJTP_CampData("WLDDUNABB",(TRIGGER)S_CAMP_WLDDUNABB_Oathbreaker_6f01e06d-d48b-4f5a-a997-8d7b2962c612);
+DB_RJTP_CampData("WLDBAS",(TRIGGER)S_CAMP_WLDBAS_Oathbreaker_40fe55e5-d4bd-4e8c-bed8-24acc115a231);
+DB_RJTP_CampData("WLDDUNSHA",(TRIGGER)S_CAMP_WLDDUNSHA_Oathbreaker_7cffb828-8cce-4485-8e1e-f2fb252e9562);
+DB_RJTP_CampData("WLDUND",(TRIGGER)S_CAMP_WLDUND_Oathbreaker_0dcd2fc5-e442-4ef5-8076-cf47d737d9ef);
+DB_RJTP_CampData("CREMAIN",(TRIGGER)S_CAMP_CRE_Oathbreaker_6090af73-a83a-42ca-a8be-427610c19178);
+DB_RJTP_CampData("CREINSIDE",(TRIGGER)S_CAMP_CREIN_Oathbreaker_75119780-fad3-497c-bb3a-25f30e40f7fa);
+DB_RJTP_CampData("SCLMAIN",(TRIGGER)S_CAMP_SCLMAIN_Oathbreaker_2086906f-43bf-4124-96ff-bb39d23192d5);
+DB_RJTP_CampData("SHARTEMPLE",(TRIGGER)S_CAMP_SHARTEMPLE_Oathbreaker_b6b499b3-8a1e-4f74-80da-22850082db9b);
+DB_RJTP_CampData("HAVEN",(TRIGGER)S_CAMP_HAVEN_Oathbreaker_908825f1-995e-4bdd-88f9-3b54bd27fe13);
+DB_RJTP_CampData("MOONRISE",(TRIGGER)S_CAMP_MOONRISE_Oathbreaker_2bfa8e97-5e34-4ee7-96ef-ab1a92bcc251);
+DB_RJTP_CampData("INTMAIN",(TRIGGER)S_CAMP_INT_Oathbreaker_5bff936b-b445-4214-a0ce-6c76a14f0d0c);
+
+// A Raphael recruited under an older pak: give him the new camp spots on load
+IF
+SavegameLoaded()
+THEN
+PROC_RJTP_EnsureCampRows();
+PROC_RJTP_PatchCampSpots();
+
+PROC
+PROC_RJTP_PatchCampSpots()
+AND
+DB_RJTP_Recruited(1)
+AND
+NOT DB_RJTP_Withdrawn(1)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_RJTP_CampData(_Camp, _Trigger)
+AND
+NOT DB_ORI_OriginCampData(_Comp, _Camp, _)
+THEN
+DB_ORI_OriginCampData(_Comp, _Camp, _Trigger);
+//END_REGION
+
+//REGION Recruitment (the vanilla party add does the rest)
+PROC
+PROC_RJTP_Recruit((CHARACTER)_Player)
+AND
+DB_RJTP_Companion(_Comp)
+THEN
+PROC_RJTP_RegisterOrigin();
+DB_RJTP_Recruited(1);
+DB_RJTP_EverRecruited(1);
+NOT DB_GLO_PartyMembers_BlockReturnToRecruitmentPosition(_Comp);
+SetOnStage(_Comp, 1);
+TeleportTo(_Comp, _Player, "", 0, 0, 0, 0, 1);
+SetFaction(_Comp, (FACTION)RJTP_RaphaelCompanion_92e572ba-3995-4ddf-8d80-c8d94bd93eb2);
+
+// Party has room: join now
+PROC
+PROC_RJTP_Recruit((CHARACTER)_Player)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+GetFlag((FLAG)GEN_MaxPlayerCountReached_823b5064-8aa4-c0b7-1b8c-657b46987ccd, NULL_00000000-0000-0000-0000-000000000000, 0)
+THEN
+PROC_GLO_PartyMembers_CheckAdd(_Comp, _Player);
+
+// Party full: vanilla's add silently does nothing (VS:_GLO_Shared_PartyMembers.txt:478-482), so send him to camp
+PROC
+PROC_RJTP_Recruit((CHARACTER)_Player)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+GetFlag((FLAG)GEN_MaxPlayerCountReached_823b5064-8aa4-c0b7-1b8c-657b46987ccd, NULL_00000000-0000-0000-0000-000000000000, 1)
+THEN
+PROC_ORI_SendToCampAfterDialog(_Comp, 0, "Walk", _Player);
+PROC_RJTP_Box(_Player, "RJTP_Msg_PartyFull", 0);
+
+// Confirmation only once he is really in the party (review 08 M13)
+PROC
+PROC_GLO_PartyMembers_AddHook((CHARACTER)_Comp, (CHARACTER)_Player)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+QRY_OnlyOnce("RJTP_JoinedMessage")
+THEN
+PROC_RJTP_Box(_Player, "RJTP_Msg_Joined", 0);
+
+// First time he joins (plan section 6.1 first-recruit hook)
+PROC
+PROC_GLO_PartyMembers_AddHook((CHARACTER)_Comp, (CHARACTER)_Player)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+QRY_OnlyOnce("RJTP_FirstRecruit")
+THEN
+PROC_RJTP_FirstRecruitSetup(_Comp);
+
+PROC
+PROC_ORI_SetupCamp((CHARACTER)_Comp)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+QRY_OnlyOnce("RJTP_FirstRecruit")
+THEN
+PROC_RJTP_FirstRecruitSetup(_Comp);
+
+PROC
+PROC_RJTP_FirstRecruitSetup((CHARACTER)_Comp)
+THEN
+PROC_RecruitableNpcHardCoreStatus_Remove(_Comp);
+PROC_GLO_DifficultyModes_AddPlayerBonuses(_Comp);
+TemplateAddTo((ITEMROOT)MAG_Infernal_Plate_Armor_7ae705fd-1cfd-4482-a584-d2e68f9c1262, _Comp, 1, 0);
+ObjectTimerLaunch(_Comp, "RJTP_FactionFailsafe", 1000, 0);
+DB_RJTP_NeedsInitialRespec(1);
+ObjectTimerLaunch(_Comp, "RJTP_InitialRespec", 4000, 0);
+
+// Sent to camp first (party was full): open the respec the first time he actually joins the party
+PROC
+PROC_GLO_PartyMembers_AddHook((CHARACTER)_Comp, (CHARACTER)_Player)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_RJTP_NeedsInitialRespec(1)
+THEN
+NOT DB_RJTP_RespecRetrying(1);
+ObjectTimerLaunch(_Comp, "RJTP_InitialRespec", 4000, 0);
+
+IF
+ObjectTimerFinished(_Comp, "RJTP_FactionFailsafe")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_Players((CHARACTER)_Comp)
+THEN
+SetFaction(_Comp, (FACTION)RJTP_RaphaelCompanion_92e572ba-3995-4ddf-8d80-c8d94bd93eb2);
+
+// His usual equipment: the Helldusk Armour, tracked so it can be removed if he ever leaves hostile (review 07 S7)
+// v0.2 (plan section 12): with the Wardrobe look the plate shows when worn. Default = he starts in his suit and the
+// Helldusk waits in his inventory; DB_RJTP_StartInHelldusk(1) (option b) equips it instead.
+IF
+TemplateAddedTo(MAG_Infernal_Plate_Armor_7ae705fd-1cfd-4482-a584-d2e68f9c1262, _Item, _Holder, _)
+AND
+DB_RJTP_Companion((CHARACTER)_Holder)
+AND
+NOT DB_RJTP_BoundHelldusk(_)
+THEN
+DB_RJTP_BoundHelldusk((ITEM)_Item);
+PROC_RJTP_MaybeEquipHelldusk((CHARACTER)_Holder, (ITEM)_Item);
+
+PROC
+PROC_RJTP_MaybeEquipHelldusk((CHARACTER)_Holder, (ITEM)_Item)
+AND
+DB_RJTP_StartInHelldusk(1)
+THEN
+Equip(_Holder, _Item, 1, 0, 0);
+//END_REGION
+
+//REGION Recruit anytime (MCM "Recruit anytime" mode; PLAN_modes_2026-10-03.md). Called only by the SE layer.
+// Reports exactly one result through PROC_RJTP_AnytimeResult, which Lua observes; recruits only on OK / OK_CAMP.
+// The per-call marker DB_RJTP_AnytimeRefused is set and cleared inside this one proc (no engine event involved).
+PROC
+PROC_RJTP_AnytimeResult((STRING)_Result)
+THEN
+DB_NOOP(1);
+
+// Betrayal and Dismiss also set Withdrawn, so their own messages come first (diff review 2026-10-03)
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_RJTP_Betrayed(1)
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("BETRAYED");
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_RJTP_Dismissed(1)
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("DISMISSED");
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_RJTP_Withdrawn(1)
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("WITHDRAWN");
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_RJTP_Recruited(1)
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("ALREADY");
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("OFFER");
+
+// The House of Hope theft alarm is being held for the portal offer: recruiting here would set Recruited, close the
+// offer, and leave vanilla's ambush suppressed for good (plan review 2026-10-03, blocker 1)
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_RJTP_HoldingVanillaAmbush(1)
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("HOH");
+
+// v0.3d: vanilla's House of Hope arrival is about to start (RJTP_HoH_Offer HandToVanilla)
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_RJTP_HandPending(_)
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("HOH");
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_CurrentLevel("SYS_CC_I")
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("LEVEL");
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_CurrentLevel("TUT_Avernus_C")
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("LEVEL");
+
+// The endgame: every withdraw hook there acts only on a Raphael who was recruited before (blocker 2)
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_CurrentLevel("END_Main")
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("ENDGAME");
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_CurrentLevel("EPI_Main_A")
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("ENDGAME");
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_GlobalFlag((FLAG)END_IllithidOptions_Event_RaphaelAppeared_9cfb6023-25e5-4ae4-899f-d6142c7f1be0)
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("ENDGAME");
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+NOT DB_Avatars(_)
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("PLAYER");
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+QRY_RJTP_PartyInCombat()
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("COMBAT");
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_DialogPlayers(_, _Player, _)
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("DIALOG");
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_Avatars(_Avatar)
+AND
+DB_DialogPlayers(_, _Avatar, _)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("DIALOG");
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_Camp_NightMode(1)
+THEN
+DB_RJTP_AnytimeRefused(1);
+PROC_RJTP_AnytimeResult("NIGHT");
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+GetFlag((FLAG)GEN_MaxPlayerCountReached_823b5064-8aa4-c0b7-1b8c-657b46987ccd, NULL_00000000-0000-0000-0000-000000000000, 0)
+THEN
+PROC_RJTP_AnytimeResult("OK");
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+GetFlag((FLAG)GEN_MaxPlayerCountReached_823b5064-8aa4-c0b7-1b8c-657b46987ccd, NULL_00000000-0000-0000-0000-000000000000, 1)
+THEN
+PROC_RJTP_AnytimeResult("OK_CAMP");
+
+// He joins an AVATAR (PROC_RJTP_Recruit feeds vanilla's party add): the selected character if it is one, else the
+// first avatar. Lua passes the host's current character, which may be a companion (diff review 2026-10-03).
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_Avatars(_Player)
+THEN
+DB_RJTP_AnytimeRecruit(1);
+DB_RJTP_AnytimePicked(1);
+PROC_RJTP_Recruit(_Player);
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+NOT DB_RJTP_AnytimeRefused(1)
+AND
+DB_Avatars(_Avatar)
+AND
+NOT DB_RJTP_AnytimePicked(1)
+THEN
+DB_RJTP_AnytimeRecruit(1);
+DB_RJTP_AnytimePicked(1);
+PROC_RJTP_Recruit(_Avatar);
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+DB_RJTP_AnytimePicked(1)
+THEN
+NOT DB_RJTP_AnytimePicked(1);
+
+PROC
+PROC_RJTP_RecruitAnytime((CHARACTER)_Player)
+AND
+DB_RJTP_AnytimeRefused(1)
+THEN
+NOT DB_RJTP_AnytimeRefused(1);
+//END_REGION
+
+//REGION Initial respec: the player builds his class (plan section 6.1, fixed per review 07 B1)
+IF
+ObjectTimerFinished(_Comp, "RJTP_InitialRespec")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_NeedsInitialRespec(1)
+AND
+DB_Players((CHARACTER)_Comp)
+AND
+NOT DB_InCharacterRespec((CHARACTER)_Comp, _)
+AND
+QRY_RJTP_AtPartyLevel()
+THEN
+PROC_TryLaunchRespec((CHARACTER)_Comp, "RJTP_InitialBuild");
+
+// Not levelled yet (RequestInitialLevel is asynchronous, review 08 S8): try again shortly
+IF
+ObjectTimerFinished(_Comp, "RJTP_InitialRespec")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_NeedsInitialRespec(1)
+AND
+DB_Players((CHARACTER)_Comp)
+AND
+NOT QRY_RJTP_AtPartyLevel()
+AND
+NOT DB_RJTP_RespecRetrying(1)
+THEN
+DB_RJTP_RespecRetrying(1);
+ObjectTimerLaunch(_Comp, "RJTP_InitialRespec", 3000, 0);
+ObjectTimerLaunch(_Comp, "RJTP_InitialRespecFallback", 20000, 0);
+
+IF
+ObjectTimerFinished(_Comp, "RJTP_InitialRespec")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_NeedsInitialRespec(1)
+AND
+DB_Players((CHARACTER)_Comp)
+AND
+NOT QRY_RJTP_AtPartyLevel()
+AND
+DB_RJTP_RespecRetrying(1)
+AND
+NOT DB_InCharacterRespec((CHARACTER)_Comp, _)
+THEN
+ObjectTimerLaunch(_Comp, "RJTP_InitialRespec", 3000, 0);
+
+IF
+LeveledUp(_Comp)
+AND
+DB_RJTP_Companion(_Comp)
+AND
+DB_RJTP_NeedsInitialRespec(1)
+THEN
+ObjectTimerLaunch(_Comp, "RJTP_InitialRespec", 1000, 0);
+
+// After 20 s open it anyway: the player can still level him in the respec screen
+IF
+ObjectTimerFinished(_Comp, "RJTP_InitialRespecFallback")
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+DB_RJTP_NeedsInitialRespec(1)
+AND
+DB_Players((CHARACTER)_Comp)
+AND
+NOT DB_InCharacterRespec((CHARACTER)_Comp, _)
+THEN
+PROC_TryLaunchRespec((CHARACTER)_Comp, "RJTP_InitialBuild");
+
+QRY
+QRY_RJTP_AtPartyLevel()
+AND
+DB_RJTP_Companion(_Comp)
+AND
+GetLevel(_Comp, _Level)
+AND
+DB_Avatars(_Avatar)
+AND
+GetLevel(_Avatar, _Level)
+THEN
+DB_NOOP(1);
+
+PROC
+PROC_LaunchRespec((CHARACTER)_Char, "RJTP_InitialBuild")
+THEN
+StartRespec(_Char);
+
+IF
+RespecCompleted(_Char)
+AND
+DB_InCharacterRespec(_Char, "RJTP_InitialBuild")
+THEN
+PROC_FinishedRespecing(_Char, "RJTP_InitialBuild");
+NOT DB_RJTP_NeedsInitialRespec(1);
+NOT DB_RJTP_RespecRetrying(1);
+
+IF
+RespecCancelled(_Char)
+AND
+DB_InCharacterRespec(_Char, "RJTP_InitialBuild")
+THEN
+PROC_FinishedRespecing(_Char, "RJTP_InitialBuild");
+NOT DB_RJTP_NeedsInitialRespec(1);
+NOT DB_RJTP_RespecRetrying(1);
+//END_REGION
+
+//REGION In-party dialog (v0.1 borrows the vanilla hireling dialog; vanilla hireling rules only act on DB_Hirelings_Hired)
+// "Follow me" from camp
+IF
+DialogActorLeft(Hireling_418bd530-1088-9cdc-6d6e-83335b9723b8, _DialogID, _Comp, _)
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+GetFlag(Hireling_Event_ToParty_a8d38e39-d672-406d-9827-811bed6ef24c, _Comp, 1)
+AND
+DB_DialogPlayers(_DialogID, _Avatar, 1)
+THEN
+ClearFlag(Hireling_Event_ToParty_a8d38e39-d672-406d-9827-811bed6ef24c, _Comp, 0);
+PROC_GLO_PartyMembers_CheckAdd((CHARACTER)_Comp, (CHARACTER)_Avatar);
+
+// "Return to the Fugue Plane" = dismiss permanently (the author: permanent, no re-recruit)
+IF
+DialogActorLeft(Hireling_418bd530-1088-9cdc-6d6e-83335b9723b8, _, _Comp, _)
+AND
+DB_RJTP_Companion((CHARACTER)_Comp)
+AND
+GetFlag(Hireling_Event_Dismiss_0899283b-9be4-4fef-babb-756270a33079, _Comp, 1)
+THEN
+ClearFlag(Hireling_Event_Dismiss_0899283b-9be4-4fef-babb-756270a33079, _Comp, 0);
+PROC_RJTP_DismissPermanently((CHARACTER)_Comp);
+
+PROC
+PROC_RJTP_DismissPermanently((CHARACTER)_Comp)
+THEN
+DB_RJTP_Dismissed(1);
+DB_RJTP_OfferResolved("Dismissed");
+NOT DB_RJTP_Recruited(1);
+PROC_RJTP_Withdraw();
+PROC_Origins_CompanionLeavePermanently(_Comp, "RJTP_Dismissed");
+// The ambush hold is kept: only the contract still releases it (v0.3d: freeing Hope does not; she stays in the House)
+PROC_RJTP_TellAvatars("RJTP_Msg_Dismissed");
+//END_REGION
+
+//REGION Betrayal: contract destroyed while he is recruited (the author Q6; plan section 5.2; v0.3d: freeing Hope is no betrayal)
+PROC
+PROC_RJTP_Betrayal((CHARACTER)_Comp, (STRING)_Why)
+AND
+NOT DB_RJTP_Betrayed(1)
+THEN
+DB_RJTP_Betrayed(1);
+NOT DB_RJTP_Recruited(1);
+PROC_RJTP_Withdraw();
+PROC_Origins_CompanionLeavePermanently(_Comp, "RJTP_Betrayal");
+PROC_RJTP_RemoveBoundItems();
+PROC_RJTP_TellAvatars("RJTP_Msg_Betrayal");
+
+PROC
+PROC_RJTP_RemoveBoundItems()
+AND
+DB_RJTP_BoundHelldusk(_Item)
+THEN
+RequestDelete(_Item);
+NOT DB_RJTP_BoundHelldusk(_Item);
+
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION

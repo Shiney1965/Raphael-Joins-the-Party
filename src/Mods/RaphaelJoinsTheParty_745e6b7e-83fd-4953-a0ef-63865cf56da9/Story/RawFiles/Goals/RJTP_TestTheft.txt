@@ -1,0 +1,188 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+// Raphael Joins the Party - v0.3f test harness: "RJTP TEST: Stage an Archive theft (cast at the exit portal)".
+// the author 2026-10-17: after a real theft the alarm's debtor ambush (HoH2:2014-2037) waits in the hall between the Archive
+// and the foyer (ambush points z 2913-2951; the exit portal is at z 2880), so reaching the portal means a long fight.
+// This spell stages the same state AT the portal: one Archive treasure moves to the caster, the mod records it exactly
+// as its own theft rules would (DB_RJTP_Taken + DB_RJTP_PendingTheft, RJTP_HoH_Offer.txt:69-80), then vanilla's alarm
+// flag is raised, so the mod classifies the alarm as "Theft" and holds the ambush. Use the portal at once.
+// A NEW goal file: saves that already ran RJTP_TestHoH never re-run its INIT (the INIT trap).
+DB_RJTP_DebugSpell("Shout_RJTP_Debug_StageTheft");
+KBSECTION
+//REGION Entry (test builds only)
+IF
+CastedSpell(_Caster, "Shout_RJTP_Debug_StageTheft", _, _, _)
+AND
+DB_RJTP_TestBuild(1)
+THEN
+PROC_RJTP_TestTheft((CHARACTER)_Caster);
+//END_REGION
+
+//REGION Refusals: the first one that applies wins
+PROC
+PROC_RJTP_TestTheft((CHARACTER)_Caster)
+AND
+NOT DB_CurrentLevel("CTY_Main_A")
+THEN
+DB_RJTP_TestTheftBlock("RJTP_Msg_TestTheft_NotAtPortal");
+
+// Within 20 m of the House of Hope exit portal (the foyer)
+PROC
+PROC_RJTP_TestTheft((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestTheftBlock(_)
+AND
+NOT QRY_RJTP_TestTheftNearPortal(_Caster)
+THEN
+DB_RJTP_TestTheftBlock("RJTP_Msg_TestTheft_NotAtPortal");
+
+// The whole party must be in the foyer, as the portal itself requires (HoH2:3622-3643); review S1
+PROC
+PROC_RJTP_TestTheft((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestTheftBlock(_)
+AND
+QRY_LOW_HouseOfHope_PlayersNotGathered()
+THEN
+DB_RJTP_TestTheftBlock("RJTP_Msg_TestTheft_NotAtPortal");
+
+PROC
+PROC_RJTP_TestTheft((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestTheftBlock(_)
+AND
+DB_LOW_HouseOfHope_AlarmIsReady(1)
+THEN
+DB_RJTP_TestTheftBlock("RJTP_Msg_TestTheft_AlarmUp");
+
+PROC
+PROC_RJTP_TestTheft((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestTheftBlock(_)
+AND
+DB_GlobalFlag((FLAG)LOW_HouseOfHope_State_RaphaelAlerted_f83c3d6b-d6cf-41a1-a03d-c31df5ea44fe)
+THEN
+DB_RJTP_TestTheftBlock("RJTP_Msg_TestTheft_AlarmUp");
+
+PROC
+PROC_RJTP_TestTheft((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestTheftBlock(_)
+AND
+DB_RJTP_OfferInProgress(1)
+THEN
+DB_RJTP_TestTheftBlock("RJTP_Msg_TestHoH_Recruited");
+
+// Deal kept, contract whole, Raphael not met here, offer not yet answered (the offer's own gate)
+PROC
+PROC_RJTP_TestTheft((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestTheftBlock(_)
+AND
+NOT QRY_RJTP_OfferAllowed()
+THEN
+DB_RJTP_TestTheftBlock("RJTP_Msg_TestTheft_NoOffer");
+
+PROC
+PROC_RJTP_TestTheft((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestTheftBlock(_)
+AND
+QRY_RJTP_PartyInCombat()
+THEN
+DB_RJTP_TestTheftBlock("RJTP_Msg_TestHoH_Busy");
+
+// Pick one treasure that still exists and has not been taken: the amulet first (review M3: taking the gauntlets
+// advances Helsik's quest for good, Act3b_LOW_DevilsFee.txt:116), else the other one
+PROC
+PROC_RJTP_TestTheft((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestTheftBlock(_)
+AND
+NOT DB_RJTP_TestTheftItem(_)
+AND
+NOT DB_RJTP_Taken((ITEM)S_LOW_HouseOfHope_Treasures_Amulet_50c4fc37-881c-4ced-9940-7f3757943475)
+AND
+Exists(S_LOW_HouseOfHope_Treasures_Amulet_50c4fc37-881c-4ced-9940-7f3757943475, 1)
+THEN
+DB_RJTP_TestTheftItem((ITEM)S_LOW_HouseOfHope_Treasures_Amulet_50c4fc37-881c-4ced-9940-7f3757943475);
+
+PROC
+PROC_RJTP_TestTheft((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestTheftBlock(_)
+AND
+DB_RJTP_HoHTreasure(_Item, _, _, _, _)
+AND
+NOT DB_RJTP_TestTheftItem(_)
+AND
+NOT DB_RJTP_Taken(_Item)
+AND
+Exists(_Item, 1)
+THEN
+DB_RJTP_TestTheftItem(_Item);
+
+PROC
+PROC_RJTP_TestTheft((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestTheftBlock(_)
+AND
+NOT DB_RJTP_TestTheftItem(_)
+THEN
+DB_RJTP_TestTheftBlock("RJTP_Msg_TestTheft_NoItem");
+
+PROC
+PROC_RJTP_TestTheft((CHARACTER)_Caster)
+AND
+DB_RJTP_TestTheftBlock(_Key)
+THEN
+NOT DB_RJTP_TestTheftBlock(_Key);
+DB_RJTP_TestTheftRefused(1);
+PROC_RJTP_Box(_Caster, _Key, 0);
+
+QRY
+QRY_RJTP_TestTheftNearPortal((CHARACTER)_Caster)
+AND
+GetDistanceTo(_Caster, S_LOW_DevilsFee_ReceivingPortalHoH_e87812da-a916-4d8c-bef7-73040524e587, _Dist)
+AND
+_Dist < 20.0
+THEN
+DB_NOOP(1);
+//END_REGION
+
+//REGION Stage the theft
+// Order matters: the theft marks go in BEFORE the alarm flag, whose FlagSet event (processed after this proc) runs
+// the mod's classifier (PendingTheft -> "Theft") and then vanilla's alarm.
+PROC
+PROC_RJTP_TestTheft((CHARACTER)_Caster)
+AND
+NOT DB_RJTP_TestTheftRefused(1)
+AND
+DB_RJTP_TestTheftItem(_Item)
+THEN
+NOT DB_RJTP_TestTheftItem(_Item);
+ToInventory(_Item, _Caster, 1, 1, 0);
+DB_RJTP_Taken(_Item);
+DB_RJTP_PendingTheft(1);
+SetFlag((FLAG)LOW_HouseOfHope_State_RaphaelAlerted_f83c3d6b-d6cf-41a1-a03d-c31df5ea44fe);
+PROC_RJTP_Box(_Caster, "RJTP_Msg_TestTheft_Go", 0);
+
+// Last rule: reset for the next cast
+PROC
+PROC_RJTP_TestTheft((CHARACTER)_Caster)
+AND
+DB_RJTP_TestTheftRefused(1)
+THEN
+NOT DB_RJTP_TestTheftRefused(1);
+
+PROC
+PROC_RJTP_TestTheft((CHARACTER)_Caster)
+AND
+DB_RJTP_TestTheftItem(_Item)
+THEN
+NOT DB_RJTP_TestTheftItem(_Item);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION

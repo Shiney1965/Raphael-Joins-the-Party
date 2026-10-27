@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="8" revision="0" build="500" />
+	<region id="Flags">
+		<node id="Flags">
+			<attribute id="UUID" type="guid" value="d70e104c-08b8-4f5a-b94c-635c28671bb9" />
+			<attribute id="Name" type="FixedString" value="RJTP_ORI_Raphael_State_CanBeKicked" />
+			<attribute id="Description" type="LSString" value="Raphael (RJTP) can be kicked." />
+			<attribute id="Usage" type="uint8" value="4" />
+		</node>
+	</region>
+</save>

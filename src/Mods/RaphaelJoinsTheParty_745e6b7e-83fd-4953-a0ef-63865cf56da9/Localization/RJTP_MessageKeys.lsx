@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="0" revision="9" build="306" />
+	<region id="TranslatedStringKeys">
+		<node id="TranslatedStringKeys">
+			<children>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_Offer" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_Offer" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_TheftDemand" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_TheftDemand" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_ConfirmRefuse" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_ConfirmRefuse" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_ItemGone" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_ItemGone" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_OfferAfterReturn" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_OfferAfterReturn" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_OfferNothingToReturn" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_OfferNothingToReturn" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_Declined" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_Declined" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_DeclinedAfterReturn" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_DeclinedAfterReturn" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_Joined" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_Joined" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_PartyFull" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_PartyFull" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_InCombat" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_InCombat" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_Betrayal" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_Betrayal" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_Dismissed" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_Dismissed" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_Farewell" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_Farewell" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_AstralWithdraw" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_AstralWithdraw" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_ConfirmDecline" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_ConfirmDecline" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_OfferHope" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_OfferHope" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_Reckoning" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_Reckoning" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_ConfirmYield" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_ConfirmYield" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_BadAnswer" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_BadAnswer" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_TestTheft_NotAtPortal" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_TestTheft_NotAtPortal" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_TestTheft_AlarmUp" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_TestTheft_AlarmUp" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_TestTheft_NoOffer" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_TestTheft_NoOffer" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_TestTheft_NoItem" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_TestTheft_NoItem" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_TestTheft_Go" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_TestTheft_Go" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_TestHoH_Level" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_TestHoH_Level" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_TestHoH_Recruited" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_TestHoH_Recruited" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_TestHoH_Story" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_TestHoH_Story" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_TestHoH_VisitedNoDeal" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_TestHoH_VisitedNoDeal" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_TestHoH_Alarm" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_TestHoH_Alarm" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_TestHoH_Busy" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_TestHoH_Busy" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_TestHoH_Go" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_TestHoH_Go" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_TestHoH_GoDeal" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_TestHoH_GoDeal" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_TestHoH_ConfirmDeal" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_TestHoH_ConfirmDeal" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_DebugState" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_DebugState" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_Dismissed_Gear" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_Dismissed_Gear" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="RJTP_Msg_Uninstalled" version="1" />
+					<attribute id="UUID" type="FixedString" value="RJTP_Msg_Uninstalled" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+			</children>
+		</node>
+	</region>
+</save>
